@@ -4,7 +4,7 @@
 *{
   font-family: "Poppins", Helvetica;
 }
-form{
+.upload-form{
   display: flex;
   flex-direction: column;
   justify-content: center;

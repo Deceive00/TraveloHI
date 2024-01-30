@@ -98,6 +98,7 @@ const Uploader: React.FC<UploaderProps> = ({onPredict, onNotPredict} ) =>{
           onClick={() => inputRef.current?.click()}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
+          className='upload-form'
         >
           <input type="file" accept='image/*' className='input-field' ref={inputRef} hidden
             onChange={({target: {files}}) => {
