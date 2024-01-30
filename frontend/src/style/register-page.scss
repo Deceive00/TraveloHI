@@ -1,0 +1,146 @@
+@import 'variables/variables.scss';
+@import "variables/mixins";
+.name-container{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;;
+
+}
+
+.first-name-container,
+.last-name-container{
+  width: 45%;
+}
+.register-form-container {
+  margin-block: 10vh;
+  width: calc(20rem + 20vw);
+  height: fit-content;
+  background-color: $background-color;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 4rem 3rem;
+}
+
+.form-body {
+  display: flex;
+  justify-content: center;
+  background: url('../image/authBG.png') center center fixed;
+  background-size: cover;
+  height: 100vh;
+  overflow: scroll;
+}
+
+.registration-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 15px;
+}
+
+.submit-button.register{
+  margin-top: 2vh;
+  @include customButton($orange, &$orange-onhover);
+}
+.submit-button:hover {
+  background: rgb(219, 77, 20);
+  transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.submit-button:active {
+  box-shadow: none;
+}
+
+.gender-container{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+input[type="radio"] {
+  appearance: none;
+  background-color: $background-color;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em $blue;
+  background-color: $blue;
+}
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+input[type="radio"]:focus {
+  outline: max(2px, 0.15em) solid currentColor;
+  outline-offset: max(2px, 0.15em);
+}
+.form-control {
+  font-size: 0.9rem;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+.form-control:focus-within {
+  color: $blue;
+}
+
+.password-requirements {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.password-requirements h4 {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.password-requirements ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.password-requirements li {
+  margin-bottom: 5px;
+  color: $secondary-text-color; 
+}
+
+.password-requirements .valid {
+  color: green;
+}
+
+.security-container{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.questions-list-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.divider{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

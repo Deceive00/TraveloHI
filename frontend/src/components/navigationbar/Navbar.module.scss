@@ -1,0 +1,54 @@
+@import '../../style/variables/mixins';
+@import '../../style/variables/variables.scss';
+nav{
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  transition: 0.5s;
+  padding-block: 2vh;
+}
+
+.navbarContainer{
+  display: flex;
+  width: 90%;
+  flex-direction: row;
+  justify-content: space-between;
+  margin:auto;
+  align-items: center;
+}
+
+.leftNavbarContainer{
+  display: flex;
+  align-items: center;
+  width: 40%;
+}
+.leftNavbarContainer img{
+  width: calc(20px + 2vw);
+  height: calc(20px + 2vw);
+}
+
+.leftNavbarContainer h3{
+  margin-right: 3vw;
+}
+.rightNavbarContainer{
+
+}
+
+.loginButton{
+  margin-right: 0.8vw;
+  @include customButton($blue, $blue-onhover);
+}
+
+.registerButton{
+  padding: 10px 15px;
+  border-radius: 6px;
+  background: $background-color;
+  cursor: pointer;
+  font-weight: 600;
+  border: 1px solid $blue;
+  &:hover{
+    background: $hover-dark-background;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}

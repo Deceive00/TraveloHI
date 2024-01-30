@@ -1,0 +1,46 @@
+@import '../../../style/variables/variables.scss';
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 31rem;
+  margin: 0rem auto;
+}
+
+.searchBar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#searchQueryInput {
+  width: 100%;
+  height: 2.8rem;
+  background: whitesmoke;
+  outline: none;
+  border: none;
+  border-radius: 1.625rem;
+  padding: 0 3.5rem 0 1.5rem;
+  font-size: $normal-text-size;
+}
+
+#searchQuerySubmit {
+  width: 3.5rem;
+  height: 2.8rem;
+  margin-left: calc(-2.5rem - 0.5vw);
+  background: none;
+  border: none;
+  outline: none;
+}
+
+#searchQuerySubmit:hover {
+  cursor: pointer;
+}
+
+#searchLogo{
+  width: calc(10px + 0.8vw);
+  height: calc(10px + 0.8vw);
+}

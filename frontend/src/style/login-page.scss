@@ -1,0 +1,257 @@
+@import 'variables/variables.scss';
+
+.imported-logo {
+  width: 5vw;
+  height: 5vw;
+  border-radius: 1rem;
+}
+
+.form-body-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('../image/authBG.png') center center fixed;
+  background-size: cover;
+}
+
+.login-form-container {
+  position: relative;
+  width: calc(20rem + 10vw);
+  height: auto;
+  background-color: $background-color;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 4rem 3rem;
+}
+
+.login-title {
+  text-align: center;
+  margin: 10px 0 30px 0;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 15px;
+}
+
+.form-title-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 1vh;
+}
+
+.form-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 1vh;
+}
+
+.form-title > img.imported-logo {
+  width: 5vw;
+  height: 5vw;
+  border-radius: 1rem;
+}
+
+.form-title-container > h1 {
+  margin: 0;
+  font-size: 2rem;
+  padding-top: 1.2rem;
+}
+
+.form-title-container > p {
+  padding-top: 0.4rem;
+  font-size: 0.8rem;
+}
+.input-container {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 0.7rem;
+  transform: translateY(-50%);
+  color: #555;
+}
+
+.input-field {
+  width: calc(100%);
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: $normal-text-size;
+  background-color: $background-color;
+  border-bottom: 1px solid $blue;
+  border-radius: 4px;
+  padding-left: 2.2rem;
+}
+
+.input-field:focus{
+  border: none;
+  outline: none;
+  border-bottom: 2px solid $blue; 
+}
+.forgot-password-link {
+  text-decoration: underline;
+  margin: 0;
+  text-align: end;
+  color: $secondary-text-color;
+  text-decoration-color: $secondary-text-color;
+  padding-block: 0.5rem;
+}
+
+.forgot-password-label {
+  cursor: pointer;
+  font-size: $normal-text-size;
+  font-weight: 700;
+}
+
+.forgot-password-label:hover {
+  text-decoration-color: $blue;
+  transition: 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+  color: $blue;
+}
+
+.submit-button {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 0 !important;
+  outline: 0 !important;
+  background: $orange;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+.submit-button:hover {
+  background: rgb(219, 77, 20);
+  transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.submit-button:active {
+  box-shadow: none;
+}
+.submit-button:active {
+  background: rgb(219, 77, 20);
+  transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.otp-button {
+  padding: 10px 15px;
+  border-radius: 6px;
+  background: $background-color;
+  color: $blue;
+  cursor: pointer;
+  border: 1px solid $blue;
+  font-weight: 600;
+}
+.otp-button:hover {
+  background: $hover-dark-background;
+  transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.otp-button:active {
+  box-shadow: none;
+}
+
+.sign-up-info {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  margin-top: 2rem;
+  font-size: 0.7rem;
+  color: $secondary-text-color;
+}
+.sign-up-link:hover {
+  text-decoration-color: $blue;
+  transition: 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+  color: $blue;
+}
+.sign-up-link {
+  margin-left: 5px;
+  font-size: 11px;
+  text-decoration: underline;
+  text-decoration-color: $secondary-text-color;
+  color: $secondary-text-color;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.action-buttons-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.apple-login-button,
+.google-login-button {
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  gap: 5px;
+}
+.error {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid rgba(255, 0, 0, 0.866); 
+}
+
+.error-message {
+  color: rgba(255, 0, 0, 0.866);
+  font-size: 0.7rem;
+  height: 2vh;
+  margin-top: 3px;
+  transition: cubic-bezier(0.23, 1, 0.320, 1) 0.3s;
+}
+
+.divider{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100%);
+}
+
+.divider-inline {
+  border: 0;
+  height: 0.8px;
+  width: 30%;
+  background: $secondary-text-color;
+  margin: 20px 0;
+}
+
+.divider-text {
+  text-align: center;
+  color: $secondary-text-color; 
+  font-weight: bold;
+  padding-inline: 1rem;
+  font-size: $normal-text-size;
+  font-weight: 400;
+}
+
+.backButton{
+  position: absolute;
+  top: 7.2%;
+  left: 6%;
+}
+
+.textfield-label{
+  font-size: $normal-text-size;
+}

@@ -1,0 +1,66 @@
+
+.gamePageContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.gameContainer{
+  position: relative;
+  display: inline-block;
+}
+.playerHB{
+  background-color: yellow;
+  width: 100%;
+  height: 2rem;
+}
+
+.timer{
+  background-color: red;
+  height: 6rem;
+  width: 10rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.spriteHBContainer{
+  position: relative;
+  height: 2rem;
+  width: 100%;
+}
+.healthBarContainer{
+  position: absolute;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 2rem;
+}
+.playerBackgroundHB {
+  position: absolute;
+  background-color: blue;
+  height: 2rem;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+.enemyBackgroundHB {
+  position: absolute;
+  background-color: blue;
+  height: 2rem;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.result {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2);
+}
