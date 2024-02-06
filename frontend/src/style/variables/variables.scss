@@ -1,9 +1,9 @@
-$blue: #1ba0e2;
-$background-color: rgba(255,255,255,1.00);
+$blue: #0194f3;
+$background-color: var(--background-color);
 $secondary-text-color: #747474;
 $orange: rgb(255, 94, 31);
 $normal-text-size: calc(10px + 0.2vw);
 $orange-onhover: rgb(219, 77, 20);
 $blue-onhover: #1481b8;
-$text-color: black;
+$text-color: var(--primary-text-color);
 $hover-dark-background: rgba(0, 0, 0, 0.154);

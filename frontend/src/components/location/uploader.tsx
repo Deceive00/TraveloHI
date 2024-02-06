@@ -1,8 +1,9 @@
 import { useState, useRef  } from 'react'
-import './uploader.css'
+import './uploader.scss'
 import { MdBackup } from "react-icons/md";
 import Loading from '../Loading/Loading';
-
+import { MdDelete } from "react-icons/md";
+import { MdDescription } from "react-icons/md";
 
 interface UploaderProps {
   onPredict: () => void;
@@ -106,7 +107,7 @@ const Uploader: React.FC<UploaderProps> = ({onPredict, onNotPredict} ) =>{
             }}
           />
           {image ? 
-          <img src={image} style={{ width: '250px', height: '250px' }} alt={filename} />
+          <img src={image} style={{ width: '20vw', height: '20vw' }} alt={filename} />
           :
           <>
             <MdBackup style={{width:'5vw', height:'5vw'}}/>
@@ -118,28 +119,19 @@ const Uploader: React.FC<UploaderProps> = ({onPredict, onNotPredict} ) =>{
         </form>
 
         <section className='uploaded-row'>
-        <MdBackup/>
+        <MdDescription className='uploader-icon'/>
           <span className='uploaded-content'>
-            {filename}
-            <div onClick={handleDelete}>
-              <MdBackup/>
-            </div>
+            <p>{filename}</p>
+            <MdDelete onClick={handleDelete} style={{color:'red'}} className='uploader-icon'/>
           </span>
         </section>
         <button
-          style={{
-            color: 'white',
-            backgroundColor: '#1475cf',
-            borderRadius: '2rem',
-            padding:'1rem 2rem',
-            marginTop:'3vh',
-            boxShadow:'none',
-            outline:'none'
-
-          }}
-
-          className='upload-btn'
+          className='submit-button'
           onClick={handlePredict}
+          style={{
+            marginTop:'2vh',
+            width:'100%'
+          }}
         >
           Upload
         </button>  

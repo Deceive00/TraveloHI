@@ -1,0 +1,16 @@
+@import '../../style/variables/mixins';
+@import '../../style/variables/variables.scss';
+
+.addButton{
+  @include customButton($blue, $blue-onhover);
+}
+
+.addCardForm{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: calc(15rem + 10vw);
+
+
+}
+

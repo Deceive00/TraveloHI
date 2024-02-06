@@ -4,8 +4,10 @@ import (
 	// "encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -16,35 +18,34 @@ import (
 )
 
 const (
-	senderEmail = "travelohi00@gmail.com"
+	senderEmail    = "travelohi00@gmail.com"
 	senderPassword = "wiwzfmlvpcwihlhs"
-	smtpAddress = "smtp.gmail.com"
-	smtpPort = 587
+	smtpAddress    = "smtp.gmail.com"
+	smtpPort       = 587
 )
-
-func ReadHTMLFromFile(filePath string) (string, error) {
-	file, err := os.Open(filePath)
+func ReadHTMLFromFile(filename string) (string, error) {
+	currentDir, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("failed to open file: %w", err)
+			return "", fmt.Errorf("failed to get current working directory: %w", err)
+	}
+
+	fullPath := filepath.Join(currentDir, filename)
+
+	file, err := os.Open(fullPath)
+	if err != nil {
+			return "", fmt.Errorf("failed to open file: %w", err)
 	}
 	defer file.Close()
 
-	stat, err := file.Stat()
+	content, err := ioutil.ReadAll(file)
 	if err != nil {
-		return "", fmt.Errorf("failed to get file stat: %w", err)
-	}
-
-	content := make([]byte, stat.Size())
-	_, err = file.Read(content)
-	if err != nil {
-		return "", fmt.Errorf("failed to read file content: %w", err)
+			return "", fmt.Errorf("failed to read file content: %w", err)
 	}
 
 	return string(content), nil
 }
-
 func SendRegistrationEmail(email string) error {
-	htmlContent, err := ReadHTMLFromFile("/Users/eldrian/Documents/aslab/DG23-2/TPA/Web/backend/EmailTemplates/Registration/registration.html")
+	htmlContent, err := ReadHTMLFromFile("EmailTemplates/Registration/registration.html")
 
 	if err != nil {
 		log.Fatalf("Error reading HTML file: %v", err)
@@ -64,13 +65,13 @@ func SendRegistrationEmail(email string) error {
 		log.Printf("Error sending registration email: %v", err)
 		return err
 	} else {
-			log.Printf("Registration email sent successfully to %s", email)
-			return nil
+		log.Printf("Registration email sent successfully to %s", email)
+		return nil
 	}
 }
 
 func SendOTPEmail(email string, otp string) error {
-	htmlContent, err := ReadHTMLFromFile("/Users/eldrian/Documents/aslab/DG23-2/TPA/Web/backend/EmailTemplates/OTP/otp.html")
+	htmlContent, err := ReadHTMLFromFile("EmailTemplates/OTP/otp.html")
 
 	if err != nil {
 		log.Fatalf("Error reading HTML file: %v", err)
@@ -87,16 +88,47 @@ func SendOTPEmail(email string, otp string) error {
 	m.SetHeader("Subject", "Login via OTP")
 	m.SetBody("text/html", htmlContent)
 
-	d := gomail.NewDialer(smtpAddress, smtpPort , senderEmail, senderPassword)
+	d := gomail.NewDialer(smtpAddress, smtpPort, senderEmail, senderPassword)
 
 	if err := d.DialAndSend(m); err != nil {
 		log.Printf("Error sending registration email: %v", err)
 		return err
 	} else {
-			log.Printf("Registration email sent successfully to %s", email)
-			return nil
+		log.Printf("Registration email sent successfully to %s", email)
+		return nil
 	}
 
+}
+
+func SendCustomEmailToSubscribers(emails []string, title, content string) error {
+	htmlContent, err := ReadHTMLFromFile("EmailTemplates/Subscription/subscription.html")
+
+	if err != nil {
+		log.Fatalf("Error reading HTML file: %v", err)
+		return err
+	}
+
+	htmlContent = strings.Replace(htmlContent, "{{TITLE_PLACEHOLDER}}", title, -1)
+	htmlContent = strings.Replace(htmlContent, "{{CONTENT_PLACEHOLDER}}", content, -1)
+	for _, email  := range emails {
+		m := gomail.NewMessage()
+		m.SetHeader("From", senderEmail)
+		m.SetHeader("To", email)
+
+		m.SetHeader("Subject", title)
+		m.SetBody("text/html", htmlContent)
+
+		d := gomail.NewDialer(smtpAddress, smtpPort, senderEmail, senderPassword)
+
+		if err := d.DialAndSend(m); err != nil {
+			log.Printf("Error sending email to %s: %v", email, err)
+			return err
+		} else {
+			log.Printf("Email sent successfully to %s", email)
+			return nil
+		}
+	}
+	return nil
 }
 
 func IsEmailPresent(email string) bool {

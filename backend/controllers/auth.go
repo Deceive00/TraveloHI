@@ -119,6 +119,7 @@ func RegisterController(c *fiber.Ctx) error {
 		Gender:            requestBody.Gender,
 		Password:          string(hashedPassword),
 		IsBanned:          false,
+		IsSubscribe:       requestBody.IsSubscribe,
 		SecurityQuestions: requestBody.SecurityQuestions,
 		ProfilePicture: requestBody.ProfilePicture,
 	}
@@ -282,6 +283,12 @@ func ForgotPasswordController(c *fiber.Ctx) error {
 			})
 		}
 		return err
+	}
+	
+	if user.IsBanned {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "User is banned",
+		})
 	}
 
 	securityQuestions := make([]string, len(user.SecurityQuestions))

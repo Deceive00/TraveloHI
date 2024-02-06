@@ -4,28 +4,31 @@ import "./style/global.scss"
 import "./style/index.css"
 import MainTemplate from "./templates/main-template"
 import { UserProvider } from "./context/UserContext"
+import { ThemeProvider } from "./context/ThemeContext"
 
 function App() {
 
   return (
     <BrowserRouter>
-      <UserProvider>
-        <MainTemplate>
-          <Routes >
-            { 
-              MENU_LIST.map((menu: IMenu, index: number) => 
-                <Route element={menu.element} path={menu.path} key={index}/>
-            )}
-            {
-              <Route
-                path="/"
-                element={<Navigate to="/login" replace />}
+      <ThemeProvider>
+        <UserProvider>
+          <MainTemplate>
+            <Routes >
+              { 
+                MENU_LIST.map((menu: IMenu, index: number) => 
+                  <Route element={menu.element} path={menu.path} key={index}/>
+              )}
+              {
+                <Route
+                  path="/"
+                  element={<Navigate to="/" replace />}
 
-              />
-            }
-          </Routes>
-        </MainTemplate>
-      </UserProvider>
+                />
+              }
+            </Routes>
+          </MainTemplate>
+        </UserProvider>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }

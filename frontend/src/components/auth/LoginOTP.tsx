@@ -16,7 +16,7 @@ export default function LoginOTP(){
   const [isSending, setIsSending] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const navigate = useNavigate();
-  const { handleLogin } = useUser();
+  const { refetch } = useUser();
   const handleSendOTP = () => {
     setLoading(true); 
     setIsSending(true);
@@ -82,8 +82,8 @@ export default function LoginOTP(){
         setLoading(false);
         setIsVerifying(false);
         console.log('OTP Verified');
-        await handleLogin()
-        navigate('/home')
+        await refetch()
+        navigate('/')
       }
       else {
         setLoading(false);
@@ -103,7 +103,7 @@ export default function LoginOTP(){
     return <Loading/>
   }
   else if(!otpSent) return (
-    <div style={{width:'100%', height:'8vh', }}>
+    <div style={{width:'100%', height:'8vh', transition:'0.5s ease-in'}}>
       <div className="input-container" style={{margin:0}}>
         <FontAwesomeIcon icon={faEnvelope} className='icon' />
         <input
@@ -121,7 +121,7 @@ export default function LoginOTP(){
   else if(otpSent){
     return (
       <>
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', transition:'0.5s ease-in'}}>
           <OtpInput length={6} onOtpChange={(otp) => setOtpString(otp)}/>
         </div>
         <button style={{width:'100%', marginTop:'4vh'}} className="submit-button" onClick={handleVerifyOTP}>Verify OTP</button>

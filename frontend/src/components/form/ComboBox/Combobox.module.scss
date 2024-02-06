@@ -1,0 +1,54 @@
+@import '../../../style/variables/mixins';
+@import '../../../style/variables/variables.scss';
+.input-group {
+  width: 100%;
+  font-size: $normal-text-size;
+}
+
+.customSelectContainer {
+  position: relative;
+}
+.selectContainer {
+  position: relative;
+
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.optionsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1;
+  background-color: #fff;
+}
+
+.option {
+  padding: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f2f2f2;
+  }
+}
+
+.customSelectContainer select:focus,
+.customSelectContainer input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid $blue; 
+}

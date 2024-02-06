@@ -1,0 +1,18 @@
+.topBackground{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background: url('../../public/Background/bg.jpg') center center;
+  background-size: cover;
+}
+
+.homeContainer{
+  height: 100vh;
+  border-top-left-radius: 5rem;
+  border-top-right-radius: 5rem;
+  background-color: var(--background-color);
+  margin-top: -5rem;
+  transition: 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+}
+

@@ -1,0 +1,32 @@
+@import "../../../style/variables/variables.scss";
+@import "../../../style/variables/mixins";
+
+.container{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(247, 249, 250, 1.00);
+  display: flex;
+  flex-direction: row;
+
+}
+
+.content{
+  width: 80%;
+  padding-inline: calc(1rem + 2vw);
+  padding-block: 2vh;
+  color: $text-color;
+  form{
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: $text-color;
+    .broadcastButton{
+      @include customButton($blue, $blue-onhover);
+      &[disabled] {
+        background-color: #ccc;
+        cursor: not-allowed; 
+      }
+    }
+  }
+}

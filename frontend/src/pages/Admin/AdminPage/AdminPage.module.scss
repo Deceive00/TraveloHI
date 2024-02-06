@@ -1,0 +1,8 @@
+@import "../../../style/variables/variables.scss";
+@import "../../../style/variables/mixins";
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(247, 249, 250, 1.00);
+}

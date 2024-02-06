@@ -1,3 +1,8 @@
+import AdminPage from "../pages/Admin/AdminPage/AdminPage";
+import ManageUsers from "../pages/Admin/ManageUsers/ManageUsers";
+import SendnewsLetter from "../pages/Admin/SendNewsletter/SendNewsletter";
+import MyCards from "../pages/MyCardsPage/MyCards";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import CheckLocationPage from "../pages/check-location-page";
 import GamePage from "../pages/game-page";
 import HomePage from "../pages/home-page";
@@ -25,7 +30,7 @@ export const MENU_LIST: IMenu[] = [
   {
     element:<HomePage/>,
     name:"Home",
-    path:"/home"
+    path:"/"
   },
   {
     element:<GamePage/>,
@@ -36,5 +41,30 @@ export const MENU_LIST: IMenu[] = [
     element:<CheckLocationPage/>,
     name:"Check Location",
     path:"/check-location"
+  },
+  {
+    element:<ProfilePage/>,
+    name:"Personal Information",
+    path:"/personal-information"
+  },
+  {
+    element:<MyCards/>,
+    name:"My Cards",
+    path:"/my-cards"
+  },
+  {
+    element:<AdminPage/>,
+    name:"Admin Page",
+    path:"/admin"
+  },
+  {
+    element:<SendnewsLetter/>,
+    name:"Send Newsletter",
+    path:"/admin/send-newsletter"
+  },
+  {
+    element:<ManageUsers/>,
+    name:"Manager Users",
+    path:"/admin/manage-users"
   },
 ]

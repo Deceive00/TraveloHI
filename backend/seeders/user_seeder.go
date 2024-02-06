@@ -9,8 +9,7 @@ import (
 )
 
 func SeedUsers(db *gorm.DB) {
-	users := []models.Users{
-	}
+	users := []models.Users{}
 
 	for _, user := range users {
 		err := db.Create(&user).Error

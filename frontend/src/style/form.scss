@@ -3,7 +3,10 @@
   width: 100%;
   font-size: $normal-text-size;
 }
-
+.input-group label{
+  font-weight: 800;
+  color: $text-color;
+}
 .label {
   display: block;
   margin-bottom: 5px;
@@ -17,10 +20,11 @@
   width: calc(100%);
   padding: 0.7rem;
   border: none;
-  background-color: $background-color;
+  background-color: transparent;
   border-bottom: 1px solid $blue;
   border-radius: 4px;
   transition: border-color 0.3s ease;
+  color: var(--input-text-color)
 }
 
 .input-group select {
@@ -40,6 +44,11 @@
 }
 
 .input-group input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid $blue; 
+}
+.input-group textarea:focus {
   border: none;
   outline: none;
   border-bottom: 2px solid $blue; 
@@ -87,48 +96,33 @@
 
 .profile-container {
   position: relative;
-  margin-top: 10px;
 }
 
 .profile-picture-preview {
-  width: 100px; /* Adjust as needed */
-  height: 100px; /* Adjust as needed */
   border-radius: 50%;
   overflow: hidden;
   position: relative;
   border: 2px solid #ccc;
 }
 
+
+.profile-picture-preview.register-picture{
+  width: 100px;
+  height: 100px;
+}
+.profile-picture-preview.profilepage-picture{
+  width: calc(5rem + 3vw);
+  height: calc(5rem + 3vw);
+}
+
+.profile-picture-preview.navbar-picture{
+  width: calc(2rem + 0.5vw);
+  height: calc(2rem + 0.5vw);
+}
 .profile-picture-preview img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.profile-buttons {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-}
-
-.profile-buttons button {
-  background-color: #ccc;
-  color: #fff;
-  padding: 5px 10px;
-  margin: 5px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.profile-buttons button:hover {
-  background-color: $secondary-text-color;
-}
-
-.profile-container:hover .profile-buttons {
-  display: flex;
 }
 
 .security-question-features{
@@ -139,4 +133,7 @@
 
 .security-question-features span {
   font-size: calc(8px + 0.3vw);
+}
+.textarea{
+  height: 15vh;
 }

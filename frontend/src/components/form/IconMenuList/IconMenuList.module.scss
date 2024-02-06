@@ -1,0 +1,55 @@
+
+@import '../../../style/variables/variables.scss';
+.container{
+  display: flex;
+  flex-direction: row;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  align-items: center;
+  background-color: #f0f3f8b1;
+  transition: 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+}
+.container:hover{
+  background-color: #d4d4d4b0;
+  transition: 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.container {
+  span{
+    color: $secondary-text-color;
+    margin-left: 1rem;
+    font-size: calc(0.6rem + 0.4vw);
+  }
+
+  svg{
+    color: $secondary-text-color;
+  }
+  .logoutMenuIcon{
+    width: 1rem;
+    height: 1rem;
+    color: red;
+    fill: red;
+    stroke: red;
+  }
+}
+.profileMenuIcon{
+  width: 1rem;
+  height: 1rem;
+  color: $secondary-text-color;
+}
+
+.container.active{
+  background-color: rgba(245, 245, 245, 0.444);
+}
+.active{
+  border-left: 5px solid $blue;
+  svg{
+    color: $blue;
+  }
+  box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1), 0 -5px 5px -5px rgba(0, 0, 0, 0.1);
+  span{
+    font-weight: 700;
+    color: black;
+  }
+}
+

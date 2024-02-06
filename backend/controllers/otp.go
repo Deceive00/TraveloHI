@@ -41,7 +41,6 @@ func SendOTP(c *fiber.Ctx) error {
 	otp := services.GenerateOTP()
 	err := services.SaveOTP(requestBody.Email, otp)
 
-	log.Println(otp)
 	if !services.IsEmailPresent(requestBody.Email) {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Email not registered"})
 	}
@@ -56,7 +55,7 @@ func SendOTP(c *fiber.Ctx) error {
 			"error": "Internal Server Error",
 		})
 	}
-	log.Println(otp)
+
 	return c.JSON(fiber.Map{"message": "OTP sent successfully"})
 }
 

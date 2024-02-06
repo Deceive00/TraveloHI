@@ -1,17 +1,14 @@
+@import '../../style/variables/variables.scss';
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-*{
-  font-family: "Poppins", Helvetica;
-}
 .upload-form{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 5px dashed #1475cf;
-  height: 25vw;
-  width: 40vw;
+  border: 5px dashed $blue;
+  height: calc(20rem + 10vw);
+  width: calc(20rem + 10vw);
   cursor: pointer;
   border-radius: 1rem;
 }
@@ -24,7 +21,7 @@ main{
 }
 
 .uploaded-row{
-  width: 40vw;
+  width: calc(20rem + 10vw);
   margin: 10px 0;
   display: flex;
   justify-content: space-between;
@@ -39,15 +36,26 @@ main{
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .result{
-  /* background: linear-gradient(180deg, rgb(58, 142, 246) 0%, rgb(111, 58, 250) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent; */
   color:#1475cf;
   font-weight: 1000;
-  font-family: "Poppins", Helvetica;
   font-size: 2rem;
+  margin-bottom: 2vh;
+}
+
+.uploaded-content > p{
+  max-width: 50%;
+  font-size: $normal-text-size;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+.uploader-icon{
+  width: calc(10px + 0.65vw);
+  height: calc(10px + 0.65vw);
 }

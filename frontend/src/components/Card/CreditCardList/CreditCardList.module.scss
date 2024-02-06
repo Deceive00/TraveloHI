@@ -1,0 +1,46 @@
+@import '../../../style/variables/mixins';
+@import '../../../style/variables/variables.scss';
+.creditCardListContainer{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding: 1rem;
+  box-shadow: 0 2px 2px 0 rgba( 31, 38, 135, 0.1 );
+}
+
+.leftContainer{
+  gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  img{
+    width: calc(3.4rem + 2vw);
+    height: auto;
+  }
+  .accountDetails{
+    display: flex;
+    flex-direction: column;
+    .bankName{
+      font-size: calc(0.5rem + 0.3vw);
+      color: $secondary-text-color;
+
+    }
+    .accountNumber{
+      font-weight: 800;
+      font-size: calc(0.75rem + 0.3vw);
+    }
+    .accountName{
+      font-size: calc(0.75rem + 0.3vw);
+    }
+  }
+
+}
+
+.rightContainer{
+  display: flex;
+  align-items: center;
+  svg{
+    width: calc(0.8rem + 0.5vw);
+    height: auto;
+  }
+}

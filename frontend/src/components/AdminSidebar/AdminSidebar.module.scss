@@ -1,0 +1,33 @@
+@import '../../style/variables/variables.scss';
+.sidebar {
+  width: calc(7.6rem + 11vw);
+  // border-radius: 3rem;
+  height: calc(100vh);
+  background-color: #ffffffb7;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  a{
+    text-decoration: none;
+  }
+  .titleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block: 3vh;
+    img {
+      width: calc(2rem + 0.5vw);
+      height: calc(2rem + 0.5vw);
+      border-radius: 1rem;
+      opacity: 0.96;
+      mix-blend-mode: multiply;
+      margin-right: 0.2rem;
+    }
+    h3{
+      text-decoration: none;
+
+      color: $text-color;
+    }
+  }
+  .menus{
+  }
+}

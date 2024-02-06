@@ -11,7 +11,6 @@ const SecurityQuestions = ({ handleChange }: { handleChange: any }) => {
   ];
 
   const [questions, setQuestions] = useState([{ question: '', answer: '' }]);
-
   const handleQuestionChange = (index: number, selectedQuestion: string) => {
     const isDuplicate = questions.some((q, i) => i !== index && q.question === selectedQuestion);
 

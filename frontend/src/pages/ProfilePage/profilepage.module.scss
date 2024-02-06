@@ -1,0 +1,138 @@
+@import '../../style/variables/variables.scss';
+@import '../../style/variables/mixins';
+
+.profilePageContent{
+  padding-top: 13vh;
+  padding-bottom: 5vh;
+  // height: 100vh;
+  height: fit-content;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  background-color: var(--background-color);
+}
+.profilePageContainer{
+  margin: auto;
+  height: 100%;
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 1;
+}
+
+
+
+.rightProfilePageContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  background: white;
+  .rightContentContainer{
+    width: 90%;
+    margin: auto;
+    padding: 2rem;
+  }
+}
+
+.profileMenuIcon{
+  width: 100rem;
+  height: 1rem;
+  color: $secondary-text-color;
+}
+
+.pageTitleContainer{
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  background: linear-gradient(to bottom, #87b2eb1a, rgba(247, 249, 250, 0.20)); 
+  padding: 2rem;
+  .pageTextTitleContainer{
+    margin-left: 1rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    color: $text-color;
+    h1{
+      font-size: calc(2rem + 0.3vw);
+    }
+    p{
+      font-size: calc(0.6rem + 0.3vw);
+      color: $secondary-text-color;
+    }
+  }
+}
+
+
+.circularContainer {
+  width: fit-content; 
+  height: fit-content;
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5; 
+  background: linear-gradient(to bottom, #87cfeb29, #f5f5f5); 
+  padding: calc(0.8rem + 0.5vw);
+}
+
+.circularContainer img {
+  width: calc(2rem + 4vw);
+  height: calc(2rem + 4vw);
+}
+
+.halfContainer{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;;
+  
+  
+  .halfContentContainer, .gender-container{
+    width: 48%;
+    font-size: calc(10px + 0.2vw);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+
+    > label{
+      font-weight: 800;
+      color: $text-color;
+    }
+  }
+}
+.saveButtonContainer{
+  margin-top: 3vh;
+  display: flex;
+  justify-content: start;
+  .saveButton{
+    width: calc(5rem + 0.5vw);
+    @include customButton($blue, $blue-onhover);
+    &[disabled] {
+      background-color: #ccc;
+      cursor: not-allowed; 
+    }
+  }
+}
+
+.subscribeContainer{
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: $normal-text-size;
+  label{
+    color: $text-color;
+  }
+}
+
+.profileForm{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  margin-bottom: 15px;
+}

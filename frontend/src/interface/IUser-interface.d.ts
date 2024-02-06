@@ -4,6 +4,7 @@ export interface IUser{
   lastName: string;
   email: string;
   dob: string;
+  isSubscribe: boolean;
   gender: string;
   status: string;
   securityQuestions: SecurityQuestion[];

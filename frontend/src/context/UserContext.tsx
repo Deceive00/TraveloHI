@@ -1,26 +1,27 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { IUser } from "../interface/IUser-interface";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
 
 interface IUserContextProps {
   user: IUser | null;
-  handleLogin: () => void;
+  refetch: () => void;
   logout: () => void;
   loading: boolean;
 }
 
 const UserContext = createContext<IUserContextProps | undefined>(undefined);
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const handleLogin = async () => {
+  const refetch = async () => {
     await fetchUser();
-  }
+  };
 
   const logout = async () => {
     try {
@@ -30,22 +31,23 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
         withCredentials: true,
       });
-  
-      if(response.status === 200){
+
+      if (response.status === 200) {
         setUser(null);
         Cookies.remove("jwt");
       }
     } catch (error) {
       console.log(error);
-      
     }
-    
-
   };
 
   const fetchUser = async () => {
     const jwt = Cookies.get("jwt");
-    if (!jwt) return;
+    setLoading(true);
+    if (!jwt) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await axios.get("http://localhost:8080/api/getuser", {
@@ -56,7 +58,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (response.status === 200) {
-        
         const userData = response.data;
         setUser({
           id: userData.id,
@@ -64,6 +65,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           lastName: userData.lastName,
           email: userData.email,
           dob: userData.dob,
+          isSubscribe: userData.isSubscribe,
           gender: userData.gender,
           status: userData.status,
           securityQuestions: userData.securityQuestions,
@@ -72,32 +74,28 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else {
         console.log("Failed to fetch user data");
       }
-    } 
-    catch (error) {
+    } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
       setLoading(false);
     }
+    setLoading(false);
   };
-  
+
   useEffect(() => {
-
-
     const fetchData = async () => {
       try {
-        
         await fetchUser();
-   
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-  
-    fetchData(); 
+
+    fetchData();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, handleLogin, logout, loading }}>
+    <UserContext.Provider value={{ user, refetch, logout, loading }}>
       {children}
     </UserContext.Provider>
   );

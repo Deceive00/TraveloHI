@@ -6,7 +6,21 @@ import { WinState } from "../Game/GameState/Win";
 import { LoseState } from "../Game/GameState/Lose";
 import { RunningState } from "../Game/GameState/Running";
 import { Sprite } from "../Game/class/Sprite";
-import { bgImages, frontKickImagesFirstPlayer, frontKickMirroredImagesFirstPlayer, idleImagesFirstPlayer, idleImagesSecondPlayer, jumpImagesFirstPlayer, lowKickImagesFirstPlayer, runLeftImagesFirstPlayer, runLeftSecondPlayer, runRightImagesFirstPlayer, runRightSecondPlayer } from "../Game/animation";
+import {
+  bgImages,
+  frontKickImagesFirstPlayer,
+  frontKickMirroredImagesFirstPlayer,
+  idleImagesFirstPlayer,
+  idleImagesSecondPlayer,
+  jumpImagesFirstPlayer,
+  lowKickImagesFirstPlayer,
+  runLeftImagesFirstPlayer,
+  runLeftSecondPlayer,
+  runRightImagesFirstPlayer,
+  runRightSecondPlayer,
+} from "../Game/animation";
+import Middleware from "../components/auth/Middleware";
+import { useUser } from "../context/UserContext";
 
 enum GameState {
   Running,
@@ -21,7 +35,8 @@ export default function GamePage() {
   const enemyHB = useRef<HTMLDivElement | null>(null);
   const playerHB = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<HTMLDivElement>(null);
-  let timer = 10;
+  // const { user, loading } = useUser();
+  let timer = 60;
   const [seconds, setSeconds] = useState(timer);
   const background = new Sprite({
     type: "bg",
@@ -48,11 +63,11 @@ export default function GamePage() {
   const secondPlayer = {
     idle: idleImagesSecondPlayer,
     runRight: runRightSecondPlayer,
-    runLeft: runLeftSecondPlayer
+    runLeft: runLeftSecondPlayer,
   };
 
   const [gameState, setGameState] = useState(GameState.Running);
-  
+
   const player = useRef(
     new Player({
       position: { x: 0, y: 0 },
@@ -68,24 +83,23 @@ export default function GamePage() {
           imageSources: firstPlayer.idle,
         },
         runRight: {
-          imageSources: firstPlayer.runRight
+          imageSources: firstPlayer.runRight,
         },
         runLeft: {
           imageSources: firstPlayer.runLeft,
         },
         jump: {
-          imageSources: firstPlayer.jump
+          imageSources: firstPlayer.jump,
         },
         frontKick: {
-          imageSources: firstPlayer.frontKick
+          imageSources: firstPlayer.frontKick,
         },
         frontKickMirrored: {
-          imageSources: firstPlayer.frontKickMirrored
+          imageSources: firstPlayer.frontKickMirrored,
         },
         lowKick: {
-          imageSources: firstPlayer.lowKick
-        }
-
+          imageSources: firstPlayer.lowKick,
+        },
       },
     })
   );
@@ -105,7 +119,7 @@ export default function GamePage() {
           imageSources: secondPlayer.idle,
         },
         runRight: {
-          imageSources: secondPlayer.runRight
+          imageSources: secondPlayer.runRight,
         },
         runLeft: {
           imageSources: secondPlayer.runLeft,
@@ -128,9 +142,10 @@ export default function GamePage() {
   };
 
   useEffect(() => {
+    // if(loading || !user) return ;
+
     const canvas = canvasRef.current!;
     const c = canvas.getContext("2d");
-
     const movement = {
       a: { pressed: false },
       d: { pressed: false },
@@ -139,7 +154,7 @@ export default function GamePage() {
       ArrowLeft: { pressed: false },
       ArrowRight: { pressed: false },
       ArrowUp: { pressed: false },
-      space: {pressed: false},
+      space: { pressed: false },
     };
 
     if (c) {
@@ -170,18 +185,16 @@ export default function GamePage() {
 
           if (movement.a.pressed && player.current.lastKey === "a") {
             player.current.velocity.x = -2;
-            player.current.switchSprite('runLeft');
+            player.current.switchSprite("runLeft");
           } else if (movement.d.pressed && player.current.lastKey === "d") {
             player.current.velocity.x = 2;
-            player.current.switchSprite('runRight');
+            player.current.switchSprite("runRight");
+          } else {
+            player.current.switchSprite("idle");
           }
 
-          else{
-            player.current.switchSprite('idle');
-          }
-
-          if(player.current.velocity.y < 0){
-            player.current.switchSprite('jump')
+          if (player.current.velocity.y < 0) {
+            player.current.switchSprite("jump");
           }
         }
 
@@ -195,15 +208,15 @@ export default function GamePage() {
             enemy.current.lastKey === "ArrowLeft"
           ) {
             enemy.current.velocity.x = -4;
-            enemy.current.switchSprite('runLeft');
+            enemy.current.switchSprite("runLeft");
           } else if (
             movement.ArrowRight.pressed &&
             enemy.current.lastKey === "ArrowRight"
           ) {
             enemy.current.velocity.x = 4;
-            enemy.current.switchSprite('runRight');
+            enemy.current.switchSprite("runRight");
           } else {
-            enemy.current.images = enemy.current.sprites.idle.image
+            enemy.current.images = enemy.current.sprites.idle.image;
           }
         }
 
@@ -211,9 +224,9 @@ export default function GamePage() {
         if (player.current && enemy.current) {
           if (isCollision() && player.current.isAttacking) {
             player.current.isAttacking = false;
-     
+
             enemy.current.health -= player.current.damage;
-            if(enemy.current.health <= 0) enemy.current.health = 0;
+            if (enemy.current.health <= 0) enemy.current.health = 0;
             enemyHB?.current?.style.setProperty(
               "width",
               `${enemy.current.health}%`
@@ -222,7 +235,7 @@ export default function GamePage() {
           if (isCollision() && enemy.current.isAttacking) {
             enemy.current.isAttacking = false;
             player.current.health -= 20;
-            if(player.current.health <= 0) player.current.health = 0;
+            if (player.current.health <= 0) player.current.health = 0;
             playerHB?.current?.style.setProperty(
               "width",
               `${player.current.health}%`
@@ -268,23 +281,20 @@ export default function GamePage() {
             currentEnemy.velocity.y = -20;
             break;
           case "k":
-            currentEnemy.attack('frontKick');
+            currentEnemy.attack("frontKick");
             break;
           case "s":
             movement.s.pressed = true;
             break;
         }
 
-        if(movement.space.pressed && movement.d.pressed){
-          currentPlayer.attack('frontKick');
+        if (movement.space.pressed && movement.d.pressed) {
+          currentPlayer.attack("frontKick");
+        } else if (movement.space.pressed && movement.a.pressed) {
+          currentPlayer.attack("frontKickMirrored");
+        } else if (movement.space.pressed && movement.s.pressed) {
+          currentPlayer.attack("lowKick");
         }
-        else if(movement.space.pressed && movement.a.pressed){
-          currentPlayer.attack('frontKickMirrored');
-        }
-        else if(movement.space.pressed && movement.s.pressed){
-          currentPlayer.attack('lowKick');
-        }
-
       });
 
       window.addEventListener("keyup", (event: KeyboardEvent) => {
@@ -344,42 +354,44 @@ export default function GamePage() {
   useEffect(() => {}, [player.current?.health, enemy.current?.health]);
 
   return (
-    <div className={style.gamePageContainer}>
-      <div className={style.gameContainer}>
-        <div className={style.healthBarContainer}>
-          <div className={style.spriteHBContainer}>
-            <div
-              className={style.playerHB}
-              style={{ display: "flex", justifyContent: "flex-end" }}
-            ></div>
-            <div
-              ref={playerHB}
-              id="playerHB"
-              className={style.playerBackgroundHB}
-            ></div>
+    <>
+      <div className={style.gamePageContainer}>
+        <div className={style.gameContainer}>
+          <div className={style.healthBarContainer}>
+            <div className={style.spriteHBContainer}>
+              <div
+                className={style.playerHB}
+                style={{ display: "flex", justifyContent: "flex-end" }}
+              ></div>
+              <div
+                ref={playerHB}
+                id="playerHB"
+                className={style.playerBackgroundHB}
+              ></div>
+            </div>
+            <div ref={timerRef} className={style.timer}>
+              {seconds}
+            </div>
+            <div className={style.spriteHBContainer}>
+              <div className={style.playerHB}></div>
+              <div
+                ref={enemyHB}
+                id="enemyHB"
+                className={style.enemyBackgroundHB}
+              ></div>
+            </div>
+            <div></div>
           </div>
-          <div ref={timerRef} className={style.timer}>
-            {seconds}
-          </div>
-          <div className={style.spriteHBContainer}>
-            <div className={style.playerHB}></div>
-            <div
-              ref={enemyHB}
-              id="enemyHB"
-              className={style.enemyBackgroundHB}
-            ></div>
-          </div>
-          <div></div>
+          <canvas ref={canvasRef} width={1024} height={724}>
+            Your browser does not support the HTML5 canvas tag.
+          </canvas>
+          {(seconds === 0 ||
+            player.current.health <= 0 ||
+            enemy.current.health <= 0) && (
+            <img src={imageResult()} alt="result" className={style.result} />
+          )}
         </div>
-        <canvas ref={canvasRef} width={1024} height={724}>
-          Your browser does not support the HTML5 canvas tag.
-        </canvas>
-        {(seconds === 0 ||
-          player.current.health <= 0 ||
-          enemy.current.health <= 0) && (
-          <img src={imageResult()} alt="result" className={style.result} />
-        )}
       </div>
-    </div>
+    </>
   );
 }

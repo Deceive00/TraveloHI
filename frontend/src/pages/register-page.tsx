@@ -6,9 +6,9 @@ import SecurityQuestions from "../components/form/SecurityDropDown";
 import { useState } from "react";
 import axios from "axios";
 import ProfilePicture from "../components/form/ProfilePicture";
-import { uploadImage } from "../utils/utils";
+import { rules, uploadImage } from "../utils/utils";
 import { Link, useNavigate } from "react-router-dom";
-
+import defaultPP from '../image/default.png'
 export default function RegisterPage(){
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, watch} = useForm();
@@ -41,6 +41,8 @@ export default function RegisterPage(){
         isSubscribe: subscribe,
         securityQuestions 
       });
+
+      console.log(stringifiedData)
       const response = await axios.post('http://localhost:8080/api/register', stringifiedData, {
         headers: {
           'Content-Type': 'application/json',
@@ -58,59 +60,6 @@ export default function RegisterPage(){
       console.error('Registration failed:', error);
     }
   };
-  const currentDate = new Date();
-
-  const rules = {
-    'name' : {
-      required: 'required*',
-      minLength: { value: 5, message: 'Name must be at least 5 characters.' },
-      pattern: { value: /^[A-Za-z]+$/, message: 'Name must contain only letters.' },
-    },
-    email: {
-      required: 'required*',
-      pattern: {
-        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-        message: 'Invalid email format. Example: hans.indrawan@gmail.com',
-      },
-    },
-    dob: {
-      required: 'required*',
-      validate: (value: string) => {
-        const dob = new Date(value);
-        
-        if (isNaN(dob.getTime())) {
-          return 'Invalid date format.';
-        }
-
-        const age = currentDate.getFullYear() - dob.getFullYear();
-
-        if (age < 13) {
-          return 'You must be at least 13 years old.';
-        }
-
-        return true;
-      },
-    },
-    gender: {
-      required: 'Please select your gender.',
-    },
-    password: {
-      required: 'required*',
-      minLength: { value: 8, message: 'Password must be at least 8 characters.' },
-      validate: (value : any) => {
-        const requirementsRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:,<.>/?[\]\\|]).*$/;
-
-        if (requirementsRegex.test(value)) {
-          return true;
-        }
-
-        return 'Password must include capital letters, lowercase letters, numbers, and special symbols.';
-      },
-    },
-    profilePicture:{
-
-    }
-  } 
 
   const passwordRequirements = [
     'At least one lowercase letter',
@@ -141,17 +90,16 @@ export default function RegisterPage(){
     <div>
       <div className="form-body">
         <div className="register-form-container " >
-
           <form className="registration-form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-title">
-              <img src={logo} alt="logo.png" className="imported-logo" />
+                <img src={logo} alt="logo.png" className="imported-logo" />
               <div className="form-title-container">
                 <h1>Sign Up</h1>
                 <p>Explore this world with traveloHI</p>
               </div>
             </div>
-            <ProfilePicture label={'profilePicture'} error={errors.profilePicture} rules={rules.profilePicture} register={register}/>
-            <div className="name-container">
+            <ProfilePicture label={'profilePicture'} error={errors.profilePicture} rules={rules.profilePicture} register={register} className="register-picture" currentImg={defaultPP}/>
+            <div className="name-container" style={{marginTop:'2vh'}}>
               <div className="first-name-container">
                 <TextField
                   label="First Name"

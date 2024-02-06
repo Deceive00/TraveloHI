@@ -10,7 +10,7 @@
 
 .first-name-container,
 .last-name-container{
-  width: 45%;
+  width: 48%;
 }
 .register-form-container {
   margin-block: 10vh;
@@ -57,6 +57,7 @@
   flex-direction: row;
   gap: 1rem;
   align-items: center;
+  color: $text-color;
 }
 
 input[type="radio"] {
@@ -142,5 +143,11 @@ input[type="radio"]:focus {
 .divider{
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.company-name-container{
+  display: flex;
+  flex-direction: row;
   align-items: center;
 }

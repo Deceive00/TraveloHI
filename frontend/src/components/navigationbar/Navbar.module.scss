@@ -7,6 +7,12 @@ nav{
   width: 100vw;
   transition: 0.5s;
   padding-block: 2vh;
+  background: rgba( 255, 255, 255, 0.3 );
+  box-shadow: 0 8px 8px 0 rgba( 31, 38, 135, 0.1 );
+  backdrop-filter: blur( 14px );
+  -webkit-backdrop-filter: blur( 14px );
+  border-end-end-radius: 10px;
+  border-end-start-radius: 10px;
 }
 
 .navbarContainer{
@@ -32,7 +38,8 @@ nav{
   margin-right: 3vw;
 }
 .rightNavbarContainer{
-
+  display: flex;
+  gap: 1rem;
 }
 
 .loginButton{
@@ -46,9 +53,58 @@ nav{
   background: $background-color;
   cursor: pointer;
   font-weight: 600;
+  font-size: calc(0.5rem + 0.3vw);
   border: 1px solid $blue;
   &:hover{
     background: $hover-dark-background;
     transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
+.homeButtonContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  color: $text-color;
+}
+.rightContentContainer{
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.themeButton{
+  background-color: transparent;
+  border: none;
+  svg{
+    width: calc(1rem + 0.4vw);
+    height: calc(1rem + 0.4vw);
+
+  }
+}
+
+.light {
+  color: black; 
+  border-radius: 20rem;
+}
+
+.dark{
+  color: black;
+}
+
+.glow {
+  animation: glowAnimation 1s infinite; 
+}
+
+@keyframes glowAnimation {
+  0% {
+    box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow; 
+  }
+  50% {
+    box-shadow: 0 0 20px yellow, 0 0 25px yellow, 0 0 30px yellow; 
+  }
+  100% {
+    box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow; 
   }
 }

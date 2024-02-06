@@ -1,0 +1,48 @@
+@import '../../style/variables/variables.scss';
+@import '../../style/variables/mixins';
+.addCardButton{
+  @include customButton($blue, $blue-onhover);
+  max-height: 2rem;
+}
+
+.cardButtonContainer{
+  
+}
+.rightCardsPage{
+  width: 90%;
+  margin: auto;
+  padding: 2rem;
+}
+
+.rightCardsPageContainer{
+  width: 75%;
+  background: white;
+}
+
+.noCreditCards{
+  margin-top: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  h1{
+    font-size: calc(1rem + 0.5vw);
+    text-align: center;
+    margin-top: 2vh;
+  }
+  img{
+    width: calc(7rem + 2vw);
+  }
+}
+
+.leftTitleContainer{
+  display: flex;
+
+}
+.titleContainer{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}

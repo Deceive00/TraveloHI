@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/eldrian/go-fiber-postgres/models"
+	"github.com/eldrian/go-fiber-postgres/seeders"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -27,10 +28,10 @@ func GetDB() *gorm.DB {
 }
 
 func init() {
-	
+
 	err := godotenv.Load(".env")
 
-	if(err != nil){
+	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
@@ -55,6 +56,14 @@ func init() {
 	// Migration
 	err = models.MigrateUsers(db)
 	err = models.MigrateOTP(db)
+	err = models.MigrateCreditCards(db)
+	err = models.MigrateLocations(db)
+	err = models.MigrateAirports(db)
+	err = models.MigrateHotels(db)
+
 	// Seeders
 	// seeders.SeedUsers(db)
+	// seeders.LocationSeeder(db)
+	// seeders.AirportSeeder(db)
+	seeders.HotelSeeder(db)
 }

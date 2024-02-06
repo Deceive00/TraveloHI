@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   width: 1rem;
+
 }
 
 .input {
@@ -15,6 +16,7 @@
   font-size: 36px;
   cursor: not-allowed;
   pointer-events: none;
+  background-color: var(--background-color);
 }
 
 .input:focus {

@@ -14,7 +14,7 @@ import ForgotPassword from "../components/auth/ForgotPassword";
 import BackButton from "../components/form/BackButton";
 
 export default function LoginPage() {
-  const { handleLogin } = useUser();
+  const { refetch } = useUser();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [fillRecaptcha, setFillRecaptcha] = useState(false);
@@ -59,7 +59,7 @@ export default function LoginPage() {
   
       if(response.status === 200){
         console.log('Login successful');
-        // await handleLogin();
+        await refetch();
         setRedirect(true);    
       }
       else {
@@ -86,7 +86,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (redirect) {
-      navigate('/home');
+      navigate('/');
     }
   }, [redirect, navigate]);
 

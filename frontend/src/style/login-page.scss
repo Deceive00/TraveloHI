@@ -1,9 +1,11 @@
 @import 'variables/variables.scss';
 
 .imported-logo {
-  width: 5vw;
-  height: 5vw;
+  width: calc(3rem + 2vw);
+  height: calc(3rem + 2vw);;
   border-radius: 1rem;
+  opacity: 0.96;
+  mix-blend-mode: multiply;
 }
 
 .form-body-login {
@@ -56,12 +58,6 @@
   align-items: center;
   flex-direction: column;
   margin-bottom: 1vh;
-}
-
-.form-title > img.imported-logo {
-  width: 5vw;
-  height: 5vw;
-  border-radius: 1rem;
 }
 
 .form-title-container > h1 {

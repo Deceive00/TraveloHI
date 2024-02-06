@@ -1,0 +1,27 @@
+@import '../../style/variables/mixins';
+@import '../../style/variables/variables.scss';
+
+.topLeftPageContainer{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-block: calc(1.5rem + 0.8vw);
+  background-color: #ffffffb7;
+}
+
+.leftPageContainer{
+  width: 25%;
+}
+
+.leftPageContainer h1{
+  font-size: calc(0.8rem + 0.5vw);
+  margin-top: 2rem;
+  max-width: 80%;
+  text-align: center;
+  color: $text-color
+}
+
+.bottomLeftPageContainer{
+  margin-top: 1vh;
+}

@@ -12,6 +12,8 @@ CORS(app)
 model = load_model('./location_checker.h5')
 
 def preprocess_image(img):
+    if img.shape[-1] != 3:
+            img = img[:, :, :3]
     dimensions = (224, 224)
     resized_img = cv2.resize(img, dimensions)
     normalized_img = resized_img.astype('float32') / 255
