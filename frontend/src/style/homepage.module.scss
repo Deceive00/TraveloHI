@@ -3,8 +3,11 @@
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background: url('../../public/Background/bg.jpg') center center;
+  background: url('/Background/bg.jpg') center center;
   background-size: cover;
+  min-height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .homeContainer{
@@ -14,5 +17,27 @@
   background-color: var(--background-color);
   margin-top: -5rem;
   transition: 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  padding: 3vw;
+  width: 100%;
+  .sliderWrapper{
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+
+    .promotionSlider{
+      display: flex;
+      gap: 1vw;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: 0;
+      scroll-behavior: smooth;
+
+    }
+    .promotionSlider main{
+      flex: 1 0 calc(50% - 0.5vw);
+      scroll-snap-align: start;
+      object-fit: cover;
+    }
+  }
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from './Combobox.module.scss';
 
-const ComboBox = ({ label, name, options, register, rules, error }: { label: any, name : any, options: any, register : any, rules : any,  error?: any }) => {
+const ComboBox = ({ label, name, options, register, rules, error, setValue }: { label: any, name : any, options: any, register : any, rules : any,  error?: any , setValue? : any}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
@@ -12,6 +12,7 @@ const ComboBox = ({ label, name, options, register, rules, error }: { label: any
   };
 
   const handleSelect = (option: string) => {
+    setValue(name, option);
     setSelectedOption(option);
     setSearchTerm(option)
     setIsOpen(false); 
@@ -50,6 +51,7 @@ const ComboBox = ({ label, name, options, register, rules, error }: { label: any
             </ul>
           )}
         </div>
+        {error && <div className="error-message">{error.message}</div>}
       </div>
     </div>
   );

@@ -1,12 +1,14 @@
-import { useLocation } from 'react-router-dom';
-import { useUser } from '../../context/UserContext';
-import { PROFILE_MENU } from '../../utils/Items';
-import IconMenuList from '../form/IconMenuList/IconMenuList';
-import ProfilePicture from '../form/ProfilePicture';
-import style from './SettingSidebar.module.scss'
+import { useLocation } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
+import { PROFILE_MENU } from "../../utils/Items";
+import IconMenuList from "../form/IconMenuList/IconMenuList";
+import ProfilePicture from "../form/ProfilePicture";
+import style from "./SettingSidebar.module.scss";
+
+
 export default function SettingSidebar() {
   const location = useLocation();
-  const {user} = useUser();
+  const { user } = useUser();
   return (
     <div className={style.leftPageContainer}>
       <div className={style.topLeftPageContainer}>
@@ -22,7 +24,26 @@ export default function SettingSidebar() {
       </div>
       <div className={style.bottomLeftPageContainer}>
         {PROFILE_MENU.map(({ icon, text, onClick }, index) => {
-          if (onClick === "logout") {
+          if(onClick === "/admin"){
+            if(user?.email === 'travelohi00@gmail.com'){
+              return (
+                <>
+                  <div key={`margin ${index}`} style={{ height: "1vh" }}></div>
+                  <IconMenuList
+                    key={`iconmenulist ${index}`}
+                    icon={icon}
+                    text={text}
+                    onClick={onClick}
+                    isActive={location.pathname === onClick}
+                  />
+                </>
+              );
+            }
+            else{
+              return <></>
+            }
+          }
+          else if (onClick === "logout") {
             return (
               <>
                 <div key={`margin ${index}`} style={{ height: "1vh" }}></div>

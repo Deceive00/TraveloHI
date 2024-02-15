@@ -12,13 +12,14 @@ func SetupRoutes(app *fiber.App) {
 	api.Post("/login", controllers.LoginController)
 	api.Post("/register", controllers.RegisterController)
 	api.Get("/getuser", controllers.GetUser)
-	api.Post("/logout", controllers.Logout)
+	api.Post("/logout", middleware.AuthMiddleware,controllers.Logout)
 	api.Post("/send-otp", controllers.SendOTP)
 	api.Post("/verify-otp", controllers.VerifyOTP)
 	api.Post("/update-profile", middleware.AuthMiddleware, controllers.UpdateProfileController)
 	api.Post("/add-credit-card", middleware.AuthMiddleware, controllers.AddCreditCardController)
 	api.Get("/get-credit-card", middleware.AuthMiddleware, controllers.GetCreditCard)
 	api.Delete("/delete-credit-card/:id", middleware.AuthMiddleware, controllers.RemoveCreditCardController)
+	api.Get("/get-all-promotions", middleware.AuthMiddleware, controllers.GetAllPromotions)
 	// Forgot Password
 	resetPW := api.Group("/reset-password")
 	resetPW.Post("/verify-forgot-pw-email", controllers.ForgotPasswordController)
@@ -27,8 +28,14 @@ func SetupRoutes(app *fiber.App) {
 
 	// Admin
 	admin := api.Group("/admin")
-	admin.Post("/send-newsletter", controllers.SendCustomEmailToSubscribersController);
-	admin.Put("/ban/:id", controllers.BanUser)
-	admin.Put("/unban/:id", controllers.UnbanUser)
-	admin.Get("/get-all-users", controllers.GetAllUserData)
+	admin.Get("/validate-admin-credentials", middleware.AdminMiddleware, controllers.GetAdminAuthorization)
+	admin.Post("/send-newsletter", middleware.AdminMiddleware, controllers.SendCustomEmailToSubscribersController)
+	admin.Put("/ban/:id", middleware.AdminMiddleware,controllers.BanUser)
+	admin.Put("/unban/:id",middleware.AdminMiddleware ,controllers.UnbanUser)
+	admin.Get("/get-all-users", middleware.AdminMiddleware, controllers.GetAllUserData)
+	admin.Get("/get-all-city", middleware.AdminMiddleware, controllers.GetAllCity)
+	admin.Get("/get-all-facility", middleware.AdminMiddleware, controllers.GetAllFacility)
+	admin.Post("/insert-hotel", middleware.AdminMiddleware, controllers.AddHotelController)
+	admin.Post("/insert-promotions", middleware.AdminMiddleware, controllers.AddPromotionController)
 }
+

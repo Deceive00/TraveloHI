@@ -13,7 +13,6 @@ export default function Middleware({ children }: { children: React.ReactNode }) 
     if (!loading) {
       if (!user) {
         const timer = setTimeout(() => {
-          console.log('sini ga sih')
           navigate("/login");
         }, duration);
 

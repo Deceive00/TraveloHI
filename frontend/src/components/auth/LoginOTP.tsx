@@ -52,6 +52,9 @@ export default function LoginOTP(){
         setLoading(false);
         setIsSending(false);
       }
+      finally{
+        setLoading(false);
+      }
     };
 
     if (isSending) {
@@ -93,6 +96,7 @@ export default function LoginOTP(){
       console.log(response.data.message);
       setLoading(false);
     }
+
 
     if(isVerifying){
       verifyOTP(email, otpString)

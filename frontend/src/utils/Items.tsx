@@ -3,6 +3,9 @@ import { FaStar } from 'react-icons/fa';
 import '../pages/ProfilePage/profilepage.module.scss'
 import { LuSend } from "react-icons/lu";
 import { FaUsers } from "react-icons/fa6";
+import { MdAdminPanelSettings } from "react-icons/md";
+import { FaHotel } from "react-icons/fa";
+import { RiAdvertisementFill } from 'react-icons/ri';
 
 export const PROFILE_MENU = [
   {
@@ -50,6 +53,11 @@ export const PROFILE_MENU = [
     text: 'Logout',
     onClick: 'logout'
   },
+  {
+    icon: <MdAdminPanelSettings className='logoutMenuIcon'/>,
+    text: 'Admin',
+    onClick: '/admin'
+  },
 ];
 
 export const ADMIN_MENU = [
@@ -62,6 +70,16 @@ export const ADMIN_MENU = [
     icon: <FaUsers className='profileMenuIcon'/>,
     text: 'Manage Users',
     onClick: '/admin/manage-users'
+  },
+  {
+    icon: <FaHotel className='profileMenuIcon'/>,
+    text: 'Manage Hotels',
+    onClick: '/admin/manage-hotels'
+  },
+  {
+    icon: <RiAdvertisementFill className='profileMenuIcon'/>,
+    text: 'Insert Promos',
+    onClick: '/admin/insert-promos'
   },
 ]
 

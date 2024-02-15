@@ -6,7 +6,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 5px dashed $blue;
+  border: 1px dashed $blue;
+  background-color: $secondary-background-color;
   height: calc(20rem + 10vw);
   width: calc(20rem + 10vw);
   cursor: pointer;
@@ -58,4 +59,14 @@ main{
 .uploader-icon{
   width: calc(10px + 0.65vw);
   height: calc(10px + 0.65vw);
+}
+
+.check-location-body{
+  background-color: $background-color;
+  width: 100vw;
+  height: 100vh;
+  color: $text-color;
+  svg{
+    color: $text-color;
+  }
 }

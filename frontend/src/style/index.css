@@ -8,6 +8,10 @@
   --background-color: rgba(247, 249, 250, 1.00);;
   --primary-text-color: black;
   --input-text-color: rgb(23, 23, 23);
+  --background-color-hover:#f2f2f2;
+  --secondary-background-color: white;
+  --profile-page-header: #ffffffb7;
+  --secondary-text-color:#747474;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -20,10 +24,23 @@ body{
 *{
   box-sizing: border-box;
 }
+input[type="date"] {
+  background-color: var(--background-color); 
+}
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(45%) sepia(50%) saturate(1000%) hue-rotate(180deg); /* Change the color */
+  color: currentColor;
+}
 [data-theme="dark"]{
   --background-color:  #161618;
+  --primary-text-color: whitesmoke;
+  --input-text-color: whitesmoke;
+  --secondary-background-color: #060607b3;
+  --profile-page-header: #282828;
+  --secondary-text-color: rgb(165, 165, 165);
 }
+
 /* 
 a {
   font-weight: 500;

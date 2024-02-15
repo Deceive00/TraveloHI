@@ -39,17 +39,33 @@ func isStrongPassword(password string) bool {
 
 }
 
+func isValidSecurityQuestion(question string) bool {
+	options := []string{
+		"What is your favorite childhood pet's name?",
+		"In which city were you born?",
+		"What is the name of your favorite book or movie?",
+		"What is the name of the elementary school you attended?",
+		"What is the model of your first car?",
+	}
+	for _, opt := range options {
+		if question == opt {
+			return true
+		}
+	}
+	return false
+}
+
 func RegisterController(c *fiber.Ctx) error {
 	type RegistrationRequest struct {
 		FirstName            string                    `json:"firstName"`
 		LastName             string                    `json:"lastName"`
 		Email                string                    `json:"email"`
-		DateOfBirth          string                  	 `json:"dob"`
+		DateOfBirth          string                    `json:"dob"`
 		Gender               string                    `json:"gender"`
 		Password             string                    `json:"password"`
 		ConfirmationPassword string                    `json:"confirmationPassword"`
-		SecurityQuestions    []models.SecurityQuestion `json:"securityQuestions"`		
-		ProfilePicture			 string										 `json:"profilePicture"`
+		SecurityQuestions    []models.SecurityQuestion `json:"securityQuestions"`
+		ProfilePicture       string                    `json:"profilePicture"`
 		IsSubscribe          bool                      `json:"isSubscribe"`
 	}
 	var requestBody RegistrationRequest
@@ -66,12 +82,16 @@ func RegisterController(c *fiber.Ctx) error {
 			"error": "First name and last name must be more than 5 characters",
 		})
 	}
-	log.Println(requestBody)
+	if !services.ValidateEmailFormat(requestBody.Email) {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Email format is not valid",
+		})
+	}
 	dob, err := time.Parse("2006-01-02", requestBody.DateOfBirth)
 	if err != nil || dob.After(time.Now().AddDate(-13, 0, 0)) {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-					"error": "User age must be more than or equal to 13 years",
-			})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "User age must be more than or equal to 13 years",
+		})
 	}
 
 	if requestBody.Gender != "Male" && requestBody.Gender != "Female" {
@@ -97,11 +117,6 @@ func RegisterController(c *fiber.Ctx) error {
 			"error": "Password is not the same as confirmation password!",
 		})
 	}
-	// if !verifyRecaptcha(requestBody.RecaptchaResponse) {
-	// 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-	// 		"error": "reCAPTCHA verification failed",
-	// 	})
-	// }
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(requestBody.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -109,6 +124,14 @@ func RegisterController(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Internal Server Error",
 		})
+	}
+
+	for _, sq := range requestBody.SecurityQuestions {
+		if !isValidSecurityQuestion(sq.Questions) {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Invalid security question",
+			})
+		}
 	}
 
 	newUser := models.Users{
@@ -121,7 +144,8 @@ func RegisterController(c *fiber.Ctx) error {
 		IsBanned:          false,
 		IsSubscribe:       requestBody.IsSubscribe,
 		SecurityQuestions: requestBody.SecurityQuestions,
-		ProfilePicture: requestBody.ProfilePicture,
+		ProfilePicture:    requestBody.ProfilePicture,
+		IsLoggedIn:        false,
 	}
 
 	db := database.GetDB()
@@ -156,10 +180,10 @@ func LoginController(c *fiber.Ctx) error {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
-	
+
 	type LoginResponse struct {
 		Message string `json:"message"`
-	}	
+	}
 	var requestBody LoginRequest
 
 	if err := c.BodyParser(&requestBody); err != nil {
@@ -197,8 +221,19 @@ func LoginController(c *fiber.Ctx) error {
 			"error": "Invalid credentials",
 		})
 	}
+	if user.IsLoggedIn {
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+			"error": "User is logged in in another place",
+		})
+	}
+	db := database.GetDB()
 	
-	
+	user.IsLoggedIn = true
+	if err := db.Save(&user).Error; err!= nil {
+    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+      "error": "Internal Server Error",
+    })
+  }
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		Issuer:    strconv.Itoa(int(user.ID)),
 		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
@@ -250,16 +285,35 @@ func GetUser(c *fiber.Ctx) error {
 
 func Logout(c *fiber.Ctx) error {
 	cookie := fiber.Cookie{
-		Name:   "jwt",
-		Value: "",
-		Expires: time.Now().Add(-time.Hour),
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
 		HTTPOnly: true,
 	}
+	userID, ok := c.Locals("userID").(uint)
+	if !ok {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "User ID not found in context",
+		})
+	}
+	db := database.GetDB();
+	user, err:= models.GetUserByID(db, userID)
+	if err!= nil {
+    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+      "error": "User not found",
+    })
+  }
+	user.IsLoggedIn = false;
 
+	if err := db.Save(&user).Error; err!= nil {
+    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+      "error": "Internal Server Error",
+    })
+  }
 	c.Cookie(&cookie)
 
 	return c.JSON(fiber.Map{
-		"message" : "success",
+		"message": "success",
 	})
 }
 
@@ -284,7 +338,7 @@ func ForgotPasswordController(c *fiber.Ctx) error {
 		}
 		return err
 	}
-	
+
 	if user.IsBanned {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "User is banned",
@@ -301,15 +355,13 @@ func ForgotPasswordController(c *fiber.Ctx) error {
 	})
 }
 
-
-
 func ValidateSecurityAnswerController(c *fiber.Ctx) error {
 	var requestBody struct {
-		Email  string `json:"email"`
-		Answer string `json:"answer"`
+		Email    string `json:"email"`
+		Answer   string `json:"answer"`
 		Question string `json:"question"`
 	}
-	
+
 	if err := c.BodyParser(&requestBody); err != nil {
 		log.Printf("Error parsing request body: %v", err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -329,7 +381,7 @@ func ValidateSecurityAnswerController(c *fiber.Ctx) error {
 
 	var matchedSecurityQuestion *models.SecurityQuestion
 	for _, question := range user.SecurityQuestions {
-		if 	strings.EqualFold(requestBody.Answer, question.Answers) && requestBody.Question == question.Questions{
+		if strings.EqualFold(requestBody.Answer, question.Answers) && requestBody.Question == question.Questions {
 			matchedSecurityQuestion = &question
 			break
 		}
@@ -348,9 +400,9 @@ func ValidateSecurityAnswerController(c *fiber.Ctx) error {
 
 func SavePassword(c *fiber.Ctx) error {
 	var requestBody struct {
-		Email               string `json:"email"`
+		Email                string `json:"email"`
 		ConfirmationPassword string `json:"confirmationPassword"`
-		NewPassword         string `json:"newPassword"`
+		NewPassword          string `json:"newPassword"`
 	}
 
 	if err := c.BodyParser(&requestBody); err != nil {
@@ -373,10 +425,10 @@ func SavePassword(c *fiber.Ctx) error {
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(requestBody.NewPassword))
 	if err == nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Password cannot be the same as the old one",
+			"error": "Password cannot be the same as the old one",
 		})
 	}
-	
+
 	if requestBody.ConfirmationPassword != requestBody.NewPassword {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Confirmation password does not match the new password",
@@ -392,7 +444,7 @@ func SavePassword(c *fiber.Ctx) error {
 	}
 
 	user.Password = string(hashedPassword)
-	
+
 	if err := database.GetDB().Save(&user).Error; err != nil {
 		log.Printf("Error saving new password to the database: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -404,3 +456,5 @@ func SavePassword(c *fiber.Ctx) error {
 		"message": "Password updated successfully",
 	})
 }
+
+

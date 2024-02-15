@@ -49,7 +49,14 @@
   box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1), 0 -5px 5px -5px rgba(0, 0, 0, 0.1);
   span{
     font-weight: 700;
-    color: black;
+    color: $text-color;
   }
 }
 
+
+[data-theme="dark"]{
+  .container{
+    background-color: #3f3f3f;
+
+  }
+}

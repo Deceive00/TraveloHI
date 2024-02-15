@@ -1,12 +1,12 @@
 package middleware
 
 import (
-	"log"
 	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 )
+
 const SecretKey = "secret"
 
 func extractToken(c *fiber.Ctx) (*jwt.StandardClaims, error) {
@@ -35,31 +35,40 @@ func AuthMiddleware(c *fiber.Ctx) error {
 			"message": "Unauthorized",
 		})
 	}
-	
+
 	userID, err := strconv.ParseUint(claims.Issuer, 10, 64)
 	if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-					"message": "Unauthorized",
-			})
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
 	}
-	
+
 	c.Locals("userID", uint(userID))
 
 	return c.Next()
 }
 
-func AdminMiddleware(c * fiber.Ctx) error {
-	type AdminRequest struct {
-		Email    string `json:"email"`
-	}
-	var requestBody AdminRequest
-
-	if err := c.BodyParser(&requestBody); err != nil {
-		log.Printf("Error parsing request body: %v", err)
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid Request Body",
+func AdminMiddleware(c *fiber.Ctx) error {
+	claims, err := extractToken(c)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
 		})
 	}
+
+	userID, err := strconv.ParseUint(claims.Issuer, 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+
+	if userID != 5 {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+	c.Locals("userID", uint(userID))
 
 	return c.Next()
 }

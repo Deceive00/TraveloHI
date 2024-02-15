@@ -28,9 +28,11 @@
     .accountNumber{
       font-weight: 800;
       font-size: calc(0.75rem + 0.3vw);
+      color: $text-color;
     }
     .accountName{
       font-size: calc(0.75rem + 0.3vw);
+      color: $text-color;
     }
   }
 

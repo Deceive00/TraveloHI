@@ -4,18 +4,26 @@ import '../style/register-page.scss'
 import logo from "../assets/travelohiLogo.png";
 import SecurityQuestions from "../components/form/SecurityDropDown";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import ProfilePicture from "../components/form/ProfilePicture";
 import { rules, uploadImage } from "../utils/utils";
 import { Link, useNavigate } from "react-router-dom";
 import defaultPP from '../image/default.png'
+import ReCAPTCHA from "react-google-recaptcha"
+import Snackbar from "../components/form/Snackbar";
 export default function RegisterPage(){
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, watch} = useForm();
   const watchPassword = watch('password', '');
   const [subscribe, setSubscribe] = useState(false);
   const [securityQuestions, setSecurityQuestions] = useState([]);
-
+  const [fillRecaptcha, setFillRecaptcha] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [snackbarType, setSnackbarType] = useState('error')
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const handleRecaptcha = () => {
+    setFillRecaptcha(true);
+  }
   const handleChangeSecurity = (value: any) => {
 
     setSecurityQuestions(value);
@@ -23,16 +31,34 @@ export default function RegisterPage(){
 
 
   const onSubmit = async (data : any) => {
+
     try {
-      if(securityQuestions.length <= 0){
-        alert('Please add at least 1 security questions')
+      if(!fillRecaptcha){
+        setSnackbarOpen(true);
+        setSnackbarMessage('Please verify yourself with recaptcha!');
+        setSnackbarType('error');
         return;
       }
-      const ext = data.profilePicture.name.split('.')[1]
-      const emailValue = data.email;
-      const filename = `profilepicture/${emailValue}_profilepicture.${ext}`;
+      if(securityQuestions.length <= 0){
+        alert('Please add at least 1 security questions')
+        setSnackbarOpen(true);
+        setSnackbarMessage('Please add at least 1 security questions!');
+        setSnackbarType('error');
+        return;
+      }
 
-      const downloadURL = await uploadImage(filename, data.profilePicture);
+      let downloadURL;
+      if (data.profilePicture) {
+        const ext = data.profilePicture.name.split(".")[1];
+        console.log(data.profilePicture.name);
+        const emailValue = data.email;
+        const filename = `profilepicture/${emailValue}_profilepicture.${ext}`;
+
+        downloadURL = await uploadImage(filename, data.profilePicture);
+      } else {
+        downloadURL = "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/profilepicture%2Fdefault.png?alt=media&token=27dc51d0-2377-4bdb-90e1-272d1067203f";
+      }
+
       
       const { profilePicture: profilePicture, ...pureData } = data;
       const stringifiedData = JSON.stringify({ 
@@ -49,6 +75,7 @@ export default function RegisterPage(){
         },
       });
 
+      
       if (response.status === 200) {
         console.log('Registration successful');
         alert('Registration Succesful')
@@ -57,7 +84,16 @@ export default function RegisterPage(){
         console.error('Registration failed: ', response.statusText);
       }
     } catch (error) {
-      console.error('Registration failed:', error);
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        const responseData = axiosError.response?.data;
+        if (typeof responseData === 'object' && responseData !== null && 'error' in responseData) {
+            console.error('Registration Failed:', responseData.error);
+            setSnackbarMessage(responseData.error as string);
+        }
+        setSnackbarType('error');
+        setSnackbarOpen(true);
+      }
     }
   };
 
@@ -189,6 +225,11 @@ export default function RegisterPage(){
               />
               I want to hear traveloHI newsletter and promotion
             </label>
+            <ReCAPTCHA
+              sitekey="6Leu1FkpAAAAANqqSbxD4IZhMTHvEPPvuHWzRBCU"
+              onChange={handleRecaptcha}
+              style={{marginTop:'1.5vh'}}
+            />
             <button type="submit" className="submit-button register">Sign Up</button>
           </form>
           <p className="sign-up-info">
@@ -197,6 +238,7 @@ export default function RegisterPage(){
           </p>
         </div>
       </div>
+      <Snackbar message={snackbarMessage} type={snackbarType} show={snackbarOpen} setShow={setSnackbarOpen}/>
     </div>
   );
 }

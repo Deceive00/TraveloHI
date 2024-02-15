@@ -45,10 +45,10 @@ export default function Navbar(){
           </button>
           {
             !user && (
-              <>
+              <div>
                 <button onClick={() => navigate('/login')} className={style.loginButton}>Login</button>
                 <button onClick={() => navigate('/signup')} className={style.registerButton}>Sign Up</button>
-              </>
+              </div>
             )
           }
           {

@@ -29,7 +29,7 @@
   justify-content: center;
   align-items: center;
   width: 75%;
-  background: white;
+  background: $secondary-background-color;
   .rightContentContainer{
     width: 90%;
     margin: auto;
@@ -46,6 +46,7 @@
 .pageTitleContainer{
   align-items: center;
   display: flex;
+  height: fit-content;
   flex-direction: row;
   background: linear-gradient(to bottom, #87b2eb1a, rgba(247, 249, 250, 0.20)); 
   padding: 2rem;

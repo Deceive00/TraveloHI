@@ -23,6 +23,7 @@ const AddCardModal = ({
     handleSubmit,
     formState: { errors },
     reset,
+    setValue
   } = useForm();
   const bankNames = BANK.map((bank) => bank.name);
   const [loading, setLoading] = useState(false);
@@ -59,6 +60,7 @@ const AddCardModal = ({
 
   const onSubmit = async (formData: any) => {
     try {
+      console.log(formData)
       setLoading(true);
       const body = JSON.stringify(formData);
       console.log(body);
@@ -104,6 +106,7 @@ const AddCardModal = ({
             register={register}
             rules={cardRules.bank}
             error={errors.bankName}
+            setValue={setValue}
           />
           <TextField
             label="Account Name"

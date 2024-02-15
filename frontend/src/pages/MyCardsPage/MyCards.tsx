@@ -37,6 +37,7 @@ export default function MyCards() {
       const data = await response.data;
       if (response.status === 200) {
         setCreditCards(data.creditCards);
+        console.log(data)
       } else {
         setSnackbarMessage("Error fetching credit card data");
         setSnackbarType("error");
@@ -55,7 +56,6 @@ export default function MyCards() {
     setSnackbarMessage(message);
     setSnackbarType(type);
     setSnackbarOpen(true);
-    console.log("muncul ga si");
   };
   const handleOpenAddCard = () => {
     setOpenAddCard(true);

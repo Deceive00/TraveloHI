@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import style from './Switch.module.scss'; 
 
 const SwitchToggle = ({ initialValue, onChange } : { initialValue : boolean | undefined, onChange : any}) => {

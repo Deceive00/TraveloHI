@@ -41,6 +41,7 @@
 .option {
   padding: 8px;
   cursor: pointer;
+  background-color: $background-color;
   &:hover {
     background-color: #f2f2f2;
   }

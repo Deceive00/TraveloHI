@@ -19,13 +19,33 @@ export default function ProfilePage() {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm();
   const [isSubscribe, setIsSubscribe] = useState<boolean | undefined>(false);
   const { user, refetch } = useUser();
+  const currentData = {
+    firstName: watch('firstName', ''),
+    lastName: watch('lastName', ''),
+    email: watch('email', ''),
+    dob: watch('dob', ''),
+    gender: watch('gender', user?.gender)
+  }
   const [loading, setLoading] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarType, setSnackbarType] = useState("error");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const isFormFilled = () => {
+    if(currentData.firstName === user?.firstName && 
+        currentData.lastName === user?.lastName && 
+        currentData.email === user?.email && 
+        currentData.dob === user?.dob && 
+        isSubscribe === user?.isSubscribe && 
+        currentData.gender === user?.gender){
+          return true;
+        }
+    return false;
+  }
   useEffect(() => setIsSubscribe(user?.isSubscribe), [user]);
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
@@ -215,7 +235,7 @@ export default function ProfilePage() {
                     <label htmlFor="toggle-btn">Newsletter Subscription</label>
                   </div>
                   <div className={style.saveButtonContainer}>
-                    <button type="submit" className={style.saveButton}>
+                    <button type="submit" className={style.saveButton} disabled={isFormFilled()}>
                       Save
                     </button>
                   </div>

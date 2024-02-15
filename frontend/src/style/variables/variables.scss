@@ -1,9 +1,10 @@
 $blue: #0194f3;
 $background-color: var(--background-color);
-$secondary-text-color: #747474;
+$secondary-text-color: var(--secondary-text-color);
 $orange: rgb(255, 94, 31);
 $normal-text-size: calc(10px + 0.2vw);
 $orange-onhover: rgb(219, 77, 20);
 $blue-onhover: #1481b8;
 $text-color: var(--primary-text-color);
 $hover-dark-background: rgba(0, 0, 0, 0.154);
+$secondary-background-color: var(--secondary-background-color);

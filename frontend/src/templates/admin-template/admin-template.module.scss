@@ -1,0 +1,22 @@
+@import '../../style/variables/variables.scss';
+@import '../../style/variables/mixins';
+
+.container{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(247, 249, 250, 1.00);
+  display: flex;
+  flex-direction: row;
+  h1{
+    font-size: calc(1rem + 1vw);
+  }
+}
+
+.content{
+  width: calc(100VW - (10rem + 10vw));
+  padding-inline: calc(1rem + 2vw);
+  padding-block: 2vh;
+  color: $text-color;
+  overflow: scroll;
+}
+

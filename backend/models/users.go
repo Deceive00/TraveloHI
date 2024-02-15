@@ -23,6 +23,7 @@ type Users struct {
 	ProfilePicture    string                `json:"profilePicture"`
 	CreatedAt         time.Time             `json:"-"`
 	UpdatedAt         time.Time             `json:"-"`
+	IsLoggedIn        bool                  `json:"isLoggedIn"`
 }
 
 type SecurityQuestion struct {

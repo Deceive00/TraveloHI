@@ -16,7 +16,7 @@
 
 .rightCardsPageContainer{
   width: 75%;
-  background: white;
+  background: $secondary-background-color;
 }
 
 .noCreditCards{
@@ -29,6 +29,7 @@
     font-size: calc(1rem + 0.5vw);
     text-align: center;
     margin-top: 2vh;
+    color: $text-color;
   }
   img{
     width: calc(7rem + 2vw);

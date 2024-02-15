@@ -7,6 +7,7 @@ import (
 
 	"github.com/eldrian/go-fiber-postgres/database"
 	"github.com/eldrian/go-fiber-postgres/models"
+	"github.com/eldrian/go-fiber-postgres/services"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -30,9 +31,20 @@ func UpdateProfileController(c *fiber.Ctx) error {
 			"error": "Invalid Request Body",
 		})
 	}
+	if requestBody.DateOfBirth == ""  || requestBody.Gender == "" || requestBody.ProfilePicture == ""  || requestBody.FirstName == "" || requestBody.LastName == "" || requestBody.Email == ""{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Please fill all the fields",
+		})
+	}
+
 	if len(requestBody.FirstName) < 5 || len(requestBody.LastName) < 5 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "First name and last name must be more than 5 characters",
+		})
+	}
+	if !services.ValidateEmailFormat(requestBody.Email){
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Email format is not valid",
 		})
 	}
 
@@ -107,7 +119,13 @@ func AddCreditCardController(c *fiber.Ctx) error {
 			"error": "Invalid Request Body",
 		})
 	}
-	log.Println(requestBody)
+	
+	if requestBody.AccountName == "" || requestBody.AccountNumber == "" || requestBody.BankName == "" || requestBody.CVV == "" {
+    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+      "error": "Please fill all the fields",
+    })
+  }
+
 	userID, ok := c.Locals("userID").(uint)
 	if !ok {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -171,22 +189,12 @@ func GetCreditCard(c *fiber.Ctx) error {
 		})
 	}
 	db := database.GetDB()
-	var userCreditCards []models.UserCreditCards
-	if err := db.Where("user_id = ?", userID).Find(&userCreditCards).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Error fetching user credit cards",
-		})
-	}
-
-	var creditCardIDs []uint
-	for _, userCreditCard := range userCreditCards {
-		creditCardIDs = append(creditCardIDs, userCreditCard.CreditCardID)
-	}
-
 	var creditCards []CreditCardResponse
 	if err := db.Model(&models.CreditCards{}).
-		Select("id, bank_name, cvv, account_name, account_number").
-		Find(&creditCards, creditCardIDs).Error; err != nil {
+		Joins("INNER JOIN user_credit_cards ON credit_cards.id = user_credit_cards.credit_card_id").
+		Where("user_credit_cards.user_id = ?", userID).
+		Select("credit_cards.id, credit_cards.bank_name, credit_cards.cvv, credit_cards.account_name, credit_cards.account_number").
+		Find(&creditCards).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Error fetching credit cards",
 		})
@@ -264,4 +272,3 @@ func RemoveCreditCardController(c *fiber.Ctx) error {
 		"remainingCreditCards": creditCardResponses,
 	})
 }
-

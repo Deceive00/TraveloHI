@@ -76,7 +76,7 @@ export default function LoginPage() {
         }
         setSnackbarType('error');
         setSnackbarOpen(true);
-    }
+      }
     }
   }
 

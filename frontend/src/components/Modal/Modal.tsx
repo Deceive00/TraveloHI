@@ -1,6 +1,6 @@
 // Modal.js
 import React, { useRef } from "react";
-import styles from '../../style/Modal.module.scss';
+import styles from './Modal.module.scss';
 
 const Modal: React.FC<{
   isOpen: boolean;

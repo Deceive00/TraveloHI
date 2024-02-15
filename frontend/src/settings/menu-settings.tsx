@@ -1,4 +1,6 @@
 import AdminPage from "../pages/Admin/AdminPage/AdminPage";
+import InsertPromoPage from "../pages/Admin/InsertPromos/insert-promo-page";
+import ManageHotelPage from "../pages/Admin/ManageHotel/manage-hotel-page";
 import ManageUsers from "../pages/Admin/ManageUsers/ManageUsers";
 import SendnewsLetter from "../pages/Admin/SendNewsletter/SendNewsletter";
 import MyCards from "../pages/MyCardsPage/MyCards";
@@ -66,5 +68,15 @@ export const MENU_LIST: IMenu[] = [
     element:<ManageUsers/>,
     name:"Manager Users",
     path:"/admin/manage-users"
+  },
+  {
+    element:<ManageHotelPage/>,
+    name:"Manager Hotels",
+    path:"/admin/manage-hotels"
+  },
+  {
+    element:<InsertPromoPage/>,
+    name:"Insert Promos",
+    path:"/admin/insert-promos"
   },
 ]

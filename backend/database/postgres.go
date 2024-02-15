@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/eldrian/go-fiber-postgres/models"
-	"github.com/eldrian/go-fiber-postgres/seeders"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -47,7 +46,7 @@ func init() {
 		config.Host, config.Port, config.User, config.Password, config.DBName, config.SSLMode)
 
 	var errDB error
-	// Assign to the global variable
+
 	db, errDB = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if errDB != nil {
 		log.Fatal("could not load the database")
@@ -60,10 +59,12 @@ func init() {
 	err = models.MigrateLocations(db)
 	err = models.MigrateAirports(db)
 	err = models.MigrateHotels(db)
-
+	err = models.MigratePromotions(db)
 	// Seeders
 	// seeders.SeedUsers(db)
 	// seeders.LocationSeeder(db)
 	// seeders.AirportSeeder(db)
-	seeders.HotelSeeder(db)
+	// seeders.HotelSeeder(db)
+	// seeders.FacilitiesSeeder(db)
+	// seeders.HotelFacilitiesSeeder(db)
 }

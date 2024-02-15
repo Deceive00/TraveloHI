@@ -18,20 +18,23 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const refetch = async () => {
     await fetchUser();
   };
 
   const logout = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/api/logout", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-
+      const response = await axios.post(
+        "http://localhost:8080/api/logout",
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+  
       if (response.status === 200) {
         setUser(null);
         Cookies.remove("jwt");
@@ -40,7 +43,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(error);
     }
   };
-
+  
   const fetchUser = async () => {
     const jwt = Cookies.get("jwt");
     setLoading(true);

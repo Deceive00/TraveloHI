@@ -1,0 +1,115 @@
+@import "../../../style/variables/variables.scss";
+@import "../../../style/variables/mixins";
+
+.container{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(247, 249, 250, 1.00);
+  display: flex;
+  flex-direction: row;
+  h1{
+    font-size: calc(1rem + 1vw);
+  }
+}
+
+.content{
+  width: 80%;
+  padding-inline: calc(1rem + 2vw);
+  padding-block: 2vh;
+  color: $text-color;
+  overflow: scroll;
+}
+
+.formContainer{
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+
+}
+.hotelForm, .rooms{
+  h2{
+    font-size: calc(0.9rem + 0.8vw);
+  }
+}
+.hotelForm{
+  border-radius: 1vw;
+  box-shadow: 0 8px 8px 0 rgba( 31, 38, 135, 0.1 );
+  padding: 2rem;
+  overflow: scroll;
+}
+.hotelForm, .roomFormContainer{
+  width: 50%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.twoTextfieldContainer{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;;
+  flex-wrap: wrap;
+}
+
+.firstTextfieldContainer,
+.secondTextfieldContainer{
+  width: 48%;
+}
+
+@media (max-width: 768px){
+  .twoTextfieldContainer{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .firstTextfieldContainer,
+  .secondTextfieldContainer{
+    width: 100%;
+  }
+  .formContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .hotelForm, .roomFormContainer{
+    width: 100%;
+    height: 100vh;
+  }
+}
+.facilityContainer {
+  display: grid;
+  margin-top: 1vh;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  label{
+    color: $text-color;
+    font-size: $normal-text-size;
+  }
+}
+
+.facilityItem {
+  display: flex;
+  align-items: center;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+
+.rooms{
+  width: 100%;
+
+}
+
+.addButton{
+  @include customButton($blue, $blue-onhover);
+}
+
+.insertButton{
+  margin-top: 2vh;
+  @include customButton($orange, $orange-onhover);
+}

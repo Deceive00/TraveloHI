@@ -32,7 +32,7 @@ const UserDataTable = () => {
   const toggleBannedStatus = async (userId: any, isBanned : boolean) => {
     try {
       const mode = isBanned ? "unban" : "ban";
-      const response = await axios.put(`http://localhost:8080/api/admin/${mode}/${userId}`, {
+      const response = await axios.put(`http://localhost:8080/api/admin/${mode}/${userId}`, {},{
         headers: {
           "Content-Type": "application/json",
         },

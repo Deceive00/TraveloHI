@@ -30,6 +30,7 @@
   background-size: cover;
   height: 100vh;
   overflow: scroll;
+  color: $text-color;
 }
 
 .registration-form {
@@ -76,7 +77,20 @@ input[type="radio"] {
   display: grid;
   place-content: center;
 }
+input[type="checkbox"]{
+  background-color: transparent;
+}
 
+input[type="checkbox"]:checked{
+  background-color: $blue;
+
+}
+
+#subscribe{
+  background-color: transparent;
+  height: $normal-text-size;
+  width: $normal-text-size;
+}
 input[type="radio"]::before {
   content: "";
   width: 0.65em;
@@ -94,12 +108,15 @@ input[type="radio"]:focus {
   outline: max(2px, 0.15em) solid currentColor;
   outline-offset: max(2px, 0.15em);
 }
+
+
 .form-control {
   font-size: 0.9rem;
   line-height: 1.1;
   display: grid;
   grid-template-columns: 1em auto;
   gap: 0.5em;
+  font-size: calc(10px + 0.2vw);
 }
 .form-control:focus-within {
   color: $blue;
@@ -107,7 +124,8 @@ input[type="radio"]:focus {
 
 .password-requirements {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: calc(10px + 0.2vw);;
+  
 }
 
 .password-requirements h4 {

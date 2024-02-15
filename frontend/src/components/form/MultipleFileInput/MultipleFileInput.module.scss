@@ -1,0 +1,47 @@
+@import '../../../style/variables/variables.scss';
+@import '../../../style/variables/mixins';
+.multipleFileInput {
+  .filePreviewGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 10px;
+    margin-top: 10px;
+  }
+
+  .fileItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+  .fileItem {
+    position: relative;
+    font-size: $normal-text-size;
+    .deleteButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: red;
+      color: white; 
+      border: none;
+      cursor: pointer;
+      padding: 3px;
+      border-radius: 50%;
+    }
+  }
+  .fileItem img {
+    max-width: 100%;
+    max-height: 100px;
+    object-fit: contain;
+  }
+
+}
+
+.button{
+  @include customButton($blue, $blue-onhover);
+  width: 100%;
+}
