@@ -1,0 +1,36 @@
+@import '../../style/variables/variables.scss';
+@import '../../style/variables/mixins';
+
+.hotelDetailContainer{
+  color: $text-color;
+}
+.imageContainer {
+  display: flex;
+}
+
+.mainImage {
+  
+  img {
+    width: 25%;
+    height: 100%;
+    object-fit: cover; 
+  }
+}
+
+.additionalImages {
+  flex: 1; 
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 10px; 
+  align-content: flex-start; 
+}
+
+
+.viewAllButton {
+  width: 100%;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+
+}

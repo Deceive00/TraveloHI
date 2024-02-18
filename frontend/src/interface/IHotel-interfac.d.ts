@@ -4,7 +4,7 @@ interface Facility {
 }
 
 interface Hotel{
-  hotelId: string;
+  hotelId: string | undefined;
   hotelName: string;
   hotelDescription: string;
   hotelPicture: string;
@@ -12,5 +12,19 @@ interface Hotel{
   hotelAddress: string;
   hotelImage: string[];
   city: string;
+  hotelStar: int;
   country: string;
+}
+
+interface Room{
+  gotBreakfast: boolean;
+  gotFreeWifi: boolean;
+  isRefundable: boolean;
+  isReschedulable: boolean;
+  isSmoking: boolean;
+  roomCapacity: int;
+  roomName: string | undefined;
+  roomPrice: number;
+  totalRoom: number;
+
 }

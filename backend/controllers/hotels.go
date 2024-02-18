@@ -34,7 +34,7 @@ func GetHotelByID(c *fiber.Ctx) error {
 
 	hotelID, err := strconv.Atoi(id)
 	if err != nil {
-			return err
+		return err
 	}
 
 	db := database.GetDB()
@@ -74,6 +74,8 @@ func GetHotelByID(c *fiber.Ctx) error {
 		HotelDescription string         `json:"hotelDescription"`
 		HotelAddress     string         `json:"hotelAddress"`
 		HotelRating      float64        `json:"hotelRating"`
+		HotelPicture     []string       `json:"hotelPicture"`
+		HotelStar        int            `json:"hotelStar"`
 		CityName         string         `json:"cityName"`
 		CountryName      string         `json:"countryName"`
 		Facilities       []FacilityInfo `json:"facilities"`
@@ -83,6 +85,8 @@ func GetHotelByID(c *fiber.Ctx) error {
 		HotelDescription: hotel.HotelDescription,
 		HotelAddress:     hotel.HotelAddress,
 		HotelRating:      hotel.HotelRating,
+		HotelPicture:     hotel.HotelPicture,
+		HotelStar:        hotel.HotelStar,
 		CityName:         city.CityName,
 		CountryName:      country.CountryName,
 		Facilities:       make([]FacilityInfo, len(facilities)),
