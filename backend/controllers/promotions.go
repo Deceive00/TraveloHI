@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAllPromotions(c *fiber.Ctx) error {
+func GetAllPromotionsForUser(c *fiber.Ctx) error {
 	db := database.GetDB()
 	userID := c.Locals("userID").(uint)
 	currentDate := time.Now()
@@ -47,3 +47,4 @@ func GetAllPromotions(c *fiber.Ctx) error {
 		"promotions": validPromotions,
 	})
 }
+

@@ -1,53 +1,61 @@
-@import '../../style/variables/mixins';
-@import '../../style/variables/variables.scss';
-nav{
+@import "../../style/variables/mixins";
+@import "../../style/variables/variables.scss";
+nav {
   z-index: 100;
   position: fixed;
   top: 0;
   width: 100vw;
   transition: 0.5s;
   padding-block: 2vh;
-  background: rgba( 255, 255, 255, 0.3 );
-  box-shadow: 0 8px 8px 0 rgba( 31, 38, 135, 0.1 );
-  backdrop-filter: blur( 14px );
-  -webkit-backdrop-filter: blur( 14px );
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 8px 0 rgba(31, 38, 135, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-end-end-radius: 10px;
   border-end-start-radius: 10px;
 }
-
-.navbarContainer{
+[data-theme="dark"] {
+  nav {
+    background: rgba(1, 1, 1, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+}
+.navbarContainer {
   display: flex;
   width: 90%;
   flex-direction: row;
   justify-content: space-between;
-  margin:auto;
+  margin: auto;
   align-items: center;
 }
 
-.leftNavbarContainer{
+.leftNavbarContainer {
   display: flex;
   align-items: center;
   width: 40%;
 }
-.leftNavbarContainer img{
+.leftNavbarContainer img {
   width: calc(20px + 2vw);
   height: calc(20px + 2vw);
 }
 
-.leftNavbarContainer h3{
+.leftNavbarContainer h3 {
   margin-right: 3vw;
 }
-.rightNavbarContainer{
+.rightNavbarContainer {
   display: flex;
-  gap:1rem;
+  gap: 1rem;
 }
 
-.loginButton{
+.loginButton {
   margin-right: 0.8vw;
   @include customButton($blue, $blue-onhover);
 }
 
-.registerButton{
+.registerButton {
   padding: 10px 15px;
   border-radius: 6px;
   background: $background-color;
@@ -55,57 +63,58 @@ nav{
   font-weight: 600;
   font-size: calc(0.5rem + 0.3vw);
   border: 1px solid $blue;
-  color:$text-color;
-  &:hover{
+  color: $text-color;
+  &:hover {
     background: $hover-dark-background;
     transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
 
-.homeButtonContainer{
+.homeButtonContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
   text-decoration: none;
   color: $text-color;
 }
-.rightContentContainer{
+.rightContentContainer {
   display: flex;
   gap: 1rem;
   justify-content: center;
 }
 
-.themeButton{
+.themeButton {
   background-color: transparent;
   border: none;
-  svg{
+  svg {
     width: calc(1rem + 0.4vw);
     height: calc(1rem + 0.4vw);
-
   }
 }
 
 .light {
-  color: black; 
+  color: yellow;
   border-radius: 20rem;
 }
 
-.dark{
+.dark {
   color: black;
 }
 
 .glow {
-  animation: glowAnimation 1s infinite; 
+  width: 80%;
+  height: 80%;
+  animation: glowAnimation 1s infinite;
 }
 
 @keyframes glowAnimation {
   0% {
-    box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow; 
+    box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow;
   }
   50% {
-    box-shadow: 0 0 20px yellow, 0 0 25px yellow, 0 0 30px yellow; 
+    box-shadow: 0 0 20px yellow, 0 0 25px yellow, 0 0 30px yellow;
   }
   100% {
-    box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow; 
+    box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow;
   }
 }

@@ -78,3 +78,57 @@ func HotelSeeder(db *gorm.DB) {
 
 	fmt.Println("Hotel data inserted successfully")
 }
+
+func HotelRoomSeeder(db *gorm.DB) {
+	// Define room data
+	rooms := []models.HotelRooms{
+			{
+					RoomName:        "Luxury Standard Room",
+					RoomPrice:       100.0,
+					RoomCapacity:    2,
+					IsRefundable:    true,
+					IsSmoking:       false,
+					IsReschedulable: true,
+					GotBreakfast:    true,
+					GotFreeWifi:     true,
+					RoomPicture:     models.Pictures{"https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview1.png?alt=media&token=bf8eed00-5f9f-4a7b-9ad0-30f7f84488a7", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview2.png?alt=media&token=ec15d996-0356-44c9-b097-5746878c1b6e", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview3.png?alt=media&token=5f2b23db-0cb3-4da5-b984-61dfb931c990", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview4.png?alt=media&token=fb8546f0-bad2-4998-8b1e-6aacb407d39e", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview5.png?alt=media&token=32f08169-bf65-439d-8ae1-1a9974d5232f", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview6.png?alt=media&token=0aef5fcc-ff36-4e24-bfa4-8855e5a4d6b9", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview7.png?alt=media&token=3fe62536-509f-4420-9447-ff0194140efd", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview8.png?alt=media&token=c56fa822-3185-4518-a7e3-69f4613c2e46"},
+					TotalRoom:       100,
+			},
+			{
+					RoomName:        "Suprior Deluxe Room",
+					RoomPrice:       150.0,
+					RoomCapacity:    4,
+					IsRefundable:    true,
+					IsSmoking:       false,
+					IsReschedulable: true,
+					GotBreakfast:    true,
+					GotFreeWifi:     true,
+					RoomPicture:     models.Pictures{"https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview1.png?alt=media&token=bf8eed00-5f9f-4a7b-9ad0-30f7f84488a7", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview2.png?alt=media&token=ec15d996-0356-44c9-b097-5746878c1b6e", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview3.png?alt=media&token=5f2b23db-0cb3-4da5-b984-61dfb931c990", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview4.png?alt=media&token=fb8546f0-bad2-4998-8b1e-6aacb407d39e", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview5.png?alt=media&token=32f08169-bf65-439d-8ae1-1a9974d5232f", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview6.png?alt=media&token=0aef5fcc-ff36-4e24-bfa4-8855e5a4d6b9", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview7.png?alt=media&token=3fe62536-509f-4420-9447-ff0194140efd", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview8.png?alt=media&token=c56fa822-3185-4518-a7e3-69f4613c2e46"},
+					TotalRoom:       150,
+			},
+			{
+					RoomName:        "Suite",
+					RoomPrice:       250.0,
+					RoomCapacity:    6,
+					IsRefundable:    true,
+					IsSmoking:       false,
+					IsReschedulable: true,
+					GotBreakfast:    true,
+					GotFreeWifi:     true,
+					RoomPicture:     models.Pictures{"https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview1.png?alt=media&token=bf8eed00-5f9f-4a7b-9ad0-30f7f84488a7", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview2.png?alt=media&token=ec15d996-0356-44c9-b097-5746878c1b6e", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview3.png?alt=media&token=5f2b23db-0cb3-4da5-b984-61dfb931c990", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview4.png?alt=media&token=fb8546f0-bad2-4998-8b1e-6aacb407d39e", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview5.png?alt=media&token=32f08169-bf65-439d-8ae1-1a9974d5232f", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview6.png?alt=media&token=0aef5fcc-ff36-4e24-bfa4-8855e5a4d6b9", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview7.png?alt=media&token=3fe62536-509f-4420-9447-ff0194140efd", "https://firebasestorage.googleapis.com/v0/b/dg-travelohi.appspot.com/o/hotel%2Fhilton%2FhotelImages%2Fseaview%2Fseaview8.png?alt=media&token=c56fa822-3185-4518-a7e3-69f4613c2e46"},
+					TotalRoom:       130,
+			},
+	}
+
+	var hotels []models.Hotels
+	db.Find(&hotels)
+
+	for _, hotel := range hotels {
+			for _, room := range rooms {
+					room.HotelID = hotel.ID
+					db.Create(&room)
+			}
+	}
+
+	fmt.Println("Hotel room data inserted successfully")
+}

@@ -9,6 +9,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon } from '@fortawesome/free-regular-svg-icons';
 import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
+import { faSun } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar(){
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export default function Navbar(){
         </div>
         <div className={style.rightNavbarContainer}>
           <button onClick={toggleTheme} className={style.themeButton}>
-            {theme === 'dark'? <FontAwesomeIcon icon={faLightbulb} className={`${style.light} ${style.glow}`}/> : <FontAwesomeIcon icon={faMoon} className={style.dark}/>}
+            {theme === 'dark'? <FontAwesomeIcon icon={faSun} className={`${style.light} ${style.glow}`}/> : <FontAwesomeIcon icon={faMoon} className={style.dark}/>}
           </button>
           {
             !user && (

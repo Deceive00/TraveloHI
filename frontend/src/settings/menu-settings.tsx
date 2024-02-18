@@ -1,10 +1,13 @@
 import AdminPage from "../pages/Admin/AdminPage/AdminPage";
 import InsertPromoPage from "../pages/Admin/InsertPromos/insert-promo-page";
 import ManageHotelPage from "../pages/Admin/ManageHotel/manage-hotel-page";
+import ManagePromos from "../pages/Admin/ManagePromos/ManagePromos";
 import ManageUsers from "../pages/Admin/ManageUsers/ManageUsers";
 import SendnewsLetter from "../pages/Admin/SendNewsletter/SendNewsletter";
+import HotelDetailPage from "../pages/HotelDetailPage/hotel-detail-page";
 import MyCards from "../pages/MyCardsPage/MyCards";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import SearchPage from "../pages/SearchPage/search-page";
 import CheckLocationPage from "../pages/check-location-page";
 import GamePage from "../pages/game-page";
 import HomePage from "../pages/home-page";
@@ -79,4 +82,19 @@ export const MENU_LIST: IMenu[] = [
     name:"Insert Promos",
     path:"/admin/insert-promos"
   },
+  {
+    element:<ManagePromos/>,
+    name:"Manage Promos",
+    path:"/admin/manage-promos"
+  },
+  {
+    element:<SearchPage/>,
+    name:"Search Page",
+    path:"/search"
+  },
+  {
+    element: <HotelDetailPage/>,
+    name: "Hotel Detail",
+    path: "/hotel-detail/:hotelId"
+  }
 ]

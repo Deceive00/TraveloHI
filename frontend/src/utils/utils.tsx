@@ -2,6 +2,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase/firebase-config";
 
 export const uploadImage = async (filename : any, photo : any) => {
+  console.log(filename, photo);
   const photoRef = ref(storage, filename);
   
   await uploadBytes(photoRef, photo);
@@ -62,3 +63,59 @@ export const rules = {
 
   }
 } 
+
+
+export const promoRules = {
+  promotionName: {
+    required: "required*",
+  },
+  promotionPercentage: {
+    required: "Percentage is required",
+    min: {
+      value: 1,
+      message: "Percentage must be at least 1",
+    },
+    max: {
+      value: 100,
+      message: "Percentage cannot exceed 100",
+    },
+    pattern: {
+      value: /^[1-9]\d*$/,
+      message: "Percentage must be a positive integer",
+    },
+  },
+  startDate: {
+    required: "required*",
+    validate: {
+      greaterThanNow: (value : any) => {
+        const today = new Date();
+        if (value < today) {
+          return 'Start date must be after today';
+        }
+      },
+    },
+  },
+  endDate: {
+    required: "required*",
+    validate: {
+      greaterThanNow: (value : any) => {
+        const today = new Date();
+        if (value < today) {
+          return 'Start date must be after today';
+        }
+      },
+    },
+  },
+  promotionCode: {
+    required: "required*",
+  },
+  promotionType: {
+    required: "required*",
+    validate: {
+      validType: (value: string) =>
+        value === "Hotel" ||
+        value === "Flight" ||
+        "Promotion type must be either 'Hotel' or 'Flight'",
+    },
+  },
+};

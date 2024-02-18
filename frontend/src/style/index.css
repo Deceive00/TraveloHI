@@ -12,6 +12,10 @@
   --secondary-background-color: white;
   --profile-page-header: #ffffffb7;
   --secondary-text-color:#747474;
+  --lighter-background-color:#f0f3f8b1;
+  --lighter-text-color: #7474748d;
+  --shadow-color: rgba(3,18,26,0.20);
+  --gray-text-color: #484848;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -25,7 +29,7 @@ body{
   box-sizing: border-box;
 }
 input[type="date"] {
-  background-color: var(--background-color); 
+  background-color: transparent;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -39,8 +43,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   --secondary-background-color: #060607b3;
   --profile-page-header: #282828;
   --secondary-text-color: rgb(165, 165, 165);
+  --lighter-background-color: #3f3f3f;
+  --shadow-color: rgba(185, 185, 185, 0.415);
+  --lighter-text-color: rgba(165, 165, 165, 0.534);
+  --gray-text-color: rgb(165, 165, 165);
 }
-
+.page-container{
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--background-color);
+  padding-top: 13vh;
+  color: var(--primary-text-color);
+}
 /* 
 a {
   font-weight: 500;

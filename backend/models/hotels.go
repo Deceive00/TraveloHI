@@ -19,7 +19,8 @@ type Hotels struct {
 	HotelRating      float64        `gorm:"not null" json:"hotelRating"`
 	CityID           uint           `json:"cityId"`
 	City             City           `gorm:"foreignKey:CityID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	HotelPicture     Pictures  `json:"hotelPicture" gorm:"type:json"`
+	HotelPicture     Pictures       `json:"hotelPicture" gorm:"type:json"`
+	HotelStar        int            `json:"hotelStar"`
 }
 
 type Pictures []string
@@ -60,19 +61,19 @@ func (hf *HotelFacilities) BeforeCreate(tx *gorm.DB) error {
 }
 
 type HotelRooms struct {
-	HotelID         uint          `json:"hotelId"`
-	Hotels          Hotels        `gorm:"foreignKey:HotelID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	RoomTypeID      uint          `json:"roomTypeId"`
-	RoomName        string        `json:"roomName"`
-	RoomPrice       float64       `json:"roomPrice"`
-	RoomCapacity    int           `json:"roomCapacity"`
-	IsRefundable    bool          `json:"isRefundable"`
-	IsSmoking       bool          `json:"isSmoking"`
-	IsReschedulable bool          `json:"isReschedulable"`
-	GotBreakfast    bool          `json:"gotBreakfast"`
-	GotFreeWifi     bool          `json:"gotFreeWifi"`
+	HotelID         uint     `json:"hotelId"`
+	Hotels          Hotels   `gorm:"foreignKey:HotelID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	RoomTypeID      uint     `json:"roomTypeId"`
+	RoomName        string   `json:"roomName"`
+	RoomPrice       float64  `json:"roomPrice"`
+	RoomCapacity    int      `json:"roomCapacity"`
+	IsRefundable    bool     `json:"isRefundable"`
+	IsSmoking       bool     `json:"isSmoking"`
+	IsReschedulable bool     `json:"isReschedulable"`
+	GotBreakfast    bool     `json:"gotBreakfast"`
+	GotFreeWifi     bool     `json:"gotFreeWifi"`
 	RoomPicture     Pictures `json:"roomPicture" gorm:"type:json"`
-	TotalRoom       int           `json:"totalRoom"`
+	TotalRoom       int      `json:"totalRoom"`
 }
 
 func MigrateHotels(db *gorm.DB) error {

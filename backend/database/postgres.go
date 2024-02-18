@@ -54,12 +54,34 @@ func init() {
 
 	// Migration
 	err = models.MigrateUsers(db)
+	if err != nil {
+		log.Fatal("error migrating users")
+	}
 	err = models.MigrateOTP(db)
+	if err != nil {
+		log.Fatal("error migrating otp")
+	}
 	err = models.MigrateCreditCards(db)
+	if err != nil {
+		log.Fatal("error migrating cc")
+	}
 	err = models.MigrateLocations(db)
+	if err != nil {
+		log.Fatal("error migrating location")
+	}
 	err = models.MigrateAirports(db)
+	if err != nil {
+		log.Fatal("error migrating airport")
+	}
 	err = models.MigrateHotels(db)
+	if err != nil {
+		log.Fatal("error migrating hotel")
+	}
 	err = models.MigratePromotions(db)
+
+	if err != nil {
+		log.Fatal("error migrating promotion")
+	}
 	// Seeders
 	// seeders.SeedUsers(db)
 	// seeders.LocationSeeder(db)
@@ -67,4 +89,5 @@ func init() {
 	// seeders.HotelSeeder(db)
 	// seeders.FacilitiesSeeder(db)
 	// seeders.HotelFacilitiesSeeder(db)
+	// seeders.HotelRoomSeeder(db)
 }

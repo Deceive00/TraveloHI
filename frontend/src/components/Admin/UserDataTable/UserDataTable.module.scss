@@ -9,7 +9,6 @@
   border-collapse: collapse;
   th{
     box-shadow: 0 2px 2px 0 rgba( 31, 38, 135, 0.1 );
-    border-top-right-radius: 1rem;
   }
   td{
     align-items: center;
@@ -24,10 +23,10 @@
     width: fit-content;
   }
   tr{
-    box-shadow: 0 2px 2px 0 rgba( 31, 38, 135, 0.1 );
+    box-shadow: 0 2px 2px 0 $shadow-color;
   }
   th {
-    background-color: rgba(240, 243, 248, 0.6941176471);
+    background-color: var(--lighter-background-color);
     border: none;
     outline: none;
   }

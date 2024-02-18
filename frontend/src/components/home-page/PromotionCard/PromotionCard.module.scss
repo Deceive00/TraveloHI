@@ -1,5 +1,5 @@
-@import "../../style/variables/mixins";
-@import "../../style/variables/variables.scss";
+@import "../../../style/variables/mixins";
+@import "../../../style/variables/variables.scss";
 
 /* PromotionCard.module.scss */
 .promotionCard {
@@ -90,14 +90,16 @@
         padding-block: 0.2vh;
         border-radius: 12vw;
         background: rgba(51, 51, 51, 0.5);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.465);
+        box-shadow: 0 8px 32px 0 $shadow-color;
         backdrop-filter: blur( 100px );
         -webkit-backdrop-filter: blur( 9px );
         border: 1px solid rgba( 255, 255, 255, 0.18 );
-        font-size: calc(0.35rem + 0.4vw);
+        font-size: calc(0.3rem + 0.4vw);
         border: none;
         text-align: center;
       }
     }
   }
 }
+
+

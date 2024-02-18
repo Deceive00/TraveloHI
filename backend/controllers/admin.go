@@ -413,3 +413,68 @@ func GetAdminAuthorization(c *fiber.Ctx) error {
 		"message": "Authorized!",
 	})
 }
+
+func GetAllPromotions(c *fiber.Ctx) error {
+	db := database.GetDB()
+
+	var promotions []models.Promotions
+	if err := db.Find(&promotions).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "No promotions available",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to retrieve promotions",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"promotions": promotions,
+	})
+}
+
+func UpdatePromotionController(c *fiber.Ctx) error {
+	type UpdatePromotionRequest struct {
+			PromotionName       string `json:"promotionName"`
+			PromotionType       string `json:"promotionType"`
+			PromotionCode       string `json:"promotionCode"`
+			PromotionPercentage int    `json:"promotionPercentage"`
+			PromotionStartDate  string `json:"promotionStartDate"`
+			PromotionEndDate    string `json:"promotionEndDate"`
+			PromotionImage      string `json:"promotionImage"`
+	}
+	
+	var requestBody UpdatePromotionRequest
+	if err := c.BodyParser(&requestBody); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"error": "Invalid JSON format",
+			})
+	}
+	
+	db := database.GetDB()
+	
+	var existingPromotion models.Promotions
+	if err := db.Where("promotion_code = ?", requestBody.PromotionCode).First(&existingPromotion).Error; err != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+					"error": "Promotion code does not exist",
+			})
+	}
+	
+	existingPromotion.PromotionName = requestBody.PromotionName
+	existingPromotion.PromotionType = requestBody.PromotionType
+	existingPromotion.PromotionPercentage = requestBody.PromotionPercentage
+	existingPromotion.PromotionStartDate = requestBody.PromotionStartDate
+	existingPromotion.PromotionEndDate = requestBody.PromotionEndDate
+	existingPromotion.PromotionImage = requestBody.PromotionImage
+	log.Println(existingPromotion)
+	if err := db.Save(&existingPromotion).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Failed to update promotion",
+			})
+	}
+	
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+			"message": "Promotion updated successfully",
+	})
+}

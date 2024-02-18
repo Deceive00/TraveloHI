@@ -3,7 +3,15 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
+.container{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgba(45, 45, 45, 0.535);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .loadingAnimation {
   border: 12px solid #f3f3f3; 
   border-top: 12px solid $orange;

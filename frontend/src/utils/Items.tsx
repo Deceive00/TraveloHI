@@ -81,6 +81,11 @@ export const ADMIN_MENU = [
     text: 'Insert Promos',
     onClick: '/admin/insert-promos'
   },
+  {
+    icon: <RiAdvertisementFill className='profileMenuIcon'/>,
+    text: 'Manage Promos',
+    onClick: '/admin/manage-promos'
+  },
 ]
 
 export const BANK = [
@@ -97,6 +102,26 @@ export const BANK = [
     name: 'Mandiri Bank',
   },
 ]
+
+export const TRAVEL_WITH_TRAVELOHI_REASONS : IReason[] = [
+  {
+    title: "All your needs in one place",
+    description: "From plane tickets, accommodation, to activities, Traveloka has complete products and the right travel guides",
+    image: "https://ik.imagekit.io/tvlk/image/imageResource/2023/06/14/1686718660877-9be996f016d2325a96f0dc96f2524e21.webp?tr=dpr-2,h-64,q-75,w-64"
+  },
+  {
+    title: "Flexible booking options",
+    description: "Need to be prepared for the unexpected? Don't worry, there is Easy Reschedule & Refund.",
+    image: "https://ik.imagekit.io/tvlk/image/imageResource/2023/06/14/1686718664559-4c61b3ca4f7e0e017b0484a9fa75c1a9.webp?tr=dpr-2,h-64,q-75,w-64",
+  },
+  {
+    title: "Secure and convenient payment",
+    description: "Enjoy transactions with multiple layers of security, as well as a variety of global & national payment options.",
+    image: "https://ik.imagekit.io/tvlk/image/imageResource/2023/06/14/1686718666471-4704fb071d5cf321cde9e417e5baee0f.webp?tr=dpr-2,h-64,q-75,w-64"
+  }
+]
+
+
 export const getBankImage = (bankName : string) => {
   const bank = BANK.find((b) => b.name === bankName);
   return bank ? bank.image : '/images/default-bank.png'; 

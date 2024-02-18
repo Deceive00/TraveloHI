@@ -28,7 +28,7 @@ input[type="checkbox"] {
   display: flex;
   flex-direction: column;
   border-radius: 1vw;
-  box-shadow: 0 8px 8px 0 rgba( 31, 38, 135, 0.1 );
+  box-shadow: 0 8px 8px 0 $shadow-color;
   gap: 1rem;
   transition: 0.8s all cubic-bezier(1, 0, 0, 1);
   overflow: scroll;

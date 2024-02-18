@@ -1,0 +1,48 @@
+@import '../../../style/variables/variables.scss';
+.promoListContainer.active{
+  background-color: #cbced4ba
+}
+.promoListContainer{
+  width: 100%;
+  cursor: pointer !important;
+  box-shadow: 0 2px 2px 0 $shadow-color;
+  border-radius: 1px solid rgba(0, 0, 0, 0.2);
+  padding-inline: 1vw;
+  padding-block: 2vh;
+  border-radius: 1rem;
+  background-color: $lighter-background-color;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  $text-color:$text-color;
+  transition: 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  &:hover{
+    background-color: #cbced4ba
+  }
+
+  h6{
+    font-weight: 600;
+  }
+  p{
+    font-size: $normal-text-size;
+
+  }
+  .rightContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+[data-theme="dark"]{
+  .promoListContainer{
+    &:hover{
+      background-color: #2e2e2e;
+    }
+  }
+
+  .promoListContainer.active{
+    background-color: #2e2e2e;
+  }
+}

@@ -1,0 +1,83 @@
+basePath: /
+definitions:
+  controllers.CityResult:
+    properties:
+      cityId:
+        type: integer
+      cityName:
+        type: string
+    type: object
+  controllers.CountryResult:
+    properties:
+      countryId:
+        type: integer
+      countryName:
+        type: string
+    type: object
+  controllers.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.HotelResult:
+    properties:
+      hotelId:
+        type: integer
+      hotelName:
+        type: string
+    type: object
+  controllers.SearchResultResponse:
+    properties:
+      cities:
+        items:
+          $ref: '#/definitions/controllers.CityResult'
+        type: array
+      countries:
+        items:
+          $ref: '#/definitions/controllers.CountryResult'
+        type: array
+      hotels:
+        items:
+          $ref: '#/definitions/controllers.HotelResult'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: This is a Travelohi API Documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Travelohi API Documentation
+  version: "1.0"
+paths:
+  /api/search-name:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve search results for countries, cities, and hotels based
+        on a search term
+      parameters:
+      - description: Search term
+        in: query
+        name: term
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SearchResultResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Get search results
+      tags:
+      - Search
+swagger: "2.0"

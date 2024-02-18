@@ -169,10 +169,6 @@ func RegisterController(c *fiber.Ctx) error {
 	})
 }
 
-func verifyRecaptcha(response string) bool {
-	return true
-}
-
 const SecretKey = "secret"
 
 func LoginController(c *fiber.Ctx) error {
@@ -181,9 +177,6 @@ func LoginController(c *fiber.Ctx) error {
 		Password string `json:"password"`
 	}
 
-	type LoginResponse struct {
-		Message string `json:"message"`
-	}
 	var requestBody LoginRequest
 
 	if err := c.BodyParser(&requestBody); err != nil {
@@ -221,22 +214,35 @@ func LoginController(c *fiber.Ctx) error {
 			"error": "Invalid credentials",
 		})
 	}
+	currentTime := time.Now().Unix()
+	log.Println(currentTime)
+
+	if currentTime < user.LoggedInExpiry {
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+			"error": "User is logged in in another place",
+		})
+	}
+
 	if user.IsLoggedIn {
 		return c.Status(fiber.StatusConflict).JSON(fiber.Map{
 			"error": "User is logged in in another place",
 		})
 	}
-	db := database.GetDB()
 	
+	db := database.GetDB()
+	expiryTime := time.Now().Add(time.Hour * 24).Unix()
+	user.LoggedInExpiry = expiryTime
 	user.IsLoggedIn = true
-	if err := db.Save(&user).Error; err!= nil {
-    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-      "error": "Internal Server Error",
-    })
-  }
+
+	if err := db.Save(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Internal Server Error",
+		})
+	}
+
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		Issuer:    strconv.Itoa(int(user.ID)),
-		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+		ExpiresAt: expiryTime,
 	})
 
 	token, err := claims.SignedString([]byte(SecretKey))
@@ -296,20 +302,20 @@ func Logout(c *fiber.Ctx) error {
 			"error": "User ID not found in context",
 		})
 	}
-	db := database.GetDB();
-	user, err:= models.GetUserByID(db, userID)
-	if err!= nil {
-    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-      "error": "User not found",
-    })
-  }
-	user.IsLoggedIn = false;
-
-	if err := db.Save(&user).Error; err!= nil {
-    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-      "error": "Internal Server Error",
-    })
-  }
+	db := database.GetDB()
+	user, err := models.GetUserByID(db, userID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "User not found",
+		})
+	}
+	user.IsLoggedIn = false
+	user.LoggedInExpiry = -1
+	if err := db.Save(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Internal Server Error",
+		})
+	}
 	c.Cookie(&cookie)
 
 	return c.JSON(fiber.Map{
@@ -456,5 +462,3 @@ func SavePassword(c *fiber.Ctx) error {
 		"message": "Password updated successfully",
 	})
 }
-
-

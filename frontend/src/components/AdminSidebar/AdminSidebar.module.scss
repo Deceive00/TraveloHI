@@ -2,8 +2,8 @@
 .sidebar {
   width: calc(10rem + 10vw);
   height: calc(100vh);
-  background-color: #ffffffb7;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  background-color: $secondary-background-color;
+  box-shadow: 0 2px 5px $shadow-color;
   text-decoration: none;
   a{
     text-decoration: none;
@@ -13,6 +13,7 @@
     justify-content: center;
     align-items: center;
     padding-block: 3vh;
+    color: $text-color;
     img {
       width: calc(2rem + 0.5vw);
       height: calc(2rem + 0.5vw);

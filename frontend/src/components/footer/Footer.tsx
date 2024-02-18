@@ -2,6 +2,7 @@
 
 import React from 'react';
 import style from './Footer.module.scss';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -24,11 +25,11 @@ export default function Footer() {
           <div className={`${style.centerFooterContainer} ${style.footerPart}`}>
             <h6>Information</h6>
             <ul>
-              <li><a href="home.html">Home</a></li>
-              <li><a href="about-us.html">About Us</a></li>
-              <li><a href="rooms.html">Rooms</a></li>
-              <li><a href="facility.html">Facilities</a></li>
-              <li><a href="reserve.html">Reservation</a></li>
+              <li><Link to={'/'}>Home</Link></li>
+              <li><Link to={'/my-cards'}>My Cards</Link></li>
+              <li><Link to={'/check-location'}>Check Location</Link></li>
+              <li><Link to={'/personal-information'}>Profile</Link></li>
+              <li><Link to={'/game'}>Game</Link></li>
             </ul>
           </div>
           <div className={`${style.rightFooterContainer} ${style.footerPart}`}>

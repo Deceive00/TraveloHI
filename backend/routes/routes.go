@@ -19,7 +19,7 @@ func SetupRoutes(app *fiber.App) {
 	api.Post("/add-credit-card", middleware.AuthMiddleware, controllers.AddCreditCardController)
 	api.Get("/get-credit-card", middleware.AuthMiddleware, controllers.GetCreditCard)
 	api.Delete("/delete-credit-card/:id", middleware.AuthMiddleware, controllers.RemoveCreditCardController)
-	api.Get("/get-all-promotions", middleware.AuthMiddleware, controllers.GetAllPromotions)
+	api.Get("/get-all-promotions", middleware.AuthMiddleware, controllers.GetAllPromotionsForUser)
 	// Forgot Password
 	resetPW := api.Group("/reset-password")
 	resetPW.Post("/verify-forgot-pw-email", controllers.ForgotPasswordController)
@@ -37,5 +37,15 @@ func SetupRoutes(app *fiber.App) {
 	admin.Get("/get-all-facility", middleware.AdminMiddleware, controllers.GetAllFacility)
 	admin.Post("/insert-hotel", middleware.AdminMiddleware, controllers.AddHotelController)
 	admin.Post("/insert-promotions", middleware.AdminMiddleware, controllers.AddPromotionController)
+	admin.Get("/get-all-promotions", middleware.AdminMiddleware, controllers.GetAllPromotions)
+	admin.Put("/update-promotion", middleware.AdminMiddleware, controllers.UpdatePromotionController)
+	// Search
+	api.Get("/search-name", controllers.GetSearchResult)
+	api.Get("/search", controllers.GetSearchPageData)
+
+	// Home
+	api.Get("/get-recommendation-hotel", controllers.GetRecommendationHotel)
+	api.Get("/get-hotel-by-id/:id", controllers.GetHotelByID)
+
 }
 

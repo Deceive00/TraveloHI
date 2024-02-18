@@ -32,15 +32,15 @@
     &:before {
       right: 1px;
       background-color: whitesmoke;
-      border-radius: 20px; /* Adjust the border-radius to make it a circle */
+      border-radius: 20px; 
       transition: background 0.4s;
     }
 
     &:after {
-      width: 20px; /* Adjust the width to make the switch button smaller */
+      width: 20px;
       background-color: #fff;
       border-radius: 100%;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 5px $shadow-color;
       transition: margin 0.4s;
     }
   }
@@ -50,6 +50,6 @@
   }
 
   .toggle:checked + label:after {
-    margin-left: 18px; /* Adjust the margin to make the switch button move accordingly */
+    margin-left: 18px; 
   }
 }

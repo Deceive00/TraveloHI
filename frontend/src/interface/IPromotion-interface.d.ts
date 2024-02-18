@@ -1,4 +1,5 @@
 interface IPromotion{
+  id: int;
   promotionPercentage: number;
   promotionName: string;
   promotionStartDate: string;

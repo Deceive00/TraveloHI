@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Uploader from "../components/location/uploader";
 import Navbar from "../components/navigationbar/Navbar";
+import Footer from "../components/footer/Footer";
 
 export default function CheckLocationPage(){
 
@@ -20,9 +21,9 @@ export default function CheckLocationPage(){
     <div className="check-location-body">
       <Navbar/>
       <div style={{display:'flex', justifyContent:'center', alignItems:'center', width:'100vw', height:'100vh', flexDirection:'column'}}>
-        {/* <h1>Upload Your Files</h1> */}
         <Uploader onNotPredict={onNotPredict} onPredict={onPredict}/>
       </div>
+      <Footer/>
     </div>
   )
 }

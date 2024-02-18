@@ -1,43 +1,136 @@
-.topBackground{
+@import "variables/variables.scss";
+
+.topBackground {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background: url('/Background/bg.jpg') center center;
+  background: url("/Background/bg.jpg") center center;
   background-size: cover;
   min-height: 500px;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.homeContainer{
-  height: 100vh;
-  border-top-left-radius: 5rem;
-  border-top-right-radius: 5rem;
+.homeContainer {
+  height: fit-content;
+  box-shadow: 2px 10px 10px 2px $shadow-color;
   background-color: var(--background-color);
-  margin-top: -5rem;
-  transition: 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-  padding: 3vw;
+  margin-top: -20vh;
+  transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   width: 100%;
-  .sliderWrapper{
+  position: relative;
+  h2{
+    font-size: calc(1rem + 0.8vw);
+    margin-bottom: 3vh;
+  }
+  .searchComponentContainer {
+    width: 100vw;
+    height: 10rem;
+    display: flex;
+    margin-top: -10vh;
+    position: absolute;
+    justify-content: center;
+  }
+  .promotionContainer {
+    padding: 5vw;
+    display: block;
+    h2 {
+      margin-top: 5vh;
+      font-size: calc(1rem + 0.8vw);
+      color: $text-color;
+      margin-bottom: 3vh;
+    }
+    .sliderWrapper {
+      position: relative;
+      max-width: 100%;
+      margin: 0 auto;
+      .promotionButton {
+        width: 2rem;
+        height: 2rem;
+        position: absolute;
+        border: none;
+        border-radius: 0.5rem;
+        background-color: $background-color;
+        box-shadow: 0px 4px 6px $shadow-color;
+        top: 50%;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+          background-color: var(--profile-page-header);
+        }
+        svg {
+          width: 65%;
+          height: 65%;
+          color: $text-color;
+        }
+      }
+      .prevPromotion {
+        left: -0.8rem;
+        transform: translateY(-50%);
+      }
+
+      .nextPromotion {
+        right: -0.8rem;
+        transform: translateY(-50%);
+      }
+      .promotionSlider {
+        display: flex;
+        gap: 1vw;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: 0;
+        scroll-behavior: smooth;
+      }
+      .promotionSlider main {
+        flex: 1 0 calc(50% - 0.5vw);
+        scroll-snap-align: start;
+        object-fit: cover;
+      }
+    }
+  }
+  .hotelRecommendationHomeContainer{
+    padding: 0 5vw 0vw 5vw;
     position: relative;
     max-width: 100%;
     margin: 0 auto;
-
-    .promotionSlider{
-      display: flex;
+  }
+  .reasonContainer {
+    display: flex;
+    flex-direction: column;
+    // gap: 0vh;
+    padding: 5vw;
+    .reasons {
       gap: 1vw;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: 0;
-      scroll-behavior: smooth;
-
-    }
-    .promotionSlider main{
-      flex: 1 0 calc(50% - 0.5vw);
-      scroll-snap-align: start;
-      object-fit: cover;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
     }
   }
 }
 
+@media (max-width: 768px) {
+  .homeContainer {
+    .promotionContainer {
+      h2 {
+        margin-top: 27vh;
+      }
+
+      .sliderWrapper{
+        .promotionSlider main{
+          flex: 1 0 calc(100%);
+        }
+      }
+    }
+    .hotelRecommendationHomeContainer{
+      padding-top: 5vh;
+    }
+    .reasonContainer {
+      .reasons {
+        flex-direction: column;
+      }
+    }
+  }
+}

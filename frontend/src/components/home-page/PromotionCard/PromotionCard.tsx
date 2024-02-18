@@ -13,7 +13,6 @@ export default function PromotionCard({
   image,
 }: IPromotionCardProps) {
   const formatDate = (inputDateString: string, mode : string) => {
-    console.log(inputDateString);
 
     if (!inputDateString) {
       return "";
@@ -38,7 +37,7 @@ export default function PromotionCard({
 
     return formattedDate;
   };
-  console.log(promotion);
+
   return (
     <main className={style.promotionCard}>
       <div className={style.backgroundImage}>

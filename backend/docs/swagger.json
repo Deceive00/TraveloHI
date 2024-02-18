@@ -1,0 +1,125 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Travelohi API Documentation",
+        "title": "Travelohi API Documentation",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "fiber@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/search-name": {
+            "get": {
+                "description": "Retrieve search results for countries, cities, and hotels based on a search term",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Get search results",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "term",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.SearchResultResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.CityResult": {
+            "type": "object",
+            "properties": {
+                "cityId": {
+                    "type": "integer"
+                },
+                "cityName": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.CountryResult": {
+            "type": "object",
+            "properties": {
+                "countryId": {
+                    "type": "integer"
+                },
+                "countryName": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.HotelResult": {
+            "type": "object",
+            "properties": {
+                "hotelId": {
+                    "type": "integer"
+                },
+                "hotelName": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.SearchResultResponse": {
+            "type": "object",
+            "properties": {
+                "cities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.CityResult"
+                    }
+                },
+                "countries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.CountryResult"
+                    }
+                },
+                "hotels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.HotelResult"
+                    }
+                }
+            }
+        }
+    }
+}

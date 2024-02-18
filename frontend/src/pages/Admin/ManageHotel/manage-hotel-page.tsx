@@ -320,7 +320,7 @@ export default function ManageHotelPage() {
               <TextField
                 label="Hotel Description"
                 name="hotelDescription"
-                type="text"
+                type="textarea"
                 register={register}
                 rules={hotelRules.hotelDescription}
                 error={errors.hotelDescription}
