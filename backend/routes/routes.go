@@ -34,18 +34,20 @@ func SetupRoutes(app *fiber.App) {
 	admin.Put("/unban/:id",middleware.AdminMiddleware ,controllers.UnbanUser)
 	admin.Get("/get-all-users", middleware.AdminMiddleware, controllers.GetAllUserData)
 	admin.Get("/get-all-city", middleware.AdminMiddleware, controllers.GetAllCity)
-	admin.Get("/get-all-facility", middleware.AdminMiddleware, controllers.GetAllFacility)
 	admin.Post("/insert-hotel", middleware.AdminMiddleware, controllers.AddHotelController)
 	admin.Post("/insert-promotions", middleware.AdminMiddleware, controllers.AddPromotionController)
 	admin.Get("/get-all-promotions", middleware.AdminMiddleware, controllers.GetAllPromotions)
 	admin.Put("/update-promotion", middleware.AdminMiddleware, controllers.UpdatePromotionController)
 	// Search
 	api.Get("/search-name", controllers.GetSearchResult)
-	api.Get("/search", controllers.GetSearchPageData)
+	api.Get("/hotel/search", controllers.GetSearchPageData)
 
 	// Home
 	api.Get("/get-recommendation-hotel", controllers.GetRecommendationHotel)
 	api.Get("/get-hotel-by-id/:id", controllers.GetHotelByID)
 
+	//Detail
+	api.Get("/hotels/reviews", controllers.GetHotelReviews)
+	api.Get("/facilities", controllers.GetAllFacility)
 }
 

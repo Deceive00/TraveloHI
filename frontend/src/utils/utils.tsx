@@ -1,5 +1,6 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase/firebase-config";
+import axios, { AxiosError } from "axios";
 
 export const uploadImage = async (filename : any, photo : any) => {
   console.log(filename, photo);
@@ -119,3 +120,42 @@ export const promoRules = {
     },
   },
 };
+
+export const getAllData = async (url : string, setLoading : any, setData : any, showSnackbar : any, key?: any) => {
+  console.log('tes')
+  try {
+    setLoading(true);
+    const response = await axios.get(
+      `http://localhost:8080/api${url}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      let extractedData = response.data;
+      if (key) {
+        extractedData = response.data[key];
+      }
+      setData(extractedData);
+    }
+
+    setLoading(false);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const responseData = axiosError.response?.data;
+      if (
+        typeof responseData === "object" &&
+        responseData !== null &&
+        "error" in responseData
+      ) {
+        showSnackbar(responseData.error as string, "error");
+      }
+    }
+  } finally {
+    setLoading(false);
+  }
+}

@@ -126,3 +126,19 @@ export const getBankImage = (bankName : string) => {
   const bank = BANK.find((b) => b.name === bankName);
   return bank ? bank.image : '/images/default-bank.png'; 
 };
+
+export const HOTEL_DETAIL_REASONS = [
+  {
+    icon: "https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/t_htl-mobile/hotel/2023/01/31/59216496-fc67-4bbe-a07d-7443075a39a4-1675163671283-b5a9bbab9e0c3b84b93235c1ceee96a7.png",
+    header: "Clean place with awesome service",
+    description: "92% of guests rated the cleanliness and service of this accommodation as fantastic."
+  },{
+    icon: "https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/t_htl-mobile/hotel/2023/01/31/40083cc7-7ce9-4865-a3c5-35f22a15ac35-1675163575465-eaf1265a47d5b5def99bc6245e1cb8bf.png",
+    header: 'You’ll love the location',
+    description: 'It’s near a shopping area, train station, and restaurant',
+  },{
+    icon: "https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/t_htl-mobile/hotel/2023/01/31/57c42540-7f91-4b9c-9857-2097e5b2302d-1675163775586-fa175d339d1b2d75a9011135edcd7c24.png",
+    header: "Perfect for wellness retreats",
+    description: "Pamper yourself with gym and salon & beauty."
+  }
+]

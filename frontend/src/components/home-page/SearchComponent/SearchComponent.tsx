@@ -46,7 +46,7 @@ const SearchComponent = () => {
   };
 
   const handleSearch = () => {
-    navigate(`/search?term=${encodeURIComponent(searchTerm)}`);
+    navigate(`/hotel/search?term=${encodeURIComponent(searchTerm)}`);
   }
   return (
     <div className={style.searchContentContainer}>
@@ -165,7 +165,7 @@ const SearchComponent = () => {
             }
           </div>
         </div>
-        <button className={style.searchButton} onClick={handleSearch}>
+        <button className={style.searchButton} onClick={handleSearch} disabled={searchTerm === ''}>
           <p>Search</p>
           <FaArrowRightLong/>
         </button>

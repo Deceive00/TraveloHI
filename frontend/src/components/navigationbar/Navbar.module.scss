@@ -6,7 +6,7 @@ nav {
   top: 0;
   width: 100vw;
   transition: 0.5s;
-  padding-block: 2vh;
+  padding-block: 1.5vh;
   background: rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 8px 0 rgba(31, 38, 135, 0.1);
   backdrop-filter: blur(14px);
@@ -81,14 +81,42 @@ nav {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  flex-direction: row;
+  .profileContainer{
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: row;
+    color: $text-color;
+    font-size: $normal-text-size;
+    align-items: center;
+    padding-inline: 0.5vw;
+    transition: 0.3s;
+    border-radius: 10px;
+    padding-block: 0.75vh;
+    &:hover{
+      background-color: rgba(109, 109, 109, 0.184);
+      
+    }
+  }
 }
-
+.logoutButtonContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .themeButton {
   background-color: transparent;
   border: none;
+  padding-block: 0.2rem;
+  padding-inline: 0.3rem;
+  transition: 0.3s;
   svg {
     width: calc(1rem + 0.4vw);
     height: calc(1rem + 0.4vw);
+  }
+  &:hover{
+    background-color: rgba(109, 109, 109, 0.184);
+    border-radius: 10px;
   }
 }
 

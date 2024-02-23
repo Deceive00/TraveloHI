@@ -1,4 +1,4 @@
-
+@import './variables.scss';
 @mixin customButton($backgroundColor, $onHover) {
   padding: 10px 15px;
   border-radius: 6px;
@@ -12,6 +12,27 @@
   &:hover{
     background: $onHover;
     transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  &[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed; 
+  }
+}
+
+@mixin buttonVariant1() {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 0 !important;
+  outline: 0 !important;
+  background: #a3cfffac;;
+  font-size: calc(0.5rem + 0.3vw);
+  color: #116c9a;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+  &:hover{
+    background: #a3cfff;;
+    transition: 0.3s;
   }
   &[disabled] {
     background-color: #ccc;

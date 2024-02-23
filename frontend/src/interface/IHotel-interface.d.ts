@@ -1,14 +1,17 @@
 interface Facility {
-  id: string;
-  name: string;
+  ID: string;
+  facilityName: string;
 }
 
 interface Hotel{
   hotelId: string | undefined;
   hotelName: string;
   hotelDescription: string;
-  hotelPicture: string;
-  hotelRating: number;
+  overallRating: number;
+  cleanlinessRating: number;
+  comfortnessRating: number;
+  locationRating: number;
+  serviceRating:number;
   hotelAddress: string;
   hotelImage: string[];
   city: string;
@@ -26,5 +29,7 @@ interface Room{
   roomName: string | undefined;
   roomPrice: number;
   totalRoom: number;
-
+  roomSize: number;
+  roomBed: string;
+  roomPicture: string[];
 }

@@ -1,8 +1,72 @@
-@import '../../style/variables/variables.scss';
-@import '../../style/variables/mixins';
+@import "../../style/variables/variables.scss";
+@import "../../style/variables/mixins";
 
-.container{
-  height: 100vh;
+.container {
+  height: fit-content;
   width: 100vw;
+  padding-top: 12vh;
   background-color: $background-color;
+  padding-inline: 10vw;
+  display: flex;
+  flex-direction: row;
+  gap: calc(0.2rem + 0.6vw);
+}
+
+.filter {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+
+}
+
+.hotelList {
+  width: 80%;
+}
+
+.filterContainer {
+  background-color: $secondary-background-color;
+  padding: 1rem;
+  border-radius: 10px;
+  h5{
+    font-size: $bigger-text-size;
+    color: $text-color;
+  }
+}
+
+.starRatingList {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  margin-top: 1.5vh;
+  .starOption {
+    color: $text-color;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    svg {
+      color: #ffcd3c;
+    }
+  }
+  
+}
+
+.facilitiesFilterContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+}
+
+.facilityList{
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  color: var(--gray-text-color);
+  font-size: $normal-text-size;
+}
+
+.hotelList{
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
 }

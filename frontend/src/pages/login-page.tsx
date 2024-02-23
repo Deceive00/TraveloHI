@@ -24,7 +24,7 @@ export default function LoginPage() {
   const [openOTPMenu, setOpenOTPMenu] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
- 
+  const { user } = useUser();
   const rules = {
     email: {
       required: 'Please fill this field',
@@ -83,6 +83,11 @@ export default function LoginPage() {
   const handleRecaptcha = () => {
     setFillRecaptcha(true);
   }
+  const showSnackbar = (message: string, type: string) => {
+    setSnackbarMessage(message);
+    setSnackbarType(type);
+    setSnackbarOpen(true);
+  };
 
   useEffect(() => {
     if (redirect) {
@@ -90,6 +95,9 @@ export default function LoginPage() {
     }
   }, [redirect, navigate]);
 
+  useEffect(() => {
+    if(user) navigate('/');
+  }, [user]);
   return (
     <>
       <div className="form-body-login">
@@ -153,7 +161,7 @@ export default function LoginPage() {
             openOTPMenu && (
               <>
                 <BackButton className={'backButton'} onClick={() => setOpenOTPMenu(false)}/>
-                <LoginOTP/>
+                <LoginOTP showSnackbar={showSnackbar}/>
               </>
             )
           }

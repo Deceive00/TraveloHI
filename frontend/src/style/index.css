@@ -27,17 +27,18 @@ body{
 }
 *{
   box-sizing: border-box;
+
 }
 input[type="date"] {
   background-color: transparent;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(45%) sepia(50%) saturate(1000%) hue-rotate(180deg); /* Change the color */
+  filter: invert(45%) sepia(50%) saturate(1000%) hue-rotate(180deg); 
   color: currentColor;
 }
 [data-theme="dark"]{
-  --background-color:  #161618;
+  --background-color:  rgb(25,25,25);
   --primary-text-color: whitesmoke;
   --input-text-color: whitesmoke;
   --secondary-background-color: #060607b3;
@@ -49,12 +50,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   --gray-text-color: rgb(165, 165, 165);
 }
 .page-container{
-  height: 100vh;
+  height: fit-content;
   width: 100vw;
   overflow: scroll !important;
   background-color: var(--background-color);
   padding-top: 13vh;
   color: var(--primary-text-color);
+  transition: 0.3s;
 }
 /* 
 a {

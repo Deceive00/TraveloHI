@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Loading from "../Loading/Loading";
 import OtpInput from "../form/OtpInput";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 
-export default function LoginOTP(){
+export default function LoginOTP({ showSnackbar } : {showSnackbar: any}){
   const [email, setEmail] = useState('');
   const [otpError, setOtpError] = useState('');
   const [loading, setLoading] = useState(false); 
@@ -73,28 +73,45 @@ export default function LoginOTP(){
       else{
         setOtpError('')
       }
-      
-      const response = await axios.post('http://localhost:8080/api/verify-otp', otpBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true
-      },);
 
-      if(response.status === 200){
+      try{
+        const response = await axios.post('http://localhost:8080/api/verify-otp', otpBody, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true
+        },);
+  
+        if(response.status === 200){
+          setLoading(false);
+          setIsVerifying(false);
+          console.log('OTP Verified');
+          await refetch()
+          navigate('/')
+        }
+        else {
+          setLoading(false);
+          setIsVerifying(false);
+          console.error('OTP failed: ', response.statusText);
+        }
         setLoading(false);
-        setIsVerifying(false);
-        console.log('OTP Verified');
-        await refetch()
-        navigate('/')
-      }
-      else {
+      }catch(error){
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          const responseData = axiosError.response?.data;
+          if (
+            typeof responseData === "object" &&
+            responseData !== null &&
+            "error" in responseData
+          ) {
+            showSnackbar(responseData.error as string, 'error');
+            setLoading(false);
+          }
+        }
+      } finally {
+        console.log('kelar verify')
         setLoading(false);
-        setIsVerifying(false);
-        console.error('OTP failed: ', response.statusText);
       }
-      console.log(response.data.message);
-      setLoading(false);
     }
 
 

@@ -142,8 +142,11 @@ func IsEmailPresent(email string) bool {
 	return !errors.Is(result.Error, gorm.ErrRecordNotFound)
 }
 
+
 func ValidateEmailFormat(email string) bool {
-	pattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\.com$`
-	regexpPattern := regexp.MustCompile(pattern)
-	return regexpPattern.MatchString(email)
+    pattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+    regexpPattern := regexp.MustCompile(pattern)
+		print(regexpPattern.MatchString((email)))
+    return regexpPattern.MatchString(email)
 }
+

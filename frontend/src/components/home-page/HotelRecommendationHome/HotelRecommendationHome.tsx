@@ -21,7 +21,7 @@ export default function HotelRecommendationHome(){
               hotelId: hotel.id,
               hotelName: hotel.hotelName,
               hotelDescription: hotel.hotelDescription,
-              hotelRating: hotel.hotelRating,
+              hotelRating: hotel.overallRating,
               hotelPicture: hotel.hotelPicture,
               hotelAddress: hotel.hotelAddress,
               hotelImage: hotel.hotelPicture,

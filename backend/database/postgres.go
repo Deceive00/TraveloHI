@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/eldrian/go-fiber-postgres/models"
+	// "github.com/eldrian/go-fiber-postgres/seeders"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -82,6 +83,12 @@ func init() {
 	if err != nil {
 		log.Fatal("error migrating promotion")
 	}
+	err = models.MigrateHotelReview(db)
+
+	if err != nil {
+		log.Fatal("error migrating hotel review")
+	}
+
 	// Seeders
 	// seeders.SeedUsers(db)
 	// seeders.LocationSeeder(db)
@@ -90,4 +97,5 @@ func init() {
 	// seeders.FacilitiesSeeder(db)
 	// seeders.HotelFacilitiesSeeder(db)
 	// seeders.HotelRoomSeeder(db)
+	// seeders.ReviewSeeder(db)
 }

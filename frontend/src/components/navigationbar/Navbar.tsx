@@ -38,9 +38,10 @@ export default function Navbar(){
             <img src={logo} alt="logo.png" className="imported-logo" />
             <h3>travelohi</h3>
           </Link>
-          <Searchbar/>
+          {/* <Searchbar/> */}
         </div>
         <div className={style.rightNavbarContainer}>
+  
           <button onClick={toggleTheme} className={style.themeButton}>
             {theme === 'dark'? <FontAwesomeIcon icon={faSun} className={`${style.light} ${style.glow}`}/> : <FontAwesomeIcon icon={faMoon} className={style.dark}/>}
           </button>
@@ -55,15 +56,18 @@ export default function Navbar(){
           {
             user && (
               <div className={style.rightContentContainer}>
-                <span onClick={() => navigate('/personal-information')}>                
+                <div onClick={() => navigate('/personal-information')} className={style.profileContainer}>                
                   <ProfilePicture
                   label={"profilePicture"}
                   className="navbar-picture"
                   currentImg={user?.profilePicture}
                   disabled={true}
                   />
-                </span>
-                <button onClick={() => logout()} className={style.loginButton}>Logout</button>
+                  <span>{user.firstName}</span>
+                </div>
+                <div className={style.logoutButtonContainer}>
+                  <button onClick={() => logout()} className={style.loginButton}>Logout</button>
+                </div>
               </div>
             )
           }

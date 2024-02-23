@@ -1,36 +1,384 @@
-@import '../../style/variables/variables.scss';
-@import '../../style/variables/mixins';
+@import "../../style/variables/variables.scss";
+@import "../../style/variables/mixins";
 
-.hotelDetailContainer{
+
+.hotelDetailContainer {
   color: $text-color;
+  padding-inline: 10vw;
+  transition: 0.3s;
+  .divider{
+    border-bottom: 1px solid var(--shadow-color);
+  }
+  .navigationTab {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5vw;
+
+    border-bottom: 1px solid var(--shadow-color);
+    background-color: $background-color;
+    .navigationTabOptions {
+      padding-block: 1.5vh;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--gray-text-color);
+      font-size: $bigger-text-size;
+    }
+    .activeTab {
+      color: $blue;
+      border-bottom: 3px solid $blue;
+    }
+  }
 }
 .imageContainer {
   display: flex;
+  flex-direction: row;
+  height: calc(30rem + 10vw);
+  gap: 1vw;
+  position: relative;
 }
-
+.trigger {
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .mainImage {
-  
+  width: 60%;
   img {
-    width: 25%;
+    width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
   }
 }
 
 .additionalImages {
-  flex: 1; 
+  width: 40%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 10px; 
-  align-content: flex-start; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .seeAllHotelImageContainer {
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+    .seeAllHotelImageOverlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.519);
+      object-fit: cover;
+      z-index: 99;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.5s;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+      h5 {
+        color: whitesmoke;
+        font-size: calc(10px + 0.3vw);
+      }
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
+.generalInformation {
+  .topGeneralInformation {
+    padding-block: $general-information-padding;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .topLeftGeneralInformation {
+      h1 {
+        font-size: calc(1.3rem + 1vw);
+      }
+      .typeAndStarContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75vw;
+        p {
+          padding-inline: 0.15rem;
+          padding-block: 0.1vh;
+          font-size: $normal-text-size;
+          border: 1px solid $text-color;
+          border-radius: 5px;
+          color: var(--gray-text-color);
+        }
+        svg {
+          color: var(--gray-text-color);
+        }
+      }
+      .locationAndRatingContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        svg {
+          width: 7px;
+          height: 7px;
+          color: var(--gray-text-color);
+        }
+        .ratingContainer {
+          display: flex;
+          flex-direction: row;
+          gap: 0.35vw;
+          align-items: center;
+          p {
+            font-size: calc(13px + 0.2vw);
+            font-weight: 800;
+            span {
+              font-size: $normal-text-size;
+              font-weight: 400;
+          
+            }
+          }
+          .totalReview {
+            color: var(--gray-text-color);
+            font-weight: 400;
+            opacity: 0.8;
+            font-size: $normal-text-size;
+            text-decoration: underline;
+          }
+        }
 
+        .locationContainer {
+          p {
+            color: var(--gray-text-color);
+            font-weight: 400;
+            opacity: 0.8;
+            font-size: $normal-text-size;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .topRightGeneralInformation {
+      text-align: end;
+      p {
+        font-size: $normal-text-size;
+      }
+      .hotelMinimumPrice {
+        color: $orange;
+        font-size: calc(1rem + 1vw);
+      }
+    }
+  }
+
+  .centerGeneralInformation{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: $general-information-padding;
+    img{
+      width: calc(3.5rem + 1.5vw);
+      height: calc(3.5rem + 1.5vw);
+    }
+    .leftCenterGeneralInformation{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1%;
+      h5{
+        font-size: $bigger-text-size;
+      }
+      span{
+        font-size: $normal-text-size;
+        line-height: 1px;
+      }
+    }
+  }
+
+  .bottomGeneralInformation{
+    padding-block: $general-information-padding;
+    .hotelDetailReasonCardContainer{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 1vw;
+    }
+  }
+}
+.sectionHeader{
+  font-size: calc(0.8rem + 1vw);
+  font-weight: 700;
+}
+.seeRoomButton{
+  margin-top: 1vh;
+  font-size: $bigger-text-size !important;
+  padding: 12.5px 20px !important;
+  @include customButton($blue, $blue-onhover)
+}
+.joinButton{
+  margin-top: 1vh;
+  font-size: $bigger-text-size!important;
+  padding: 12.5px 20px!important;
+  @include buttonVariant1()
+}
 .viewAllButton {
   width: 100%;
   padding: 10px;
   background-color: #f0f0f0;
   border: none;
   cursor: pointer;
+}
 
+.review{
+  padding-block: $general-information-padding;
+  .topRatingContainer{
+    display: flex;
+    gap: 1vw;
+    margin-top: 2vh;
+    .overallRating{
+      font-size: calc(1.3rem + 1.5vw);
+      font-weight: 900;
+      color: $blue;
+      span{
+        margin-left: 0.1vw;
+        font-size: calc(13px + 0.3vw);
+        letter-spacing: 0;
+        color: $text-color;
+      }
+    }
+    .reviewConclusion{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      h6{
+        font-size: $bigger-text-size;
+      }
+      p{
+        font-size: $normal-text-size;
+      }
+    }
+  }
+
+  .bottomRatingContainer{
+    display: flex;
+    gap: 1vw;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: 0;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    height: calc(10rem + 3vw);
+    -ms-overflow-style: none; 
+    width: calc(100% + 8px);
+    padding: 8px;
+    color: $text-color;
+
+    .noReviewYet{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h1{
+        font-size: calc(12px + 1vw);
+      }
+    }
+  }
+}
+
+.facilities{
+  padding-block: $general-information-padding;
+  .facilityListContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25%, 1fr)); /* 4 columns */
+    gap: 10px; 
+    padding-block: 2vh;
+    color: var(--gray-text-color);
+    .facilityList{
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+  }
+  span{
+    color: $blue;
+    font-weight: 800;
+  }
+  
+}
+
+.about{
+  padding-block: $general-information-padding;
+  .hotelDescription{
+    margin-top: 3vh;
+    font-size: $normal-text-size;
+  }
+  .seeMore{
+    color: $blue;
+    font-weight: 800;
+    margin-top: 2vh;
+    font-size: $bigger-text-size;
+    text-wrap: wrap;
+    overflow: hidden;        
+    text-overflow: ellipsis; 
+    max-height: 30%;      
+  }
+} 
+
+.rooms{
+  padding-block: $general-information-padding;
+
+  .roomListContainer{
+    display: flex;
+    gap: 2vh;
+    flex-direction: column;
+  }
+}
+@media (max-width: 768px) {
+  .imageContainer {
+    flex-direction: column;
+    gap: 1vh;
+    height: fit-content;
+    .mainImage {
+      width: 100%;
+    }
+    .additionalImages {
+      width: 100%;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .generalInformation {
+    padding-block: 2vh;
+    .topGeneralInformation {
+      .topLeftGeneralInformation {
+        .typeAndStarContainer {
+        }
+        .locationAndRatingContainer {
+          .ratingContainer {
+            flex-direction: column;
+          }
+        }
+      }
+
+    }
+    .bottomGeneralInformation{
+      h2{
+        font-size: calc(0.8rem + 1vw);
+      }
+      .hotelDetailReasonCardContainer{
+        flex-direction: column;
+        gap: 1vh;
+      }
+    }
+  }
 }

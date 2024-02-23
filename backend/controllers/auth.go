@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"log"
 	"strconv"
 	"strings"
@@ -82,6 +83,15 @@ func RegisterController(c *fiber.Ctx) error {
 			"error": "First name and last name must be more than 5 characters",
 		})
 	}
+	var existingUser models.Users
+	if err := database.GetDB().Where("email = ?", requestBody.Email).First(&existingUser).Error; err == nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"error": "Email is already registered",
+			})
+	} else if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+	}
+
 	if !services.ValidateEmailFormat(requestBody.Email) {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Email format is not valid",
@@ -93,7 +103,7 @@ func RegisterController(c *fiber.Ctx) error {
 			"error": "User age must be more than or equal to 13 years",
 		})
 	}
-
+	
 	if requestBody.Gender != "Male" && requestBody.Gender != "Female" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid gender",

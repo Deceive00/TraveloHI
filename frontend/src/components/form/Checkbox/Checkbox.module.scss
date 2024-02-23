@@ -1,0 +1,38 @@
+@import '../../../style/variables/mixins';
+@import '../../../style/variables/variables.scss';
+
+.checkboxContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #817f7f !important;
+  border-radius: 4px;
+  margin-right: 5px;
+  
+  .check {
+    width: 10px;
+    height: 10px;
+  }
+  svg {
+    color: var(--gray-text-color) !important;
+    opacity: 0.4;
+  }
+}
+
+input[type="checkbox"]:checked + label {
+  background-color: $blue !important;
+}
+input[type="checkbox"]:checked + .checkboxContainer {
+  svg {
+    color: whitesmoke !important;
+    opacity: 1;
+  }
+}
+
+input[type="checkbox"] {
+  display: none;
+}

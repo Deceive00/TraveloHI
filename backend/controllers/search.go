@@ -13,17 +13,17 @@ type SearchResultResponse struct {
 }
 
 type CountryResult struct {
-	CountryID   uint    `json:"countryId"`
+	CountryID   uint   `json:"countryId"`
 	CountryName string `json:"countryName"`
 }
 
 type CityResult struct {
-	CityID   uint    `json:"cityId"`
+	CityID   uint   `json:"cityId"`
 	CityName string `json:"cityName"`
 }
 
 type HotelResult struct {
-	HotelID   uint    `json:"hotelId"`
+	HotelID   uint   `json:"hotelId"`
 	HotelName string `json:"hotelName"`
 }
 type ErrorResponse struct {
@@ -75,7 +75,7 @@ func GetSearchResult(c *fiber.Ctx) error {
 		Countries: make([]CountryResult, len(countries)),
 		Cities:    make([]CityResult, len(cities)),
 		Hotels:    make([]HotelResult, len(hotels)),
-}
+	}
 
 	for i, country := range countries {
 		results.Countries[i] = CountryResult{CountryID: country.ID, CountryName: country.CountryName}
@@ -91,6 +91,22 @@ func GetSearchResult(c *fiber.Ctx) error {
 
 	return c.JSON(results)
 }
+type HotelWithFacilitiesAndRoomsResponse struct {
+	ID                uint              `json:"id"`
+	HotelName         string            `json:"hotelName"`
+	HotelDescription  string            `json:"hotelDescription"`
+	HotelAddress      string            `json:"hotelAddress"`
+	HotelPicture      models.Pictures   `json:"hotelPicture"`
+	HotelStar         int               `json:"hotelStar"`
+	CleanlinessRating float64           `json:"cleanlinessRating"`
+	ComfortnessRating float64           `json:"comfortnessRating"`
+	LocationRating    float64           `json:"locationRating"`
+	ServiceRating     float64           `json:"serviceRating"`
+	OverallRating     float64           `json:"overallRating"`
+	Facilities        []models.Facilities `json:"facilities"`
+	Rooms             []models.HotelRooms `json:"rooms"`
+}
+
 func GetSearchPageData(c *fiber.Ctx) error {
 	term := c.Query("term")
 
@@ -98,20 +114,50 @@ func GetSearchPageData(c *fiber.Ctx) error {
 	db := database.GetDB()
 
 	if err := db.
-		Table("hotels").
-		Select("hotels.id, hotels.hotel_name").
-		Joins("JOIN cities ON cities.id = hotels.city_id").
-		Joins("JOIN countries ON cities.country_id = countries.id").
-		Where("cities.city_name ILIKE ? OR hotels.hotel_name ILIKE ? OR countries.country_name ILIKE ?", "%"+term+"%", "%"+term+"%", "%"+term+"%").
-		Find(&hotels).Error; err != nil {
-		return err
+			Table("hotels").
+			Select("hotels.id, hotels.hotel_name, hotels.hotel_description, hotels.hotel_address, hotels.hotel_picture, hotels.hotel_star, hotels.cleanliness_rating, hotels.comfortness_rating, hotels.location_rating, hotels.service_rating, hotels.overall_rating").
+			Joins("JOIN cities ON cities.id = hotels.city_id").
+			Joins("JOIN countries ON cities.country_id = countries.id").
+			Where("cities.city_name ILIKE ? OR hotels.hotel_name ILIKE ? OR countries.country_name ILIKE ?", "%"+term+"%", "%"+term+"%", "%"+term+"%").
+			Find(&hotels).Error; err != nil {
+			return err
 	}
 
-	results := struct {
-		Hotels []models.Hotels `json:"hotels"`
-	}{
-		Hotels: hotels,
+	var hotelsWithFacilitiesAndRooms []HotelWithFacilitiesAndRoomsResponse
+
+	for _, hotel := range hotels {
+			var facilities []models.Facilities
+			if err := db.
+					Table("facilities").
+					Select("facilities.id, facilities.facility_name").
+					Joins("JOIN hotel_facilities ON facilities.id = hotel_facilities.facility_id").
+					Where("hotel_facilities.hotel_id = ?", hotel.ID).
+					Find(&facilities).Error; err != nil {
+					return err
+			}
+
+			var rooms []models.HotelRooms
+			if err := db.Where("hotel_id = ?", hotel.ID).Find(&rooms).Error; err != nil {
+					return err
+			}
+
+			hotelsWithFacilitiesAndRooms = append(hotelsWithFacilitiesAndRooms, HotelWithFacilitiesAndRoomsResponse{
+					ID:                hotel.ID,
+					HotelName:         hotel.HotelName,
+					HotelDescription:  hotel.HotelDescription,
+					HotelAddress:      hotel.HotelAddress,
+					HotelPicture:      hotel.HotelPicture,
+					HotelStar:         hotel.HotelStar,
+					CleanlinessRating: hotel.CleanlinessRating,
+					ComfortnessRating: hotel.ComfortnessRating,
+					LocationRating:    hotel.LocationRating,
+					ServiceRating:     hotel.ServiceRating,
+					OverallRating:     hotel.OverallRating,
+					Facilities:        facilities,
+					Rooms:             rooms,
+			})
 	}
 
-	return c.JSON(results)
+	return c.JSON(hotelsWithFacilitiesAndRooms)
 }
+

@@ -70,27 +70,37 @@ func GetHotelByID(c *fiber.Ctx) error {
 	}
 
 	response := struct {
-		HotelName        string         `json:"hotelName"`
-		HotelDescription string         `json:"hotelDescription"`
-		HotelAddress     string         `json:"hotelAddress"`
-		HotelRating      float64        `json:"hotelRating"`
-		HotelPicture     []string       `json:"hotelPicture"`
-		HotelStar        int            `json:"hotelStar"`
-		CityName         string         `json:"cityName"`
-		CountryName      string         `json:"countryName"`
-		Facilities       []FacilityInfo `json:"facilities"`
-		Rooms            []RoomInfo     `json:"rooms"`
+		HotelName         string         `json:"hotelName"`
+		HotelDescription  string         `json:"hotelDescription"`
+		HotelAddress      string         `json:"hotelAddress"`
+		HotelRating       float64        `json:"hotelRating"`
+		HotelPicture      []string       `json:"hotelPicture"`
+		HotelStar         int            `json:"hotelStar"`
+		CleanlinessRating float64        `json:"cleanlinessRating"`
+		ComfortnessRating float64        `json:"comfortnessRating"`
+		LocationRating    float64        `json:"locationRating"`
+		ServiceRating     float64        `json:"serviceRating"`
+		OverallRating     float64        `json:"overallRating"`
+		CityName          string         `json:"cityName"`
+		CountryName       string         `json:"countryName"`
+		Facilities        []FacilityInfo `json:"facilities"`
+		Rooms             []RoomInfo     `json:"rooms"`
 	}{
-		HotelName:        hotel.HotelName,
-		HotelDescription: hotel.HotelDescription,
-		HotelAddress:     hotel.HotelAddress,
-		HotelRating:      hotel.HotelRating,
-		HotelPicture:     hotel.HotelPicture,
-		HotelStar:        hotel.HotelStar,
-		CityName:         city.CityName,
-		CountryName:      country.CountryName,
-		Facilities:       make([]FacilityInfo, len(facilities)),
-		Rooms:            make([]RoomInfo, len(rooms)),
+		HotelName:         hotel.HotelName,
+		HotelDescription:  hotel.HotelDescription,
+		HotelAddress:      hotel.HotelAddress,
+		HotelRating:       hotel.HotelRating,
+		HotelPicture:      hotel.HotelPicture,
+		HotelStar:         hotel.HotelStar,
+		CityName:          city.CityName,
+		CountryName:       country.CountryName,
+		CleanlinessRating: hotel.CleanlinessRating,
+		ComfortnessRating: hotel.ComfortnessRating,
+		LocationRating:    hotel.LocationRating,
+		ServiceRating:     hotel.ServiceRating,
+		OverallRating:     hotel.OverallRating,
+		Facilities:        make([]FacilityInfo, len(facilities)),
+		Rooms:             make([]RoomInfo, len(rooms)),
 	}
 
 	for i, f := range facilities {
@@ -111,6 +121,9 @@ func GetHotelByID(c *fiber.Ctx) error {
 			GotBreakfast:    r.GotBreakfast,
 			GotFreeWifi:     r.GotFreeWifi,
 			TotalRoom:       r.TotalRoom,
+			RoomSize:        r.RoomSize,
+			RoomBed:         r.RoomBed,
+			RoomPicture:     r.RoomPicture,
 		}
 	}
 
@@ -123,13 +136,16 @@ type FacilityInfo struct {
 }
 
 type RoomInfo struct {
-	RoomName        string  `json:"roomName"`
-	RoomPrice       float64 `json:"roomPrice"`
-	RoomCapacity    int     `json:"roomCapacity"`
-	IsRefundable    bool    `json:"isRefundable"`
-	IsSmoking       bool    `json:"isSmoking"`
-	IsReschedulable bool    `json:"isReschedulable"`
-	GotBreakfast    bool    `json:"gotBreakfast"`
-	GotFreeWifi     bool    `json:"gotFreeWifi"`
-	TotalRoom       int     `json:"totalRoom"`
+	RoomName        string          `json:"roomName"`
+	RoomPrice       float64         `json:"roomPrice"`
+	RoomCapacity    int             `json:"roomCapacity"`
+	IsRefundable    bool            `json:"isRefundable"`
+	IsSmoking       bool            `json:"isSmoking"`
+	IsReschedulable bool            `json:"isReschedulable"`
+	GotBreakfast    bool            `json:"gotBreakfast"`
+	GotFreeWifi     bool            `json:"gotFreeWifi"`
+	TotalRoom       int             `json:"totalRoom"`
+	RoomSize        float64         `json:"roomSize"`
+	RoomBed         string          `json:"roomBed"`
+	RoomPicture     models.Pictures `json:"roomPicture" gorm:"type:json"`
 }

@@ -1,5 +1,4 @@
 import { useFieldArray, useForm } from "react-hook-form";
-import AdminSidebar from "../../../components/AdminSidebar/AdminSidebar";
 import style from "./manage-hotel-page.module.scss";
 import TextField from "../../../components/form/Textfield";
 import axios, { AxiosError } from "axios";
@@ -180,7 +179,7 @@ export default function ManageHotelPage() {
     const data = await fetchData(
       setLoading,
       showSnackbar,
-      "admin/get-all-facility"
+      "facilities"
     );
     if (data) {
       setFacilities(
@@ -348,12 +347,12 @@ export default function ManageHotelPage() {
                     <div key={index} className={style.facilityItem}>
                       <input
                         type="checkbox"
-                        id={`facility-${facility.id}`}
-                        value={facility.id}
+                        id={`facility-${facility.ID}`}
+                        value={facility.ID}
                         onChange={handleCheckboxChange}
                       />
-                      <label htmlFor={`facility-${facility.id}`}>
-                        {facility.name}
+                      <label htmlFor={`facility-${facility.ID}`}>
+                        {facility.facilityName}
                       </label>
                     </div>
                   ))}

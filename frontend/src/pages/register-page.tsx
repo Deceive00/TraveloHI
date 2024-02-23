@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import '../style/register-page.scss'
 import logo from "../assets/travelohiLogo.png";
 import SecurityQuestions from "../components/form/SecurityDropDown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import ProfilePicture from "../components/form/ProfilePicture";
 import { rules, uploadImage } from "../utils/utils";
@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import defaultPP from '../image/default.png'
 import ReCAPTCHA from "react-google-recaptcha"
 import Snackbar from "../components/form/Snackbar";
+import { useUser } from "../context/UserContext";
 export default function RegisterPage(){
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, watch} = useForm();
@@ -21,6 +22,7 @@ export default function RegisterPage(){
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarType, setSnackbarType] = useState('error')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const {user} = useUser();
   const handleRecaptcha = () => {
     setFillRecaptcha(true);
   }
@@ -121,6 +123,10 @@ export default function RegisterPage(){
         return false;
     }
   };
+
+  useEffect(() => {
+    if(user) navigate('/');
+  }, [user]);
   
   return (
     <div>

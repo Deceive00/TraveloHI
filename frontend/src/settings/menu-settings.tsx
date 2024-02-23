@@ -90,7 +90,7 @@ export const MENU_LIST: IMenu[] = [
   {
     element:<SearchPage/>,
     name:"Search Page",
-    path:"/search"
+    path:"/hotel/search"
   },
   {
     element: <HotelDetailPage/>,

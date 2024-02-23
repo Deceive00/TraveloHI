@@ -9,18 +9,23 @@ import (
 )
 
 type Hotels struct {
-	ID               uint           `gorm:"primaryKey" json:"id"`
-	CreatedAt        time.Time      `json:"createdAt"`
-	UpdatedAt        time.Time      `json:"updatedAt"`
-	DeletedAt        gorm.DeletedAt `gorm:"index" json:"deletedAt,omitempty"`
-	HotelName        string         `gorm:"not null" json:"hotelName"`
-	HotelDescription string         `gorm:"not null" json:"hotelDescription"`
-	HotelAddress     string         `gorm:"not null" json:"hotelAddress"`
-	HotelRating      float64        `gorm:"not null" json:"hotelRating"`
-	CityID           uint           `json:"cityId"`
-	City             City           `gorm:"foreignKey:CityID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	HotelPicture     Pictures       `json:"hotelPicture" gorm:"type:json"`
-	HotelStar        int            `json:"hotelStar"`
+	ID                uint           `gorm:"primaryKey" json:"id"`
+	CreatedAt         time.Time      `json:"createdAt"`
+	UpdatedAt         time.Time      `json:"updatedAt"`
+	DeletedAt         gorm.DeletedAt `gorm:"index" json:"deletedAt,omitempty"`
+	HotelName         string         `gorm:"not null" json:"hotelName"`
+	HotelDescription  string         `gorm:"not null" json:"hotelDescription"`
+	HotelAddress      string         `gorm:"not null" json:"hotelAddress"`
+	HotelRating       float64        `gorm:"not null" json:"hotelRating"`
+	CityID            uint           `json:"cityId"`
+	City              City           `gorm:"foreignKey:CityID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	HotelPicture      Pictures       `json:"hotelPicture" gorm:"type:json"`
+	HotelStar         int            `json:"hotelStar"`
+	CleanlinessRating float64        `json:"cleanlinessRating"`
+	ComfortnessRating float64        `json:"comfortnessRating"`
+	LocationRating    float64        `json:"locationRating"`
+	ServiceRating     float64        `json:"serviceRating"`
+	OverallRating     float64        `json:"overallRating"`
 }
 
 type Pictures []string
@@ -74,6 +79,8 @@ type HotelRooms struct {
 	GotFreeWifi     bool     `json:"gotFreeWifi"`
 	RoomPicture     Pictures `json:"roomPicture" gorm:"type:json"`
 	TotalRoom       int      `json:"totalRoom"`
+	RoomSize        float64  `json:"roomSize"`
+	RoomBed         string   `json:"roomBed"`
 }
 
 func MigrateHotels(db *gorm.DB) error {

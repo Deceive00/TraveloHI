@@ -36,6 +36,7 @@ export default function HomePage() {
   };
   useEffect(() => {
     getPromotion();
+    
   }, []);
 
   const handleNextPromotion = () => {
