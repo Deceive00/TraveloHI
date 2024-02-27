@@ -26,6 +26,11 @@ definitions:
       hotelName:
         type: string
     type: object
+  controllers.OTPRequest:
+    properties:
+      email:
+        type: string
+    type: object
   controllers.SearchResultResponse:
     properties:
       cities:
@@ -41,6 +46,28 @@ definitions:
           $ref: '#/definitions/controllers.HotelResult'
         type: array
     type: object
+  controllers.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.UpdatePromotionRequest:
+    properties:
+      promotionCode:
+        type: string
+      promotionEndDate:
+        type: string
+      promotionImage:
+        type: string
+      promotionName:
+        type: string
+      promotionPercentage:
+        type: integer
+      promotionStartDate:
+        type: string
+      promotionType:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -54,6 +81,115 @@ info:
   title: Travelohi API Documentation
   version: "1.0"
 paths:
+  /api/admin/send-newsletter:
+    post:
+      consumes:
+      - application/json
+      description: Sends a custom email to all subscribed users with the provided
+        title and content.
+      parameters:
+      - description: Title of the email
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      - description: Content of the email
+        in: body
+        name: content
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Emails sent to subscribers successfully
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Send Custom Email to Subscribers
+      tags:
+      - Email
+  /api/admin/update-promotion:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing promotion with the provided details.
+      parameters:
+      - description: Request Body
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdatePromotionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Promotion updated successfully
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Promotion code does not exist
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Promotion
+      tags:
+      - Promotions
+  /api/delete-credit-card/{id}:
+    delete:
+      description: Removes the specified credit card associated with the authenticated
+        user.
+      parameters:
+      - description: Credit Card ID
+        example: 1
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Credit card removed successfully
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Credit card not found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Remove credit card
+      tags:
+      - Credit Cards
   /api/search-name:
     get:
       consumes:
@@ -80,4 +216,34 @@ paths:
       summary: Get search results
       tags:
       - Search
+  /api/send-otp:
+    post:
+      consumes:
+      - application/json
+      description: Sends a one-time password (OTP) to the provided email address.
+      parameters:
+      - description: Request body containing the email address
+        in: body
+        name: request_body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.OTPRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Otp sent successfully
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Send OTP
+      tags:
+      - Authentication
 swagger: "2.0"

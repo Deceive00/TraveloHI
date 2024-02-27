@@ -18,6 +18,10 @@
     scroll-snap-align: start;
     object-fit: cover;
     cursor: pointer;
+    transition: 0.3s;
+    &:hover{
+      scale: 1.01;
+    }
     .imageContainer{
       width: 100%;
       position: relative;
@@ -39,6 +43,7 @@
         background-position: center;
         background-repeat: no-repeat;
         border-radius: 0.75rem;
+        
       }
     }
     

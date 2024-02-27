@@ -1,5 +1,5 @@
 interface HotelSearch {
-  hotelId: string | undefined;
+  id: string | undefined;
   hotelName: string;
   hotelDescription: string;
   overallRating: number;

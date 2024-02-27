@@ -2,7 +2,7 @@
 @import "../../../style/variables/variables.scss";
 
 .searchContentContainer{
-  width: 90%;
+  width: 100%;
   // background: rgba(255, 255, 255, 0.3);
   // box-shadow: 0 8px 8px 0 rgba(31, 38, 135, 0.5);
   // backdrop-filter: blur(14px);
@@ -178,3 +178,18 @@
   }
 
 }
+
+.searchModeChanger{
+  color: $text-color;
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+  svg{
+    transition: 0.3s;
+  }
+}
+
+.activeOption{
+  color: $blue;
+}
+

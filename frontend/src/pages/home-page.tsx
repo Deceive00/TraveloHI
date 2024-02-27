@@ -14,7 +14,7 @@ import HotelRecommendationHome from "../components/home-page/HotelRecommendation
 export default function HomePage() {
   const [promotions, setPromotions] = useState<IPromotion[]>([]);
   const [scrollPosition, setScrollPosition] = useState<number | undefined>(0);
-
+  const ws = useRef<WebSocket | null>(null);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const getPromotion = async () => {
     try {
@@ -36,7 +36,6 @@ export default function HomePage() {
   };
   useEffect(() => {
     getPromotion();
-    
   }, []);
 
   const handleNextPromotion = () => {
@@ -71,7 +70,9 @@ export default function HomePage() {
       <div className={style.topBackground}></div>
       <div className={style.homeContainer}>
         <div className={style.searchComponentContainer}>
-          <SearchComponent/>
+          <div style={{width: '90%'}}>
+            <SearchComponent/>
+          </div>
         </div>
         {promotions.length !== 0 && (
           <div className={style.promotionContainer}>
@@ -105,6 +106,12 @@ export default function HomePage() {
           <h2>Top Recommendation Hotel In Worldwide</h2>
           <div className={style.hotelRecommendationSlider}>
             <HotelRecommendationHome/>
+          </div>
+        </div>
+        <div className={style.hotelRecommendationHomeContainer}>
+          <h2>Get your flight tickets</h2>
+          <div className={style.hotelRecommendationSlider}>
+            
           </div>
         </div>
         <div className={style.reasonContainer}>

@@ -4,6 +4,7 @@ import { MdBackup } from "react-icons/md";
 import Loading from "../Loading/Loading";
 import { MdDelete } from "react-icons/md";
 import { MdDescription } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 interface UploaderProps {
   onPredict: () => void;
@@ -24,7 +25,11 @@ const Uploader: React.FC<UploaderProps> = ({ onPredict, onNotPredict }) => {
   const [filename, setFilename] = useState("No Selected file");
   const [prediction, setPrediction] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  const handleSearch = (searchTerm: string) => {
+    navigate(`/hotel/search?term=${encodeURIComponent(searchTerm)}`);
+  }
   const handlePredict = async () => {
     try {
       setLoading(true);
@@ -39,6 +44,9 @@ const Uploader: React.FC<UploaderProps> = ({ onPredict, onNotPredict }) => {
 
       const result = await response.json();
       setPrediction(country[result.predictedIndex - 1]);
+      alert(`${country[result.predictedIndex - 1]}`)
+      setLoading(false);
+      handleSearch(country[result.predictedIndex - 1])
       onPredict();
     } catch (error) {
       console.error("Error fetching data:", error);

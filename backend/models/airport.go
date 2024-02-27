@@ -7,7 +7,7 @@ type Airports struct {
 	AirportCode string `gorm:"not null" json:"airportCode"`
 	AirportName string `gorm:"not null" json:"airportName"`
 	CityID      uint   `json:"cityId"`
-	City        City   `gorm:"foreignKey:CityID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	City        City   `gorm:"foreignKey:CityID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }
 
 func MigrateAirports(db *gorm.DB) error {

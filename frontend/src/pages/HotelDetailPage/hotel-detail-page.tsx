@@ -117,7 +117,7 @@ export default function HotelDetailPage() {
             (facility: any) => {
               return {
                 ID: facility.id,
-                faciltyName: facility.facilityName,
+                facilityName: facility.facilityName,
               };
             }
           );

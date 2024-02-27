@@ -205,7 +205,17 @@ func GetCreditCard(c *fiber.Ctx) error {
 	})
 
 }
-
+// RemoveCreditCardController removes a credit card associated with the authenticated user.
+// @Summary Remove credit card
+// @Description Removes the specified credit card associated with the authenticated user.
+// @Security ApiKeyAuth
+// @Tags Credit Cards
+// @Param id path integer true "Credit Card ID" Format(int64) Example(1)
+// @Success 200 {object} SuccessResponse "Credit card removed successfully"
+// @Failure 400 {object} ErrorResponse "Bad request"
+// @Failure 404 {object} ErrorResponse "Credit card not found"
+// @Failure 500 {object} ErrorResponse "Internal Server Error"
+// @Router /api/delete-credit-card/{id} [delete]
 func RemoveCreditCardController(c *fiber.Ctx) error {
 	userID, ok := c.Locals("userID").(uint)
 	if !ok {

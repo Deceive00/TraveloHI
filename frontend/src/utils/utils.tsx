@@ -159,3 +159,22 @@ export const getAllData = async (url : string, setLoading : any, setData : any, 
     setLoading(false);
   }
 }
+
+export const getMinimumPrice = (rooms: Room[]) => {
+  let minPrice = 9999999999999;
+  rooms.forEach((room) => {
+    if (room.roomPrice < minPrice) {
+      minPrice = room.roomPrice;
+    }
+  });
+  return minPrice;
+};
+export const getMaximumPrice = (rooms: Room[]) => {
+  let maxPrice = -1;
+  rooms.forEach((room) => {
+    if (room.roomPrice > maxPrice) {
+      maxPrice = room.roomPrice;
+    }
+  });
+  return maxPrice;
+};

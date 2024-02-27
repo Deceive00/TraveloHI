@@ -9,6 +9,7 @@ import MultipleFileInput from "../../../components/form/MultipleFileInput/Multip
 import { uploadImage } from "../../../utils/utils";
 import RoomForm from "../../../components/RoomForm/RoomForm";
 import AdminTemplate from "../../../templates/admin-template/admin-template";
+import Checkbox from "../../../components/form/Checkbox/Checkbox";
 
 interface Room {
   roomId: string;
@@ -149,7 +150,9 @@ export default function ManageHotelPage() {
           withCredentials: true,
         }
       );
+      
       const data = await response.data;
+      console.log(data)
       if (response.status === 200) {
         return data;
       } else {
@@ -183,9 +186,9 @@ export default function ManageHotelPage() {
     );
     if (data) {
       setFacilities(
-        data.facilities.map((facility: any) => ({
-          id: facility.ID,
-          name: facility.facilityName,
+        data.facilities.map((facility: Facility) => ({
+          ID: facility.ID,
+          facilityName: facility.facilityName,
         }))
       );
     }
@@ -345,12 +348,7 @@ export default function ManageHotelPage() {
                 <div className={style.facilityContainer}>
                   {facilities.map((facility, index) => (
                     <div key={index} className={style.facilityItem}>
-                      <input
-                        type="checkbox"
-                        id={`facility-${facility.ID}`}
-                        value={facility.ID}
-                        onChange={handleCheckboxChange}
-                      />
+                      <Checkbox id={`facility-${facility.ID}`} value={facility.ID} onChange={handleCheckboxChange}/>
                       <label htmlFor={`facility-${facility.ID}`}>
                         {facility.facilityName}
                       </label>

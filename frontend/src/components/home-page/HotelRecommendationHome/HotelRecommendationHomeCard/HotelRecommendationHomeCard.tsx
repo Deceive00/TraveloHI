@@ -26,7 +26,7 @@ export default function HotelRecommendationHomeCard({hotel} : HotelRecommendatio
         </div>
         <div className={style.rating}>
           <FaRegStar/>
-          <p>{round(hotel.hotelRating, 2)} (1000 Reviews)</p>
+          <p>{round(hotel.overallRating, 2)} (1000 Reviews)</p>
         </div>
       </div>
       <div className={style.priceContainer}>

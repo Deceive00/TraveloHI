@@ -4,11 +4,19 @@
 .container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   gap: 1vw;
   background-color: $secondary-background-color;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover{
+    box-shadow: $blue 0px 2px 8px 0px;
+    margin-left: 1vw;
+  }
+
 }
 
 .leftSearchHotelCard {
@@ -40,14 +48,20 @@
     object-fit: cover;
   }
 }
-
+.firstCenter{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vh;
+}
 .centerSearchHotelCard {
   display: flex;
   flex-direction: column;
   color: $text-color;
-  width: 50%;
+  width: 55%;
+  justify-content: space-between;
+
   padding-block: 1vh;
-  p {
+  .hotelName {
     font-size: calc(12px + 0.3vw);
     font-weight: 900;
   }
@@ -89,24 +103,108 @@
   svg{
     color: #ffcd3c;
   }
-  .typeContainer {
+}
+.typeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  padding-block: 0.1rem;
+  width: fit-content;
+  padding-inline: 0.3rem;
+  border-radius: 5px;
+  background-color: rgb(236, 248, 255);
+  p {
+    font-weight: 400;
+    font-size: calc(8px + 0.2vw);
+    color: $blue;
+  }
+  svg {
+    width: 10px;
+    height: 10px;
+    color: $blue;
+  }
+}
+
+.locationContainer{
+  display: flex;
+  gap: 0.5vw;
+  align-items: center;
+  .hotelAddress{
+    font-size: $normal-text-size;
+    color: $text-color;
+  }
+  svg{
+    color: var(--gray-text-color);
+    width: $normal-text-size;
+    height: $normal-text-size;
+  }
+
+}
+
+.facilityContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5vw;
+  .facilityOptions{
+    padding: 1px;
+    background-color: var(--lighter-background-color);
+    p{
+      font-size: calc(9px + 0.2vw);
+      color: $text-color;
+    }
+  }
+}
+
+.rightSearchHotelCard{
+  box-shadow: 0 0 5px 0 $shadow-color;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  width: 15%;
+}
+
+.rightContainer{
+  display: flex;
+  flex-direction: column;
+  color: $text-color;
+  padding: 1vh;
+  span{
+    font-size: calc(7px + 0.2vw);
+    text-align: end;
+    color: var(--gray-text-color);
+  }
+  h5{
+    text-decoration: line-through;
+    color: var(--secondary-text-color);
+    text-align: end;
+    font-size: $bigger-text-size;
+  }
+
+  h4{
+    font-size: calc(12px + 0.5vw);
+    text-align: end;
+    color: $orange;
+  }
+}
+.selectRoomBtnContainer{
+  display: flex;
+  justify-content: flex-end;
+}
+.selectRoomBtn{
+  @include customButton($orange, $orange-onhover);
+  margin-top: 2vh;
+}
+
+@media (max-width: 768px) {
+  .rightSearchHotelCard{
+    box-shadow: 0 0 5px 0 $shadow-color;
+    height: 100%;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.25rem;
-    padding-block: 0.1rem;
-    padding-inline: 0.3rem;
-    border-radius: 5px;
-    background-color: rgb(236, 248, 255);
-    p {
-      font-weight: 400;
-      font-size: calc(8px + 0.2vw);
-      color: $blue;
-    }
-    svg {
-      width: 10px;
-      height: 10px;
-      color: $blue;
-    }
+    justify-content: flex-end;
+    flex-direction: column;
+    width: 20%;
+
   }
 }

@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { FaTrashAlt } from 'react-icons/fa';
-import { AiOutlinePlus } from 'react-icons/ai';
 const SecurityQuestions = ({ handleChange }: { handleChange: any }) => {
   const securityQuestionOptions = [
     "What is your favorite childhood pet's name?",

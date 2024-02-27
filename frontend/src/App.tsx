@@ -5,19 +5,22 @@ import "./style/index.css";
 import MainTemplate from "./templates/main-template";
 import { UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
 
 function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <UserProvider>
-          <Routes>
-            {MENU_LIST.map((menu: IMenu, index: number) => (
-              <Route element={menu.element} path={menu.path} key={index} />
-            ))}
-            {<Route path="/" element={<Navigate to="/" replace />} />}
-          </Routes>
-        </UserProvider>
+        <CurrencyProvider>
+          <UserProvider>
+            <Routes>
+              {MENU_LIST.map((menu: IMenu, index: number) => (
+                <Route element={menu.element} path={menu.path} key={index} />
+              ))}
+              {<Route path="/" element={<Navigate to="/" replace />} />}
+            </Routes>
+          </UserProvider>
+        </CurrencyProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

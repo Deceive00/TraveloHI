@@ -1,0 +1,21 @@
+@import '../../style/variables/mixins';
+@import '../../style/variables/variables.scss';
+
+
+.inputContainer{
+  width: 25%;
+  height: 100%;
+  
+}
+
+.flightSearchContainer{
+  height: fit-content;
+  width: 100%;
+  color: $text-color;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2vw;
+}
+

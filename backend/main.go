@@ -46,3 +46,4 @@ func main() {
 	routes.SetupRoutes(app)
 	app.Listen(":8080")
 }
+

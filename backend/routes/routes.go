@@ -49,5 +49,9 @@ func SetupRoutes(app *fiber.App) {
 	//Detail
 	api.Get("/hotels/reviews", controllers.GetHotelReviews)
 	api.Get("/facilities", controllers.GetAllFacility)
+	api.Get("/airports", controllers.GetAllAirports)
+	api.Get("/flight/search-name", controllers.GetSearchFlightResult)
+
+	api.Get("/flights", controllers.GetAllFlightData)
 }
 

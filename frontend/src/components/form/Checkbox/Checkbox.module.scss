@@ -23,16 +23,16 @@
   }
 }
 
-input[type="checkbox"]:checked + label {
+.checkbox input[type="checkbox"]:checked + label {
   background-color: $blue !important;
 }
-input[type="checkbox"]:checked + .checkboxContainer {
+.checkbox input[type="checkbox"]:checked + .checkboxContainer {
   svg {
     color: whitesmoke !important;
     opacity: 1;
   }
 }
 
-input[type="checkbox"] {
+.checkbox input[type="checkbox"] {
   display: none;
 }

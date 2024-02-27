@@ -11,7 +11,19 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
-
+// SendCustomEmailToSubscribersController sends a custom email to all subscribed users.
+// @Summary Send Custom Email to Subscribers
+// @Description Sends a custom email to all subscribed users with the provided title and content.
+// @Accept json
+// @Produce json
+// @Tags Email
+// @Security ApiKeyAuth
+// @Param title body string true "Title of the email" Example: "New Updates"
+// @Param content body string true "Content of the email" Example: "Check out our latest blog post!"
+// @Success 200 {object} SuccessResponse "Emails sent to subscribers successfully"
+// @Failure 400 {object} ErrorResponse "Bad request"
+// @Failure 500 {object} ErrorResponse "Internal Server Error"
+// @Router /api/admin/send-newsletter [post]
 func SendCustomEmailToSubscribersController(c *fiber.Ctx) error {
 	db := database.GetDB()
 	var subscribedUsers []models.Users
@@ -30,7 +42,7 @@ func SendCustomEmailToSubscribersController(c *fiber.Ctx) error {
 			"error": "Invalid JSON format",
 		})
 	}
-
+	log.Print(requestBody)
 	title, titleExists := requestBody["title"]
 	content, contentExists := requestBody["content"]
 
@@ -433,17 +445,31 @@ func GetAllPromotions(c *fiber.Ctx) error {
 		"promotions": promotions,
 	})
 }
+type UpdatePromotionRequest struct {
+	PromotionName       string `json:"promotionName"`
+	PromotionType       string `json:"promotionType"`
+	PromotionCode       string `json:"promotionCode"`
+	PromotionPercentage int    `json:"promotionPercentage"`
+	PromotionStartDate  string `json:"promotionStartDate"`
+	PromotionEndDate    string `json:"promotionEndDate"`
+	PromotionImage      string `json:"promotionImage"`
+}
 
+// UpdatePromotionController updates an existing promotion.
+// @Summary Update Promotion
+// @Description Updates an existing promotion with the provided details.
+// @Accept json
+// @Produce json
+// @Tags Promotions
+// @Security ApiKeyAuth
+// @Param requestBody body UpdatePromotionRequest true "Request Body"
+// @Success 200 {object} SuccessResponse "Promotion updated successfully"
+// @Failure 400 {object} ErrorResponse "Bad request"
+// @Failure 404 {object} ErrorResponse "Promotion code does not exist"
+// @Failure 500 {object} ErrorResponse "Internal Server Error"
+// @Router /api/admin/update-promotion [put]
 func UpdatePromotionController(c *fiber.Ctx) error {
-	type UpdatePromotionRequest struct {
-			PromotionName       string `json:"promotionName"`
-			PromotionType       string `json:"promotionType"`
-			PromotionCode       string `json:"promotionCode"`
-			PromotionPercentage int    `json:"promotionPercentage"`
-			PromotionStartDate  string `json:"promotionStartDate"`
-			PromotionEndDate    string `json:"promotionEndDate"`
-			PromotionImage      string `json:"promotionImage"`
-	}
+
 	
 	var requestBody UpdatePromotionRequest
 	if err := c.BodyParser(&requestBody); err != nil {

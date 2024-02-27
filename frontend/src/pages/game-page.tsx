@@ -19,8 +19,7 @@ import {
   runRightImagesFirstPlayer,
   runRightSecondPlayer,
 } from "../Game/animation";
-import Middleware from "../components/auth/Middleware";
-import { useUser } from "../context/UserContext";
+import backgroundMusic from "/bgm2.mp3";
 
 enum GameState {
   Running,
@@ -140,7 +139,24 @@ export default function GamePage() {
       return new RunningState().getImage();
     }
   };
+  const [backgroundAudio] = useState(new Audio(backgroundMusic)); 
 
+  useEffect(() => {
+    let timeoutId: any;
+    
+    const playBackgroundAudio = () => {
+      backgroundAudio.loop = true; 
+      backgroundAudio.play(); 
+    };
+    
+    timeoutId = setTimeout(playBackgroundAudio, 0);
+  
+
+    return () => {
+      backgroundAudio.pause();
+      clearTimeout(timeoutId);
+    };
+  }, []);
   useEffect(() => {
     // if(loading || !user) return ;
 
@@ -355,6 +371,7 @@ export default function GamePage() {
 
   return (
     <>
+      <audio src={backgroundMusic} autoPlay loop />
       <div className={style.gamePageContainer}>
         <div className={style.gameContainer}>
           <div className={style.healthBarContainer}>

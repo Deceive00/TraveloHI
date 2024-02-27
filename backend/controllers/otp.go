@@ -25,7 +25,18 @@ type OTPVerifyRequest struct {
 	Email    string `json:"email"`
 	Code		 string `json:"code"`
 }
-
+// SendOTP sends a one-time password (OTP) to the provided email address.
+//
+// @Summary Send OTP
+// @Description Sends a one-time password (OTP) to the provided email address.
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request_body body OTPRequest true "Request body containing the email address"
+// @Success 200 {object} SuccessResponse "Otp sent successfully"
+// @Failure 400 {object} ErrorResponse "Bad request"
+// @Failure 500 {object} ErrorResponse "Internal Server Error"
+// @Router /api/send-otp [post]
 func SendOTP(c *fiber.Ctx) error {
 	var requestBody OTPRequest
 	if err := c.BodyParser(&requestBody); err != nil {

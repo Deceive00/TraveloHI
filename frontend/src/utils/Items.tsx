@@ -6,6 +6,7 @@ import { FaUsers } from "react-icons/fa6";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { FaHotel } from "react-icons/fa";
 import { RiAdvertisementFill } from 'react-icons/ri';
+import { IoAirplane } from 'react-icons/io5';
 
 export const PROFILE_MENU = [
   {
@@ -85,6 +86,11 @@ export const ADMIN_MENU = [
     icon: <RiAdvertisementFill className='profileMenuIcon'/>,
     text: 'Manage Promos',
     onClick: '/admin/manage-promos'
+  },
+  {
+    icon: <IoAirplane className='profileMenuIcon'/>,
+    text: 'Manage Flight',
+    onClick: '/admin/manage-flight'
   },
 ]
 

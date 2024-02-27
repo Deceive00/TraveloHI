@@ -12,7 +12,7 @@ type City struct {
 	gorm.Model
 	CityName string `gorm:"not null" json:"cityName"`
 	CountryID uint `json:"countryId"`
-	Country  Country `gorm:"foreignKey:CountryID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Country  Country `gorm:"foreignKey:CountryID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }
 
 
