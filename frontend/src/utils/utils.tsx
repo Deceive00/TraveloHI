@@ -121,10 +121,11 @@ export const promoRules = {
   },
 };
 
-export const getAllData = async (url : string, setLoading : any, setData : any, showSnackbar : any, key?: any) => {
-  console.log('tes')
+export const getAllData = async (url : string, setData : any, setLoading? : any,  showSnackbar? : any, key?: any) => {
   try {
-    setLoading(true);
+    if(setLoading){
+      setLoading(true);
+    }
     const response = await axios.get(
       `http://localhost:8080/api${url}`,
       {
@@ -140,9 +141,12 @@ export const getAllData = async (url : string, setLoading : any, setData : any, 
         extractedData = response.data[key];
       }
       setData(extractedData);
+      console.log(extractedData)
     }
 
-    setLoading(false);
+    if(setLoading){
+      setLoading(false);
+    }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
@@ -152,11 +156,16 @@ export const getAllData = async (url : string, setLoading : any, setData : any, 
         responseData !== null &&
         "error" in responseData
       ) {
-        showSnackbar(responseData.error as string, "error");
+        if(showSnackbar){
+          showSnackbar(responseData.error as string, "error");
+        }
+        console.error(responseData.error)
       }
     }
   } finally {
-    setLoading(false);
+    if(setLoading){
+      setLoading(false);
+    }
   }
 }
 

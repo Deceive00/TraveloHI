@@ -16,9 +16,9 @@ type Flights struct {
 }
 
 type FlightSegment struct {
-	FlightID         uint            `json:"flightID"`
+	FlightID         uint            `json:"flightId"`
 	Flight           Flights         `gorm:"foreignKey:FlightID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	FlightScheduleID uint            `json:"flightScheduleID"`
+	FlightScheduleID uint            `json:"flightScheduleId"`
 	FlightSchedule   FlightSchedules `gorm:"foreignKey:FlightScheduleID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }
 type FlightSchedules struct {
@@ -27,8 +27,8 @@ type FlightSchedules struct {
 	FlightRoute     FlightRoutes `gorm:"foreignKey:FlightRouteID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 	ArrivalTime     time.Time    `json:"arrivalTime"`
 	DepartureTime   time.Time    `json:"departureTime"`
-	AirplaneID      uint         `json:"airplaneID"`
-	Airplane        Airplanes    `gorm:"foreignKey:AirplaneID;references:ID:constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	AirplaneID      uint         `json:"airplaneId"`
+	Airplane        Airplanes    `gorm:"foreignKey:AirplaneID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }
 
 func MigrateFlight(db *gorm.DB) error {

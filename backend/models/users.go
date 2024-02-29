@@ -44,9 +44,15 @@ func (sqa *SecurityQuestionArray) Scan(value interface{}) error {
 func (sqa SecurityQuestionArray) Value() (driver.Value, error) {
 	return json.Marshal(sqa)
 }
-
+type SearchHistory struct{
+	gorm.Model
+	UserID uint `json:"userId"`
+	User Users `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	SearchTerm string `json:"searchTerm"`
+	SearchDate time.Time `json:"searchDate"`
+}
 func MigrateUsers(db *gorm.DB) error {
-	err := db.AutoMigrate(&Users{})
+	err := db.AutoMigrate(&Users{}, &SearchHistory{})
 	return err
 }
 
@@ -70,3 +76,5 @@ func GetUserByID(db *gorm.DB, userID uint) (*Users, error) {
 	}
 	return &user, nil
 }
+
+

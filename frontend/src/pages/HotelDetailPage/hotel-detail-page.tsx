@@ -15,6 +15,9 @@ import { FACILITY_ICONS } from "../../utils/IconData";
 import { IoChevronDown } from "react-icons/io5";
 import RoomDetail from "../../components/HotelDetail/RoomDetail/RoomDetail";
 import Footer from "../../components/footer/Footer";
+import Middleware from "../../components/auth/Middleware";
+import TextField from "../../components/form/Textfield";
+import { useForm } from "react-hook-form";
 
 interface HotelDetailNavigationTab {
   name: string;
@@ -35,6 +38,9 @@ export default function HotelDetailPage() {
   const navigationTabRef = useRef<HTMLDivElement>(null);
   const { user } = useUser();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const { register, handleSubmit, formState: { errors }, watch} = useForm();
+  const [isBuyNow, setIsBuyNow] = useState(true);
+  const inputtedDate = watch()
   const [navigationTab, setNavigationTab] = useState<
     Array<HotelDetailNavigationTab>
   >([
@@ -163,11 +169,11 @@ export default function HotelDetailPage() {
     fetchHotel();
     getAllData(
       `/hotels/reviews?hotelId=${hotelId}`,
-      setLoading,
       setReviews,
+      setLoading,
       showSnackbar
     );
-
+      
   }, [hotelId]);
 
   useEffect(() => {
@@ -256,9 +262,14 @@ export default function HotelDetailPage() {
     return minPrice;
   };
   const formattedRating = hotel?.overallRating.toFixed(1);
+
+
+  const onSubmit = () => {
+
+  }
   return (
     <MainTemplate>
-      <>
+      <Middleware>
         <div className={style.hotelDetailContainer}>
           <div className={style.imageContainer} ref={navigationTabFixedTrigger}>
             <div className={style.mainImage}>
@@ -383,7 +394,7 @@ export default function HotelDetailPage() {
               <h2>The Fun Awaits</h2>
               <div className={style.hotelDetailReasonCardContainer}>
                 {HOTEL_DETAIL_REASONS.map((reason: any) => {
-                  return <HotelDetailReasonCard reason={reason} />;
+                  return <HotelDetailReasonCard reason={reason} key={reason.title} />;
                 })}
               </div>
             </div>
@@ -452,6 +463,50 @@ export default function HotelDetailPage() {
        
           >
             <p className={style.sectionHeader}>Room Type and Price</p>
+            <form className={style.dateForm} onSubmit={handleSubmit(onSubmit)}>
+              <div className={style.dateInputContainer}>
+                <TextField 
+                  label="Check-in date"
+                  name="checkInDate"
+                  error={errors.checkInDate}
+                  register={register}
+                  rules={{required: 'required*'}}
+                  type="date"
+                />
+              </div>
+              <div className={style.dateInputContainer}>
+                <TextField 
+                  label="Check-out date"
+                  name="checkOutDate"
+                  error={errors.checkOutDate}
+                  register={register}
+                  rules={{required: 'required*'}}
+                  type="date"
+                />
+              </div>
+              <div className={style.dateInputContainer}>
+                <TextField 
+                  label="Total Guests"
+                  name="totalGuest"
+                  error={errors.totalGuest}
+                  register={register}
+                  rules={{required: 'required*'}}
+                  type="number"
+                  defaultValue={2}
+                />
+              </div>
+              <div className={style.dateInputContainer}>
+                <TextField 
+                  label="Total Rooms"
+                  name="totalRoom"
+                  error={errors.totalRoom}
+                  register={register}
+                  rules={{required: 'required*'}}
+                  type="number"
+                  defaultValue={2}
+                />
+              </div>
+            </form>
             <div className={style.roomListContainer}>
               {
                 rooms.map((room : Room, index: number) => (
@@ -469,7 +524,7 @@ export default function HotelDetailPage() {
           setShow={setSnackbarOpen}
         />
         
-      </>
+      </Middleware>
     </MainTemplate>
   );
 }

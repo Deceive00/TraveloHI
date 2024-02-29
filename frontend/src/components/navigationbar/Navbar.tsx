@@ -19,7 +19,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { user, logout } = useUser();
   const { theme, toggleTheme } = useTheme();
-  const [language, setLanguage] = useState(EnglishFlag);
   const { currency } = useCurrency();
   useEffect(() => {
     const handleScroll = () => {
@@ -90,9 +89,9 @@ export default function Navbar() {
             </span>
             {showLanguageSelector && (
               <LanguageSelector
+                isOpen={showLanguageSelector}
                 position={languageSelectorPosition}
                 onClose={() => setShowLanguageSelector(false)}
-                setLanguage={setLanguage}
               />
             )}
           </div>

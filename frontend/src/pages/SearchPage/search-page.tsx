@@ -13,6 +13,7 @@ import Snackbar from "../../components/form/Snackbar";
 import SearchHotelCard from "../../components/SearchHotelCard/SearchHotelCard";
 import Loading from "../../components/Loading/Loading";
 import SearchComponent from "../../components/home-page/SearchComponent/SearchComponent";
+import { useUser } from "../../context/UserContext";
 
 const ratingOptions = [
   { value: 0, label: "All ratings" },
@@ -143,13 +144,28 @@ export default function SearchPage() {
     setPageSize(parseInt(event.target.value));
   };
   useEffect(() => {
-    getAllData(
-      "/facilities",
-      setLoading,
-      setAllFacilities,
-      showSnackbar,
-      "facilities"
-    );
+    // getAllData(
+    //   "/facilities",
+    //   setLoading,
+    //   setAllFacilities,
+    //   showSnackbar,
+    // );
+    const fetchFacility = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/facilities`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setAllFacilities(response.data)
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
+    };
+    fetchFacility();
   }, []);
 
   useEffect(() => {
@@ -160,18 +176,18 @@ export default function SearchPage() {
       fetchSearchResults(term);
     }
   }, [location.search]);
-
+  
+  const {user} = useUser();
   const fetchSearchResults = async (term: string) => {
     try {
       if(term === '') return;
       const response = await axios.get(
         `http://localhost:8080/api/hotel/search`,
         {
-          params: { term: term, page: currentPage, pageSize: pageSize },
+          params: { term: term, page: currentPage, pageSize: pageSize, userId: user?.id },
         }
       );
       setHotel(response.data.hotels);
-      console.log(response.data.hotels);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -248,7 +264,7 @@ export default function SearchPage() {
             <div className={style.filterContainer}>
               <h5 style={{ marginBottom: "1.5vh" }}>Facilities</h5>
               <div className={style.facilitiesFilterContainer}>
-                {allFacilities.map((facility: Facility) => (
+                {allFacilities && allFacilities?.map((facility: Facility) => (
                   <div
                     className={style.facilityList}
                     key={facility.facilityName}

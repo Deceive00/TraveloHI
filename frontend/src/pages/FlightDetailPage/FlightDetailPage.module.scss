@@ -1,0 +1,330 @@
+@import "../../style/variables/variables.scss";
+@import "../../style/variables/mixins";
+
+.flightDetailContainer {
+  color: $text-color;
+  transition: 0.3s;
+  padding-inline: 20vw;
+  padding-bottom: 10vh;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    font-size: calc(0.7rem + 1.2vw);
+  }
+  h2 {
+    margin-bottom: 1vh;
+    font-size: calc(0.4rem + 1vw);
+  }
+  h4 {
+    font-size: calc(14px + 0.2vw);
+  }
+}
+
+.flightRoute {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3vh;
+
+  justify-content: center;
+  height: fit-content;
+}
+.line {
+  border: 1px solid $secondary-text-color;
+  height: 1rem;
+  width: 1px;
+  opacity: 0.5;
+}
+.circle {
+  border-radius: 50%;
+  border: 1px solid $secondary-text-color;
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+}
+
+.flightContent {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  padding: 3rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 20px;
+  background-color: var(--profile-page-header);
+  h2 {
+    font-size: calc(15px + 0.3vw);
+    margin-bottom: 2vh;
+  }
+  h5 {
+    font-size: calc(11px + 0.2vw);
+  }
+  .topFlightContent {
+    span {
+      font-size: $normal-text-size;
+    }
+  }
+}
+
+.centerFlightContent {
+  margin-top: -4px;
+}
+.lineContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  .lineCenter {
+    border: 1px solid $secondary-text-color;
+    height: 30rem;
+    width: 1px;
+    opacity: 0.5;
+  }
+}
+.airlineContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+  img {
+    width: calc(3rem + 0.2vw);
+    height: calc(1.5rem + 0.2vw);
+  }
+}
+
+.airlineNameContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.topFlightContainer {
+  display: flex;
+  gap: 1vw;
+}
+
+.circleContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.durationContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+  align-items: center;
+  p {
+    font-size: $normal-text-size;
+    color: var(--gray-text-color);
+  }
+  svg {
+    color: var(--gray-text-color);
+    width: 5px;
+    height: 5px;
+  }
+}
+
+.topCenterContent {
+  display: flex;
+  gap: 1vw;
+  padding: 1.5rem;
+}
+
+.centerContent {
+  border-radius: 20px;
+  margin-top: 10vh;
+  border: 1px solid var(--secondary-text-color);
+  // width: calc(20rem + 25vw);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+.bottomCenterContentContainer {
+  display: flex;
+  gap: 2vh;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-top: 1px solid var(--gray-text-color);
+}
+.bottomCenterContent {
+  display: flex;
+  justify-content: space-between;
+  max-width: 25rem;
+}
+
+.leftBotContent,
+.rightBotContent {
+  display: flex;
+  font-size: $normal-text-size;
+  gap: 1vw;
+}
+
+.blue {
+  color: $blue;
+  cursor: pointer;
+}
+
+.circleFilled {
+  background-color: var(--gray-text-color);
+}
+
+.luggageContainer,
+.totalPaymentContainer,
+.flightRoute {
+  margin-bottom: 2vh;
+}
+.luggageContent {
+  display: flex;
+  margin-top: 3vh;
+  flex-direction: column;
+  height: fit-content;
+  padding: 3rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 20px;
+  background-color: var(--profile-page-header);
+}
+.totalPaymentContent {
+  display: flex;
+  margin-top: 3vh;
+  flex-direction: column;
+  height: fit-content;
+  padding: 3rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 20px;
+  background-color: var(--profile-page-header);
+}
+
+.topLuggage {
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+
+  img {
+    width: calc(2rem + 1vw);
+    height: calc(2rem + 1vw);
+  }
+  align-items: center;
+}
+
+.topLuggageText {
+  display: flex;
+  flex-direction: column;
+  h4 {
+    font-size: calc(14px + 0.2vw);
+  }
+  p {
+    font-size: $normal-text-size;
+  }
+}
+
+.bottomLuggage {
+  margin-top: 2vh;
+  display: flex;
+  gap: 1vw;
+}
+
+.topPayment {
+  display: flex;
+  justify-content: space-between;
+  h4 {
+    cursor: pointer;
+  }
+  h5 {
+    margin-top: 0.1vh;
+    color: var(--secondary-text-color);
+  }
+}
+
+.payButtonContainer {
+  display: flex;
+  margin-top: 2vh;
+  justify-content: space-between;
+  .buyNowButton {
+    width: 48%;
+    @include customButton($blue, $blue-onhover);
+  }
+}
+
+.seatModal {
+  position: relative;
+  height: calc(30rem + 10vw);
+  width: fit-content;
+  overflow: auto;
+  h3{
+    font-size:calc(15px + 0.4vw);
+    margin-bottom: 2vh;
+  }
+}
+
+.seatContainer {
+  display: grid;
+  width: fit-content;
+  gap: 10px;
+}
+
+.seatOptions {
+  cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: calc(3rem + 0.75vw);
+  height: calc(3rem + 0.75vw);
+  transition: 0.3s;
+  p {
+    text-align: center;
+  }
+}
+
+.available {
+  background-color: $blue;
+  color:whitesmoke;
+  &:hover {
+    background-color: $blue-onhover;
+  }
+}
+
+.isNotAvailable {
+  background-color: rgba(197, 195, 195, 0.353);
+
+  &:hover{
+    background-color: rgba(179, 179, 179, 0.353);
+  }
+}
+.isSelected{
+  background-color: $orange;
+  color: whitesmoke;
+  &:hover {
+    background-color: $orange-onhover;
+  }
+}
+.seats{
+  p{
+    width: fit-content;
+    padding: 0.5rem;
+    transition: 0.3s;
+    border-radius: 10px;
+    font-size: $normal-text-size;
+    &:hover{
+      background-color: rgba(109, 109, 109, 0.184);
+    }
+  }
+  display: flex;
+  gap: 0.5vw;
+  align-items: center;
+}
+
+.closeBtn{
+  position: absolute;
+  right: 0.5vw;
+  top: 0.5vw;
+  width: 2rem;
+  height:2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px){
+  .flightDetailContainer{
+    padding-inline: 3vw;
+  }
+}

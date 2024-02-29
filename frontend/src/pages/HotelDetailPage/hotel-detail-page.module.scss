@@ -382,3 +382,19 @@
     }
   }
 }
+
+
+.dateForm{
+  display: flex;
+  padding: 2vw;
+  margin-block: 2vh;
+  justify-content: space-between;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+}
+
+.dateInputContainer{
+  width: 23%;
+  height: 100%;
+}

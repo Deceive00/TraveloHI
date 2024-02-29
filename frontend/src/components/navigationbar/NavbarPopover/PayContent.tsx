@@ -1,10 +1,8 @@
 // LanguageSelector.js
 
 import { BiWallet } from "react-icons/bi";
-import { useCurrency } from "../../../context/CurrencyContext";
 import style from "./LanguageSelector.module.scss";
-import IndonesiaFlag from "/images/language/indonesia.png";
-import EnglishFlag from "/images/language/united-kingdom.png";
+
 import { CiCreditCard1 } from "react-icons/ci";
 const PayContent = ({
   position,
@@ -13,11 +11,7 @@ const PayContent = ({
   position: any;
   onClose: any;
 }) => {
-  const {setCurrency} = useCurrency();
-  const handleLanguageSelectorClick = (flag : any) => {
-    setCurrency(flag)
-    onClose()
-  }
+
   return (
     <>
       <div

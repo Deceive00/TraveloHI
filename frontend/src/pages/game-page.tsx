@@ -20,6 +20,8 @@ import {
   runRightSecondPlayer,
 } from "../Game/animation";
 import backgroundMusic from "/bgm2.mp3";
+import { useUser } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 enum GameState {
   Running,
@@ -35,7 +37,9 @@ export default function GamePage() {
   const playerHB = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<HTMLDivElement>(null);
   // const { user, loading } = useUser();
-  let timer = 60;
+  const [isDone, setIsDone] = useState(false);
+  const navigate = useNavigate();
+  let timer = 20;
   const [seconds, setSeconds] = useState(timer);
   const background = new Sprite({
     type: "bg",
@@ -140,6 +144,7 @@ export default function GamePage() {
     }
   };
   const [backgroundAudio] = useState(new Audio(backgroundMusic)); 
+  const {user} = useUser();
 
   useEffect(() => {
     let timeoutId: any;
@@ -157,9 +162,9 @@ export default function GamePage() {
       clearTimeout(timeoutId);
     };
   }, []);
-  useEffect(() => {
-    // if(loading || !user) return ;
 
+
+  useEffect(() => {
     const canvas = canvasRef.current!;
     const c = canvas.getContext("2d");
     const movement = {
@@ -172,7 +177,6 @@ export default function GamePage() {
       ArrowUp: { pressed: false },
       space: { pressed: false },
     };
-
     if (c) {
       function isCollision() {
         return (
@@ -190,6 +194,7 @@ export default function GamePage() {
       }
 
       function animate() {
+        const isDone = player?.current.health <= 0 || enemy?.current.health <= 0 || timer <= 0; 
         window.requestAnimationFrame(animate);
         c!.fillStyle = "black";
         c!.fillRect(0, 0, canvas.width, canvas.height);
@@ -199,17 +204,17 @@ export default function GamePage() {
           player.current.update(c, canvas);
           player.current.velocity.x = 0;
 
-          if (movement.a.pressed && player.current.lastKey === "a") {
+          if (movement.a.pressed && player.current.lastKey === "a" && !isDone) {
             player.current.velocity.x = -2;
             player.current.switchSprite("runLeft");
-          } else if (movement.d.pressed && player.current.lastKey === "d") {
+          } else if (movement.d.pressed && player.current.lastKey === "d" && !isDone) {
             player.current.velocity.x = 2;
             player.current.switchSprite("runRight");
           } else {
             player.current.switchSprite("idle");
           }
 
-          if (player.current.velocity.y < 0) {
+          if (player.current.velocity.y < 0 && !isDone) {
             player.current.switchSprite("jump");
           }
         }
@@ -221,13 +226,13 @@ export default function GamePage() {
           enemy.current.velocity.x = 0;
           if (
             movement.ArrowLeft.pressed &&
-            enemy.current.lastKey === "ArrowLeft"
+            enemy.current.lastKey === "ArrowLeft" && !isDone
           ) {
             enemy.current.velocity.x = -4;
             enemy.current.switchSprite("runLeft");
           } else if (
             movement.ArrowRight.pressed &&
-            enemy.current.lastKey === "ArrowRight"
+            enemy.current.lastKey === "ArrowRight" && !isDone
           ) {
             enemy.current.velocity.x = 4;
             enemy.current.switchSprite("runRight");
@@ -314,29 +319,31 @@ export default function GamePage() {
       });
 
       window.addEventListener("keyup", (event: KeyboardEvent) => {
-        switch (event.key) {
-          case "d":
-            movement.d.pressed = false;
-            break;
-          case "a":
-            movement.a.pressed = false;
-            break;
-          case "ArrowLeft":
-            movement.ArrowLeft.pressed = false;
-            break;
-          case "ArrowRight":
-            movement.ArrowRight.pressed = false;
-            break;
-          case " ":
-            movement.space.pressed = false;
-            break;
-          case "s":
-            movement.s.pressed = false;
-            break;
+        if(!isDone){
+          switch (event.key) {
+            case "d":
+              movement.d.pressed = false;
+              break;
+            case "a":
+              movement.a.pressed = false;
+              break;
+            case "ArrowLeft":
+              movement.ArrowLeft.pressed = false;
+              break;
+            case "ArrowRight":
+              movement.ArrowRight.pressed = false;
+              break;
+            case " ":
+              movement.space.pressed = false;
+              break;
+            case "s":
+              movement.s.pressed = false;
+              break;
+          }
         }
       });
-
       animate();
+      
     }
 
     return () => {};

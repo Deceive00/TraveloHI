@@ -37,7 +37,7 @@ export default function HotelRecommendationHome(){
     };
     fetchHotel();
   }, [])
-  useEffect(() => console.log(hotels), [hotels])
+
   return(
     <div className={style.container}>
       {

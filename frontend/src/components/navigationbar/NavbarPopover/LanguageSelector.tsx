@@ -5,13 +5,13 @@ import style from "./LanguageSelector.module.scss";
 import IndonesiaFlag from "/images/language/indonesia.png";
 import EnglishFlag from "/images/language/united-kingdom.png";
 const LanguageSelector = ({
+  isOpen,
   position,
   onClose,
-  setLanguage,
 }: {
+  isOpen: boolean;
   position: any;
   onClose: any;
-  setLanguage: any;
 }) => {
   const {setCurrency} = useCurrency();
   const handleLanguageSelectorClick = (flag : any) => {
@@ -25,11 +25,11 @@ const LanguageSelector = ({
         style={{ position: "absolute", top: position.top, left: position.left - 30}}
       >
         <span
-          onClick={() => handleLanguageSelectorClick('Rupiah')}
+          onClick={() => handleLanguageSelectorClick('IDR')}
           className={style.languageContainer}
         >
           <img src={IndonesiaFlag} alt="" />
-          <span>Rupiah</span>
+          <span>IDR</span>
         </span>
         <span
           onClick={() => handleLanguageSelectorClick('USD')}

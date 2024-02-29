@@ -49,6 +49,5 @@ func GetHotelReviews(c *fiber.Ctx) error {
 
 		response = append(response, reviewResponse)
 	}
-
 	return c.JSON(response)
 }

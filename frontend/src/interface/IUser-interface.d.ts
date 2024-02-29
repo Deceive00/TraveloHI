@@ -15,3 +15,9 @@ interface SecurityQuestion{
   question :string;
   answer: string;
 }
+
+interface ISearchHistory{
+  User: IUser;
+  searchTerm: string;
+  searchDate: Date;
+}

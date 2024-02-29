@@ -7,6 +7,8 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { IoAirplane } from "react-icons/io5";
 import SearchFlight from "../../Flight/SearchFlight";
+import { useUser } from "../../../context/UserContext";
+import { ISearchHistory } from "../../../interface/IUser-interface";
 const FILTER_OPTIONS = [
   "Hotels",
   "Villas",
@@ -22,6 +24,7 @@ const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
   const [hotelResults, setHotelResults] = useState<Hotel[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState("hotel");
+  const [searchHistoriesResults, setSearchHistoriesResults] = useState<ISearchHistory[]>([]);
   useEffect(() => {
     setIsOpen(false);
   }, []);
@@ -38,18 +41,22 @@ const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
   const handleNameInputClicked = () => {
     setIsOpen(!isOpen);
   };
+  const {user} = useUser();
   const debouncedSearch = debounce(async (term) => {
     try {
       const response = await axios.get(
         "http://localhost:8080/api/search-name",
         {
-          params: { term },
+          params: { userId: user?.id, term },
         }
       );
-      const { countries, cities, hotels } = response.data;
+      const { searchHistories, countries, cities, hotels } = response.data;
       setCountryResults(countries);
       setCityResults(cities);
       setHotelResults(hotels);
+      console.log(searchHistories)
+      setSearchHistoriesResults(searchHistories);
+
     } catch (error) {
       console.error("Error searching:", error);
     }
@@ -101,6 +108,18 @@ const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
                     </div>
                     {isOpen && (
                       <ul className={style.optionsList}>
+                        {searchHistoriesResults?.map((option: ISearchHistory, index: any) => (
+                          <li
+                            key={index}
+                            className={style.option}
+                            onClick={() =>
+                              handleNameOptionsClicked(option.searchTerm)
+                            }
+                          >
+                            <span>{option.searchTerm}</span>{" "}
+                            <span className={style.nameType}>Before</span>
+                          </li>
+                        ))}
                         {countryResults.map((option: Country, index: any) => (
                           <li
                             key={index}

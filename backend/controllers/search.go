@@ -1,13 +1,16 @@
 package controllers
 
 import (
+	"errors"
 	"log"
 	"math"
 	"strconv"
+	"time"
 
 	"github.com/eldrian/go-fiber-postgres/database"
 	"github.com/eldrian/go-fiber-postgres/models"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type SearchResultResponse struct {
@@ -60,12 +63,21 @@ type SuccessResponse struct {
 // @Router /api/search-name [get]
 func GetSearchResult(c *fiber.Ctx) error {
 	term := c.Query("term")
+	userIdStr := c.Query("userId")
+	userId, err := strconv.ParseUint(userIdStr, 10, 64)
+	if err != nil {
+		return err
+	}
 
 	var countries []models.Country
 	var cities []models.City
 	var hotels []models.Hotels
 	db := database.GetDB()
-
+	var searchHistories []models.SearchHistory
+	
+	if err := db.Where("user_id = ?", userId).Find(&searchHistories).Error; err != nil {
+		return err
+	}
 	if err := db.Select("id, country_name").Where("country_name ILIKE ?", "%"+term+"%").Find(&countries).Error; err != nil {
 		return err
 	}
@@ -127,10 +139,40 @@ type HotelWithFacilitiesAndRoomsResponse struct {
 }
 
 func GetSearchPageData(c *fiber.Ctx) error {
+	userIdStr := c.Query("userId")
+
+	userId, err := strconv.ParseUint(userIdStr, 10, 64)
+	if err != nil {
+		return err
+	}
+	db := database.GetDB()
 	term := c.Query("term")
 	page := c.Query("page")
+
+	var existingSearchHistory models.SearchHistory
+	if err := db.Where("user_id = ? AND search_term = ?", userId, term).First(&existingSearchHistory).Error; err != nil {
+
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			searchHistory := models.SearchHistory{
+				UserID:     uint(userId),
+				SearchTerm: term,
+				SearchDate: time.Now(),
+			}
+			if err := db.Create(&searchHistory).Error; err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	} else {
+		existingSearchHistory.SearchDate = time.Now()
+		if err := db.Save(&existingSearchHistory).Error; err != nil {
+			return err
+		}
+	}
+
 	pageSize := c.Query("pageSize")
-	log.Println(page)
+
 	pageNum, err := strconv.Atoi(page)
 	if err != nil {
 		pageNum = 1
@@ -141,7 +183,6 @@ func GetSearchPageData(c *fiber.Ctx) error {
 	}
 
 	var hotels []models.Hotels
-	db := database.GetDB()
 
 	var totalHotels int64
 	if err := db.
@@ -218,12 +259,22 @@ func GetSearchPageData(c *fiber.Ctx) error {
 
 func GetSearchFlightResult(c *fiber.Ctx) error {
 	term := c.Query("term")
+	userIdStr := c.Query("userId")
+
+	userId, err := strconv.ParseUint(userIdStr, 10, 64)
+	if err != nil {
+		return err
+	}
 
 	var countries []models.Country
 	var cities []models.City
 	var airports []models.Airports
-	db := database.GetDB()
+	var searchHistories []models.SearchHistory
 
+	db := database.GetDB()
+	if err := db.Where("user_id = ?", userId).Find(&searchHistories).Error; err != nil {
+		return err
+	}
 	if err := db.Select("id, country_name").Where("country_name ILIKE ?", "%"+term+"%").Find(&countries).Error; err != nil {
 		return err
 	}
@@ -264,8 +315,8 @@ func GetSearchFlightResult(c *fiber.Ctx) error {
 	for i, airport := range airports {
 		results.Airports[i] = AirportResult{AirportCode: airport.AirportCode, AirportName: airport.AirportName}
 	}
-
 	return c.JSON(fiber.Map{
+		"searchHistories": searchHistories,
 		"airports":  results.Airports,
 		"cities":    results.Cities,
 		"countries": results.Countries,

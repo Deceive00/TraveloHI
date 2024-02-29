@@ -4,6 +4,7 @@ import ManageHotelPage from "../pages/Admin/ManageHotel/manage-hotel-page";
 import ManagePromos from "../pages/Admin/ManagePromos/ManagePromos";
 import ManageUsers from "../pages/Admin/ManageUsers/ManageUsers";
 import SendnewsLetter from "../pages/Admin/SendNewsletter/SendNewsletter";
+import FlightDetailPage from "../pages/FlightDetailPage/FlightDetailPage";
 import FlightSearchPage from "../pages/FlightSearchPage/FlightSearchPage";
 import HotelDetailPage from "../pages/HotelDetailPage/hotel-detail-page";
 import MyCards from "../pages/MyCardsPage/MyCards";
@@ -102,5 +103,10 @@ export const MENU_LIST: IMenu[] = [
     element: <FlightSearchPage/>,
     name: "Flight Search",
     path: "/flight/search"
-  }
+  },
+  {
+    element: <FlightDetailPage/>,
+    name: "Flight Detail",
+    path: "/flight/:flightId"
+  },
 ]

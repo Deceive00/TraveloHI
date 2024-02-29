@@ -53,5 +53,6 @@ func SetupRoutes(app *fiber.App) {
 	api.Get("/flight/search-name", controllers.GetSearchFlightResult)
 
 	api.Get("/flights", controllers.GetAllFlightData)
+	api.Get("/flight/:id", controllers.GetFlightById)
 }
 

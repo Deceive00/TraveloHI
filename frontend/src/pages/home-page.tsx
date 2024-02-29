@@ -11,6 +11,7 @@ import SearchComponent from "../components/home-page/SearchComponent/SearchCompo
 import { TRAVEL_WITH_TRAVELOHI_REASONS } from "../utils/Items";
 import ReasonCard from "../components/ReasonCard/ReasonCard";
 import HotelRecommendationHome from "../components/home-page/HotelRecommendationHome/HotelRecommendationHome";
+import FlightRecommendationHome from "../components/Flight/FlightRecommendationHome/FlightRecommendationHome";
 export default function HomePage() {
   const [promotions, setPromotions] = useState<IPromotion[]>([]);
   const [scrollPosition, setScrollPosition] = useState<number | undefined>(0);
@@ -35,7 +36,13 @@ export default function HomePage() {
     }
   };
   useEffect(() => {
+    console.log(ws)
     getPromotion();
+    // const intervalId = setInterval(() => {
+    //   getPromotion();
+    // }, 500); 
+
+    // return () => clearInterval(intervalId);
   }, []);
 
   const handleNextPromotion = () => {
@@ -111,7 +118,7 @@ export default function HomePage() {
         <div className={style.hotelRecommendationHomeContainer}>
           <h2>Get your flight tickets</h2>
           <div className={style.hotelRecommendationSlider}>
-            
+            <FlightRecommendationHome/>
           </div>
         </div>
         <div className={style.reasonContainer}>

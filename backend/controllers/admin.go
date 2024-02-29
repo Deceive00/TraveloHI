@@ -195,10 +195,7 @@ func GetAllFacility(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message":    "Facility retrieved successfully",
-		"facilities": facilities,
-	})
+	return c.Status(fiber.StatusOK).JSON(facilities)
 }
 
 func AddHotelController(c *fiber.Ctx) error {
@@ -258,13 +255,12 @@ func AddHotelController(c *fiber.Ctx) error {
 	}
 
 	for _, room := range requestBody.Rooms {
-		log.Println(room)
+
 		if room.RoomName == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Please fill all the fields!",
 			})
 		} else if room.RoomCapacity <= 0 || room.RoomPrice <= 0 || room.TotalRoom <= 0 {
-			log.Println(room.RoomCapacity, room.RoomPrice, room.TotalRoom)
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Please fill all the fields!",
 			})
@@ -347,7 +343,6 @@ func AddPromotionController(c *fiber.Ctx) error {
 		})
 	}
 	db := database.GetDB()
-	log.Println(requestBody)
 	if requestBody.PromotionName == "" || requestBody.PromotionType == "" || requestBody.PromotionCode == "" || requestBody.PromotionStartDate == "" || requestBody.PromotionEndDate == "" || requestBody.PromotionImage == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Please fill all the fields!",
@@ -493,7 +488,6 @@ func UpdatePromotionController(c *fiber.Ctx) error {
 	existingPromotion.PromotionStartDate = requestBody.PromotionStartDate
 	existingPromotion.PromotionEndDate = requestBody.PromotionEndDate
 	existingPromotion.PromotionImage = requestBody.PromotionImage
-	log.Println(existingPromotion)
 	if err := db.Save(&existingPromotion).Error; err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to update promotion",

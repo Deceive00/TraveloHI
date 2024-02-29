@@ -1,7 +1,11 @@
 @import "../../../style/variables/mixins";
 @import "../../../style/variables/variables.scss";
 $border-radius: 10px;
-
+[data-theme="dark"]{
+  .container{
+    background-color: #222427d5;
+  }
+}
 .container{
   display: flex;
   flex-direction: column;
@@ -95,4 +99,14 @@ $border-radius: 10px;
 .fixed{
   position: fixed;
   top: 10vh;
+}
+
+@media (max-width: 768px) {
+  .container{
+    .content{
+      flex-direction: column;
+      gap: 2vh;
+      align-items: center;
+    }
+  }
 }

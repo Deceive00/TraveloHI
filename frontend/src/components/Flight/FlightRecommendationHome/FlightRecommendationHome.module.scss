@@ -1,3 +1,5 @@
+@import "../../../style/variables/mixins";
+@import "../../../style/variables/variables.scss";
 .container{
   display: flex;
   gap: 1vw;
@@ -6,8 +8,143 @@
   scrollbar-width: 0;
   scroll-behavior: smooth;
   width: 100%;
-  height: calc(10rem + 20vw);
+  height: calc(13rem + 22vw);
   color: $text-color;
   scrollbar-width: none; 
   -ms-overflow-style: none;
+  padding-block: 1vh;
+  .cardContainer{
+    flex: 1 0 calc(25% - 0.75vw);
+    scroll-snap-align: start;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover{
+      scale: 1.01;
+    }
+    .imageContainer{
+      width: 100%;
+      position: relative;
+      height: calc(15% + 15vw );
+      .heartIcon{
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        color: $secondary-background-color;
+        width: calc(0.75rem + 0.5vw);
+        height: calc(0.75rem + 0.5vw);
+        cursor: pointer;
+        
+      }
+      img{
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 0.75rem;
+        
+      }
+    }
+    .flightDetailContainer{
+      p{
+        font-size: $normal-text-size;
+      }
+      padding-block: 1vh;
+      display: flex;
+      gap: 0.5vh;
+      flex-direction: column;
+
+      .destinationContainer{
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+        svg{
+          width: calc(12px + 0.2vw);
+          height: calc(12px + 0.2vw);
+        }
+      }
+      h4{
+        font-size: calc(12px + 0.2vw);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: calc(5rem + 5vw);
+      }
+
+      .location{
+        display: flex;
+        font-size: $normal-text-size;
+        gap: 0.5vw;
+        align-items: center;
+        color: var(--gray-text-color);
+        svg{
+          width: $normal-text-size;
+          height: $normal-text-size;
+          fill: var(--gray-text-color);
+        }
+      }
+      .rating{
+        display: flex;
+        font-size: $normal-text-size;
+        gap: 0.5vw;
+        align-items: center;
+        color: var(--gray-text-color);
+        svg{
+          width: $normal-text-size;
+          height: $normal-text-size;
+          fill: var(--gray-text-color);
+        }
+      }
+    }
+
+    .priceContainer{
+      display: flex;
+      flex-direction: column;
+      .price{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        h4{
+          font-size: calc(12px + 0.2vw);
+        }
+        h5{
+          text-decoration: line-through;
+          color: var(--secondary-text-color);
+        }
+      }
+      p{
+        font-size: calc(8px + 0.2vw);
+        color: var(--secondary-text-color);
+      }
+    }
+  }
+}
+
+.airline{
+  display: flex;
+  gap: 1vw;
+  img{
+    width: 2.5rem;
+    height: 1rem;
+    object-fit: cover;
+  }
+}
+@media (max-width: 768px) {
+  .container{
+    .cardContainer{
+      flex: 1 0 calc(50% - 0.5vw);
+    
+      .imageContainer{
+        img{
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: 0.75rem;
+        }
+      }
+      
+    }
+  }
 }

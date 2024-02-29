@@ -279,7 +279,6 @@ func LoginController(c *fiber.Ctx) error {
 
 func GetUser(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
-
 	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(t *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
