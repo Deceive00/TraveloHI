@@ -58,7 +58,7 @@ func SaveOTP(email, code string) error {
 
 func VerifyOTP(email, code string) error {
 	db := database.GetDB()
-
+	
 	var otp models.Otps
 	result := db.Where("email = ? AND code = ? AND expiration > ?", email, code, time.Now()).First(&otp)
 	log.Print(result)

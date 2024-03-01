@@ -103,3 +103,18 @@
     }
   }
 }
+
+.outlineButton{
+    padding: 10px 15px;
+  border-radius: 6px;
+  background: $background-color;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: calc(0.5rem + 0.3vw);
+  border: 1px solid $blue;
+  color: $text-color;
+  &:hover {
+    background: $hover-dark-background;
+    transition: 0.3s;
+  }
+}

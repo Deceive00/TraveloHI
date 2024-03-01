@@ -1,0 +1,84 @@
+@import "../../style/variables/variables.scss";
+@import "../../style/variables/mixins";
+.cartPageContainer{
+  padding-inline: 8vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  min-height: 70vh;
+  h1{
+    font-size: calc(16px + 1vw);
+  }
+}
+
+.cartPageContent{
+  display: flex;
+  gap: 4vw;
+}
+.priceSection{
+  width: 30%;
+}
+.priceContainer{
+  width: 100%;
+  padding: calc(2rem + 1vw);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.priceContent{
+  h3{
+    font-size: calc(12px + 0.5vw);
+  }
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vh;
+  .actualPrice{
+    color: $blue;
+  }
+}
+
+.price{
+  display: flex;
+  justify-content: space-between;
+  h4{
+    font-size: $bigger-text-size;
+    font-weight: 600;
+    color: var(--secondary-text-color);
+  }
+}
+
+.checkoutButton{
+  @include customButton($blue, $blue-onhover);
+  font-size: $bigger-text-size;
+}
+
+.cartDetail{
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  width: 70%;
+}
+
+.hotelListContainer{
+  margin-top: 2vh;
+}
+
+.hotelFormUpdate{
+  display: flex;
+  gap: 1vh;
+  flex-direction: column;
+  width: calc(10rem + 10vw);
+}
+
+@media (max-width:768px){
+  .cartPageContent{
+    flex-direction: column;
+  }
+  .priceContainer, .cartDetail{
+    width: 100%;
+  }
+}
+
+.updateButton{
+  margin-top: 1vh;
+  @include customButton($blue, $blue-onhover);
+}

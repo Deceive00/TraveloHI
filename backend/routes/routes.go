@@ -54,5 +54,11 @@ func SetupRoutes(app *fiber.App) {
 
 	api.Get("/flights", controllers.GetAllFlightData)
 	api.Get("/flight/:id", controllers.GetFlightById)
+
+	api.Post("/hotel/cart", middleware.AuthMiddleware, controllers.InsertHotelCart)
+	api.Post("/ticket", middleware.AuthMiddleware, controllers.InsertFlightCart)
+	api.Get("/cart", middleware.AuthMiddleware, controllers.GetCarts)
+
+	api.Put("/hotel/cart", middleware.AuthMiddleware, controllers.UpdateHotelCarts)
 }
 

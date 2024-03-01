@@ -99,10 +99,26 @@ nav {
     }
   }
 }
-.language{
+.language, .cart{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cart{
+  padding-inline: 0.5vw;
+  padding-block: 0.75vh;
+  transition: 0.3s;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover{
+    background-color: rgba(109, 109, 109, 0.184);
+  }
+}
+.cart svg{
+  color: $text-color;
+  width: calc(1rem + 0.4vw);
+  height: calc(1rem + 0.4vw);
 }
 .languageContainer{
   display: flex;

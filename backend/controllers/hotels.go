@@ -118,6 +118,8 @@ func GetHotelByID(c *fiber.Ctx) error {
 			IsRefundable:    r.IsRefundable,
 			IsSmoking:       r.IsSmoking,
 			IsReschedulable: r.IsReschedulable,
+			HotelID:         r.HotelID,
+			RoomTypeID:      r.ID,
 			GotBreakfast:    r.GotBreakfast,
 			GotFreeWifi:     r.GotFreeWifi,
 			TotalRoom:       r.TotalRoom,
@@ -148,4 +150,6 @@ type RoomInfo struct {
 	RoomSize        float64         `json:"roomSize"`
 	RoomBed         string          `json:"roomBed"`
 	RoomPicture     models.Pictures `json:"roomPicture" gorm:"type:json"`
+	HotelID         uint            `json:"hotelId"`
+	RoomTypeID      uint            `json:"roomTypeId"`
 }

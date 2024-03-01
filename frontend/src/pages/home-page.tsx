@@ -36,7 +36,6 @@ export default function HomePage() {
     }
   };
   useEffect(() => {
-    console.log(ws)
     getPromotion();
     // const intervalId = setInterval(() => {
     //   getPromotion();

@@ -1,0 +1,106 @@
+@import "../../../style/variables/mixins";
+@import "../../../style/variables/variables.scss";
+$border-radius: 10px;
+.container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: $border-radius;
+}
+
+.imageContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(10rem + 3.5vw);
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+}
+
+.leftContainer{
+  display: flex;
+  gap: 2vw;
+}
+
+.hotelDetail{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  h5{
+    font-size: calc(12px + 0.5vw);
+    color: $text-color;
+  }
+  p{
+    color: $secondary-text-color;
+    font-weight: 900;
+    font-size: $normal-text-size;
+  }
+  .price{
+    color: $orange;
+  }
+}
+
+
+.rightContainer{
+  padding-block: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1vh;
+  margin-right: 2vw;
+}
+
+.bottomRightContainer{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dateRange{
+  color: $secondary-text-color;
+
+}
+
+.dateFormat{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h2{
+    font-size: calc(1rem + 1vw);
+    color: $blue;
+  }
+  h6{
+    font-size: calc(8px + 0.2vw);
+    color: $secondary-text-color;
+  }
+}
+
+.topRightContainer{
+  display: flex;
+  flex-direction: end;
+  transition: 0.3s;
+  padding: 5px;
+  gap: 1vw;
+  border-radius: $border-radius;
+  &:hover{
+    background-color: rgba(109, 109, 109, 0.184);
+  }
+  svg{
+    width: calc(0.6rem + 0.5vw);
+    height: calc(0.6rem + 0.5vw);
+  }
+}
+
+.totalHotelPrice{
+  p{
+    font-size: calc(5px + 0.4vw);
+  }
+}

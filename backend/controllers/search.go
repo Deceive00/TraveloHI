@@ -17,6 +17,7 @@ type SearchResultResponse struct {
 	Countries []CountryResult `json:"countries"`
 	Cities    []CityResult    `json:"cities"`
 	Hotels    []HotelResult   `json:"hotels"`
+	SearchHistories []models.SearchHistory `json:"searchHistories"`
 }
 
 type FlightSearchResponse struct {
@@ -105,6 +106,7 @@ func GetSearchResult(c *fiber.Ctx) error {
 		Countries: make([]CountryResult, len(countries)),
 		Cities:    make([]CityResult, len(cities)),
 		Hotels:    make([]HotelResult, len(hotels)),
+		SearchHistories: searchHistories,
 	}
 
 	for i, country := range countries {

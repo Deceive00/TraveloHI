@@ -44,6 +44,7 @@ const Snackbar: React.FC<SnackbarProps> = ({ message, type, show, setShow }) => 
     transform: getTransformValue(),
     backgroundColor: getBackgroundColor(),
     color: '#fff',
+    zIndex:9999
   };
 
   return (

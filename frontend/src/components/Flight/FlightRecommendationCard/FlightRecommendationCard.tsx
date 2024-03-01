@@ -4,12 +4,14 @@ import defautlImg from "/images/empty-folder.png";
 import { FaRegHeart } from "react-icons/fa";
 import defaultFlight from '/Background/bg.jpg'
 import { FaPlane } from "react-icons/fa6";
+import { useCurrency } from "../../../context/CurrencyContext";
 interface IFlightRecommendationCard {
   flightData: IFlightData;
 }
 export default function FlightRecommendationCard({
   flightData,
 }: IFlightRecommendationCard) {
+  const {getCurrency, convertPrice} = useCurrency();
   const navigate = useNavigate();
   const handleNavigateDetail = () => {
     navigate(`/flight/${flightData.Flight.ID}`)
@@ -64,8 +66,8 @@ export default function FlightRecommendationCard({
       </div>
       <div className={style.priceContainer}>
         <div className={style.price}>
-          <h4>${flightData?.Flight.flightPrice}</h4>
-          <h5>${flightData?.Flight.flightPrice * 110 / 100}</h5>
+          <h4>{getCurrency()}{convertPrice(flightData?.Flight.flightPrice).toLocaleString()}</h4>
+          <h5>{getCurrency()}{convertPrice(flightData?.Flight.flightPrice * 110 / 100).toLocaleString()}</h5>
         </div>
         <p>Includes taxes & fees</p>
       </div>

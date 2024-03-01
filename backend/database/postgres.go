@@ -102,6 +102,11 @@ func init() {
 	if err != nil {
 		log.Fatal("error migrating tickets")
 	}
+	err = models.MigrateCarts(db)
+
+	if err != nil {
+		log.Fatal("error migrating carts")
+	}
 	// Seeders
 	// seeders.SeedUsers(db)
 	// seeders.LocationSeeder(db)

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import MainTemplate from "../../templates/main-template";
 import style from "./FlightDetailPage.module.scss";
 import { useEffect, useState } from "react";
-import { getAllData } from "../../utils/utils";
+import { getAllData, insertData } from "../../utils/utils";
 import Footer from "../../components/footer/Footer";
 import Snackbar from "../../components/form/Snackbar";
 
@@ -11,6 +11,16 @@ import Middleware from "../../components/auth/Middleware";
 import { HiChevronDown } from "react-icons/hi2";
 import Modal from "../../components/Modal/Modal";
 import { IoClose } from "react-icons/io5";
+import { useCurrency } from "../../context/CurrencyContext";
+import { round } from "lodash";
+import Loading from "../../components/Loading/Loading";
+interface ITickets {
+  seatId: number;
+  flightId: number;
+  addOnBaggageWeight: number;
+  flightScheduleId: number;
+}
+
 function formatDate(dateStr: any | undefined): string {
   if (!dateStr) return "No Date";
   const date = new Date(dateStr);
@@ -31,6 +41,7 @@ function formatDate(dateStr: any | undefined): string {
 export default function FlightDetailPage() {
   let { flightId } = useParams();
   const [flightData, setFlightData] = useState<IFlightData>();
+  const { getCurrency, convertPrice } = useCurrency();
   const [loading, setLoading] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarType, setSnackbarType] = useState("error");
@@ -39,7 +50,8 @@ export default function FlightDetailPage() {
   const [isSeatChoiceOpen, setIsSeatChoiceOpen] = useState(false);
   const [seatData, setSeatData] = useState<ISeats[]>([]);
   const [selectedSeat, setSelectedSeat] = useState<ISeats[]>([]);
-  const [selectedSeatConfigurationIdx, setSelectedSeatConfigurationIdx] = useState(0);
+  const [selectedSeatConfigurationIdx, setSelectedSeatConfigurationIdx] =
+    useState(0);
   const handleBaggageChange = (event: any) => {
     setSelectedBaggageAddOn(Number(event.target.value));
   };
@@ -56,46 +68,85 @@ export default function FlightDetailPage() {
     " " +
     `(${flightData?.FlightSchedules[0]?.FlightRoute?.DepartureAirport?.airportCode})`;
   const isTransit = flightData?.Flight.isTransit;
+  const getMaxMutliplier = () => {
+    if(selectedSeat.length <= 0)  return 1;
+    let max = -1;
+    for (let i = 0 ; i < selectedSeat.length ; i++){
+      console.log(selectedSeat)
+      if (max < selectedSeat[i].SeatClass.multiplier){
+        max = selectedSeat[i].SeatClass.multiplier;
+      }
+    }
 
+    return max;
+  }
+  const fee = (flightData?.Flight.flightPrice || 1)  * 0.001
   const getTotalPrice = (price: number) => {
-    return price + selectedBaggageAddOn * 10;
+    return (
+      price * getMaxMutliplier() +
+      selectedBaggageAddOn * 10 +
+      round(fee, 2)
+    );
   };
-  const handleSeat = (seat: any, index : number) => {
+  const handleSeat = (seat: any, index: number) => {
     setSeatData(seat);
     setIsSeatChoiceOpen(true);
     setSelectedSeatConfigurationIdx(index);
   };
   useEffect(() => {
-    if(seatData.length <= 0){
+    if (seatData.length <= 0) {
       setSeatData(flightData?.Seats[0] || []);
     }
   }, [flightData]);
 
   const handleSeatClicked = (clickedSeat: ISeats) => {
-    const updatedSelectedSeats = [...selectedSeat]; 
-    
-    const existingSeatIndex = updatedSelectedSeats.findIndex(seat => seat.Airplane.ID === clickedSeat.Airplane.ID);
-    
+    const updatedSelectedSeats = [...selectedSeat];
+
+    const existingSeatIndex = updatedSelectedSeats.findIndex(
+      (seat) => seat.Airplane.ID === clickedSeat.Airplane.ID
+    );
+
     if (existingSeatIndex !== -1) {
       updatedSelectedSeats[existingSeatIndex] = clickedSeat;
     } else {
       updatedSelectedSeats.push(clickedSeat);
     }
-    
-    setSelectedSeat(updatedSelectedSeats); 
-  }
-  
-  useEffect(() => {
-    console.log(selectedSeat)
-  }, [selectedSeat]);
 
+    setSelectedSeat(updatedSelectedSeats);
+  };
+  useEffect(() => {
+    console.log(selectedSeat);
+  }, [selectedSeat]);
+  const handleAddToCart = () => {
+    let data : ITickets[] = [];
+    let len = flightData?.FlightSchedules.length || 0;
+    if(selectedSeat.length <= 0){
+      showSnackbar("Please select seats for each flight!", 'error');
+      return;
+    }
+
+    for (let i = 0; i < len; i++) {
+      data.push({
+        addOnBaggageWeight: selectedBaggageAddOn,
+        flightId: parseInt(flightData?.Flight.ID, 10),
+        flightScheduleId: parseInt(flightData?.FlightSchedules[i].ID, 10),
+        seatId: parseInt(selectedSeat[i].ID ,10)
+      })
+    }
+
+    const stringifiedData = JSON.stringify(data);
+    insertData('/ticket', stringifiedData, setLoading, showSnackbar);
+
+  }
+  console.log(fee)
   return (
     <Middleware>
       <MainTemplate>
         <>
+          {loading && <Loading />}
           <div className={style.flightDetailContainer}>
             <h1>
-              {departureAirport} To{" "}
+              {departureAirport} -{" "}
               {
                 flightData?.FlightSchedules[
                   flightData?.FlightSchedules.length - 1
@@ -141,7 +192,10 @@ export default function FlightDetailPage() {
                     ).map((data: IFlightSchedule, index: number) => {
                       return (
                         <>
-                          <div className={style.topFlightContainer} key={`contianer + ${index}`}>
+                          <div
+                            className={style.topFlightContainer}
+                            key={`contianer + ${index}`}
+                          >
                             <div
                               className={style.circleContainer}
                               style={{ marginTop: "-1vh" }}
@@ -165,7 +219,7 @@ export default function FlightDetailPage() {
                             seat={flightData.Seats[index + 1]}
                             key={`progress + ${index + 1}`}
                             selectedSeat={selectedSeat[index + 1]}
-                            index={index+1}
+                            index={index + 1}
                           />
                         </>
                       );
@@ -282,29 +336,43 @@ export default function FlightDetailPage() {
                 <div className={style.topPayment}>
                   <h4>Total Payment</h4>
                   <h4 className={style.totalPrice}>
-                    $
-                    {getTotalPrice(flightData?.Flight.flightPrice || 0) +
-                      getTotalPrice(flightData?.Flight.flightPrice || 0) *
-                        0.001}
+                    {getCurrency()}
+                    {convertPrice(
+                      getTotalPrice(flightData?.Flight.flightPrice || 0) + getTotalPrice(flightData?.Flight.flightPrice || 0) *
+                      0.001
+                    ).toLocaleString()}
                     <HiChevronDown />
                   </h4>
                 </div>
                 <div className={style.topPayment}>
+                  <h5>Base Price</h5>
+                  <h5 className={style.totalPrice}>
+                    {getCurrency()}
+                    {convertPrice((flightData?.Flight.flightPrice || 1) * (getMaxMutliplier() || 1)).toLocaleString()}
+                  </h5>
+                </div>
+                <div className={style.topPayment}>
                   <h5>Baggage Adds On</h5>
                   <h5 className={style.totalPrice}>
-                    ${selectedBaggageAddOn * 10}
+                    {getCurrency()}
+                    {convertPrice(selectedBaggageAddOn * 10).toLocaleString()}
                   </h5>
                 </div>
                 <div className={style.topPayment}>
                   <h5>Platform Fee</h5>
                   <h5>
-                    $
-                    {getTotalPrice(flightData?.Flight.flightPrice || 0) * 0.001}
+                    {getCurrency()}
+                    {round(
+                      convertPrice(
+                        fee
+                      ),
+                      2
+                    )}
                   </h5>
                 </div>
                 <div className={style.payButtonContainer}>
-                  <button className={style.buyNowButton}>Buy Now</button>
-                  <button className={style.buyNowButton}>Add To Cart</button>
+                  <button className={style.outlineButton} onClick={handleAddToCart}>Add to cart</button>
+                  <button className={style.buyNowButton}>Buy now</button>
                 </div>
               </div>
             </div>
@@ -321,36 +389,56 @@ export default function FlightDetailPage() {
             onRequestClose={() => setIsSeatChoiceOpen(false)}
           >
             <>
-              <IoClose className={style.closeBtn} onClick={() => setIsSeatChoiceOpen(false)}/>
+              <IoClose
+                className={style.closeBtn}
+                onClick={() => setIsSeatChoiceOpen(false)}
+              />
               <div className={style.seatModal}>
                 <h3>Choose Your Seat</h3>
                 <div
                   className={style.seatContainer}
                   style={{
                     gridTemplateColumns: `repeat(${
-                      seatData ? seatData[0]?.Airplane.seatColumn + (seatData[0]?.Airplane.seatColumn === 10 ? 2 : 1) : 6
+                      seatData
+                        ? seatData[0]?.Airplane.seatColumn +
+                          (seatData[0]?.Airplane.seatColumn === 10 ? 2 : 1)
+                        : 6
                     }, 1fr)`,
                   }}
                 >
                   {seatData?.map((seat: ISeats, index: number) => {
-                    let flightGap = '';
-                    if(seatData[0]?.Airplane.seatColumn === 10){
-                      if((index + 1) % 10 === 3 || (index + 1)% 10 === 7){
-                        flightGap ='2vw';
+                    let flightGap = "";
+                    if (seatData[0]?.Airplane.seatColumn === 10) {
+                      if ((index + 1) % 10 === 3 || (index + 1) % 10 === 7) {
+                        flightGap = "2vw";
                       }
                     }
-                    if(seatData[0]?.Airplane.seatColumn === 6){
-                      if((index + 1) % 3 === 0 && (index + 1) % 6 !== 0){
-                        flightGap ='2vw';
+                    if (seatData[0]?.Airplane.seatColumn === 6) {
+                      if ((index + 1) % 3 === 0 && (index + 1) % 6 !== 0) {
+                        flightGap = "2vw";
                       }
                     }
                     return (
                       <>
-                        <div className={`${style.seatOptions} ${seat?.seatNumber === selectedSeat[selectedSeatConfigurationIdx]?.seatNumber ? style.isSelected: seat.isAvailable ? style.available : style.isNotAvailable}`} onClick={() => handleSeatClicked(seat)} key={seat.ID}>
+                        <div
+                          className={`${style.seatOptions} ${
+                            seat?.seatNumber ===
+                            selectedSeat[selectedSeatConfigurationIdx]
+                              ?.seatNumber
+                              ? style.isSelected
+                              : seat.isAvailable
+                              ? style.available
+                              : style.isNotAvailable
+                          }`}
+                          onClick={() => handleSeatClicked(seat)}
+                          key={seat.ID}
+                        >
                           <p>{seat.seatNumber}</p>
                         </div>
-                        {flightGap !== '' && (
-                          <div style={{width: flightGap, height:'100%'}}></div>
+                        {flightGap !== "" && (
+                          <div
+                            style={{ width: flightGap, height: "100%" }}
+                          ></div>
                         )}
                       </>
                     );

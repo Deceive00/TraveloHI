@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Navbar from "../../components/navigationbar/Navbar";
 import style from "./search-page.module.scss";
 import { useLocation } from "react-router-dom";
@@ -14,6 +14,7 @@ import SearchHotelCard from "../../components/SearchHotelCard/SearchHotelCard";
 import Loading from "../../components/Loading/Loading";
 import SearchComponent from "../../components/home-page/SearchComponent/SearchComponent";
 import { useUser } from "../../context/UserContext";
+import { useCurrency } from "../../context/CurrencyContext";
 
 const ratingOptions = [
   { value: 0, label: "All ratings" },
@@ -40,7 +41,7 @@ export default function SearchPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-
+  const {currency, convertPrice} = useCurrency();
   const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const rating = parseFloat(event.target.value);
     if (!isNaN(rating)) {
@@ -99,16 +100,15 @@ export default function SearchPage() {
           return false;
         }
       }
-
+      console.log(convertPrice(getMinimumPrice(hotel.rooms)))
       if (
         (minPrice !== undefined &&
           minPrice &&
-          getMinimumPrice(hotel.rooms) <= minPrice) ||
+          convertPrice(getMinimumPrice(hotel.rooms)) <= minPrice) ||
         (maxPrice !== undefined &&
           maxPrice &&
-          getMinimumPrice(hotel.rooms) >= maxPrice)
+          convertPrice(getMinimumPrice(hotel.rooms)) >= maxPrice)
       ) {
-        console.log(maxPrice);
         return false;
       }
 
@@ -131,6 +131,7 @@ export default function SearchPage() {
     maxPrice,
     minPrice,
     selectedRatings,
+    currency
   ]);
 
   const showSnackbar = (message: string, type: string) => {
@@ -162,7 +163,14 @@ export default function SearchPage() {
         );
         setAllFacilities(response.data)
       } catch (error) {
-        console.error("Error fetching search results:", error);
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          const responseData = axiosError.response?.data;
+          if (typeof responseData === 'object' && responseData !== null && 'error' in responseData) {
+              console.error('Answer is not valid details:', responseData.error);
+              showSnackbar(responseData.error as string, 'error');
+          }
+        }
       }
     };
     fetchFacility();

@@ -65,7 +65,6 @@ export const rules = {
   }
 } 
 
-
 export const promoRules = {
   promotionName: {
     required: "required*",
@@ -132,6 +131,7 @@ export const getAllData = async (url : string, setData : any, setLoading? : any,
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials:true
       }
     );
 
@@ -141,9 +141,98 @@ export const getAllData = async (url : string, setData : any, setLoading? : any,
         extractedData = response.data[key];
       }
       setData(extractedData);
-      console.log(extractedData)
     }
 
+    if(setLoading){
+      setLoading(false);
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const responseData = axiosError.response?.data;
+      if (
+        typeof responseData === "object" &&
+        responseData !== null &&
+        "error" in responseData
+      ) {
+        if(showSnackbar){
+          showSnackbar(responseData.error as string, "error");
+        }
+        console.error(responseData.error)
+      }
+    }
+  } finally {
+    if(setLoading){
+      setLoading(false);
+    }
+  }
+}
+
+export const insertData = async (url : string, stringifiedData : any, setLoading? : any,  showSnackbar? : any) => {
+  try {
+    if(setLoading){
+      setLoading(true);
+    }
+    const response = await axios.post(
+      `http://localhost:8080/api${url}`,
+      stringifiedData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      showSnackbar(response.data.message, 'success');
+    }
+    if(setLoading){
+      setLoading(false);
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const responseData = axiosError.response?.data;
+      if (
+        typeof responseData === "object" &&
+        responseData !== null &&
+        "error" in responseData
+      ) {
+        if(showSnackbar){
+          showSnackbar(responseData.error as string, "error");
+        }
+        console.error(responseData.error)
+      }
+    }
+  } finally {
+    if(setLoading){
+      setLoading(false);
+    }
+  }
+}
+export const updateData = async (url : string, stringifiedData : any, setLoading? : any,  showSnackbar? : any, setModal? :any) => {
+  try {
+    if(setLoading){
+      setLoading(true);
+    }
+    const response = await axios.put(
+      `http://localhost:8080/api${url}`,
+      stringifiedData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      // showSnackbar(response.data.message, 'success');
+      if(setModal){
+        setModal(false);
+      }
+    }
     if(setLoading){
       setLoading(false);
     }

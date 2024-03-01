@@ -3,9 +3,9 @@ import { SlSizeActual } from "react-icons/sl";
 import { TbAirConditioning } from "react-icons/tb";
 import { ROOM_FACILITIES } from "../../../utils/IconData";
 import RoomTypeCard from "../RoomTypeCards/RoomTypeCards";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { useInView } from 'react-intersection-observer';
-export default function RoomDetail({ room }: { room: Room }) {
+export default function RoomDetail({ room, handleCart }: { room: Room , handleCart: (room : Room) => void}) {
   const ref = useRef();
 
   const { ref: leftContainerRef, inView: isFixed } = useInView({
@@ -61,9 +61,9 @@ export default function RoomDetail({ room }: { room: Room }) {
           </div>
         </div>
         <div className={style.rightContainer}>
-          <RoomTypeCard room={room} />
-          <RoomTypeCard room={room} />
-          <RoomTypeCard room={room} />
+          <RoomTypeCard room={room} handleCart={handleCart}/>
+          <RoomTypeCard room={room} handleCart={handleCart}/>
+          <RoomTypeCard room={room} handleCart={handleCart}/>
         </div>
       </div>
     </div>

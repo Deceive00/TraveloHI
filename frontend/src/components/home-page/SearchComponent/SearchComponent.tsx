@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { IoAirplane } from "react-icons/io5";
 import SearchFlight from "../../Flight/SearchFlight";
 import { useUser } from "../../../context/UserContext";
-import { ISearchHistory } from "../../../interface/IUser-interface";
 const FILTER_OPTIONS = [
   "Hotels",
   "Villas",
@@ -54,7 +53,6 @@ const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
       setCountryResults(countries);
       setCityResults(cities);
       setHotelResults(hotels);
-      console.log(searchHistories)
       setSearchHistoriesResults(searchHistories);
 
     } catch (error) {

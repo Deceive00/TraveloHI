@@ -66,9 +66,9 @@ func (hf *HotelFacilities) BeforeCreate(tx *gorm.DB) error {
 }
 
 type HotelRooms struct {
+	gorm.Model
 	HotelID         uint     `json:"hotelId"`
-	Hotels          Hotels   `gorm:"foreignKey:HotelID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	RoomTypeID      uint     `json:"roomTypeId"`
+	Hotels          Hotels   `gorm:"foreignKey:HotelID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 	RoomName        string   `json:"roomName"`
 	RoomPrice       float64  `json:"roomPrice"`
 	RoomCapacity    int      `json:"roomCapacity"`

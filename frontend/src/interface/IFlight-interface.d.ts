@@ -15,7 +15,7 @@ interface ISeats{
 interface ISeatClass{
   ID: string;
   seatClass: string;
-	mutliplier: number;
+	multiplier: number;
 }
 
 interface IFlight{
@@ -66,3 +66,22 @@ interface ICountry{
   countryName: string;
 }
 
+
+interface ISearchFlight {
+  countries: Country[];
+  cities: City[];
+  airports: IAirport[];
+  searchHistories: ISearchHistory[];
+}
+
+interface ITickets{
+  Flight: IFlight;
+  ID: int;
+  Seat: ISeats;
+  addOnBaggageWeight: number;
+  flightId: int;
+  flightScheduleId: int;
+  seatId: int;
+  status: "Cart";
+  userId: int;
+}

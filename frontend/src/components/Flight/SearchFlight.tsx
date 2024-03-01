@@ -8,11 +8,8 @@ import Loading from "../Loading/Loading";
 import axios from "axios";
 import { debounce } from "lodash";
 import CustomSelectContainer from "../Search/CustomSelectContainer";
-interface ISearchFlight {
-  countries: Country[];
-  cities: City[];
-  airports: IAirport[];
-}
+import { useUser } from "../../context/UserContext";
+
 const FILTER_OPTIONS = [
   "Business Class",
   "First Class",
@@ -52,15 +49,15 @@ export default function SearchFlight() {
       )}&departureDate=${encodeURIComponent(date || "")}`
     );
   };
+  const {user} = useUser();
   const debouncedSearch = debounce(async (term: string, type: string) => {
     try {
       const response = await axios.get(
         "http://localhost:8080/api/flight/search-name",
         {
-          params: { term },
+          params: { term, userId: user?.id},
         }
       );
-      console.log(response.data)
       if(type === 'departure'){
         setDepartureData(response.data);
       }

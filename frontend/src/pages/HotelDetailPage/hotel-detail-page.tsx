@@ -9,7 +9,7 @@ import { FaCircle } from "react-icons/fa";
 import { useUser } from "../../context/UserContext";
 import { HOTEL_DETAIL_REASONS } from "../../utils/Items";
 import HotelDetailReasonCard from "../../components/HotelDetail/HotelDetailReasonCard/HotelDetailReasonCard";
-import { getAllData } from "../../utils/utils";
+import { getAllData, insertData } from "../../utils/utils";
 import ReviewCard from "../../components/HotelDetail/ReviewCard/ReviewCard";
 import { FACILITY_ICONS } from "../../utils/IconData";
 import { IoChevronDown } from "react-icons/io5";
@@ -18,6 +18,8 @@ import Footer from "../../components/footer/Footer";
 import Middleware from "../../components/auth/Middleware";
 import TextField from "../../components/form/Textfield";
 import { useForm } from "react-hook-form";
+import { useCurrency } from "../../context/CurrencyContext";
+import Modal from "../../components/Modal/Modal";
 
 interface HotelDetailNavigationTab {
   name: string;
@@ -36,11 +38,18 @@ export default function HotelDetailPage() {
   const [loading, setLoading] = useState(false);
   const [isFixedNavigationTab, setIsFixedNavigationTab] = useState(false);
   const navigationTabRef = useRef<HTMLDivElement>(null);
+  const [selectedRoom, setSelectedRoom] = useState<Room>();
   const { user } = useUser();
   const [reviews, setReviews] = useState<Review[]>([]);
-  const { register, handleSubmit, formState: { errors }, watch} = useForm();
-  const [isBuyNow, setIsBuyNow] = useState(true);
-  const inputtedDate = watch()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+  const inputData = watch();
+  const { getCurrency, convertPrice } = useCurrency();
+  const [isOpenAddToCart, setIsOpenAddToCart] = useState(false);
   const [navigationTab, setNavigationTab] = useState<
     Array<HotelDetailNavigationTab>
   >([
@@ -140,7 +149,9 @@ export default function HotelDetailPage() {
               totalRoom: room.totalRoom,
               roomSize: room.roomSize,
               roomBed: room.roomBed,
-              roomPicture: room.roomPicture
+              roomPicture: room.roomPicture,
+              hotelId: room.hotelId,
+              roomTypeId: room.roomTypeId,
             };
           });
 
@@ -173,7 +184,6 @@ export default function HotelDetailPage() {
       setLoading,
       showSnackbar
     );
-      
   }, [hotelId]);
 
   useEffect(() => {
@@ -263,10 +273,26 @@ export default function HotelDetailPage() {
   };
   const formattedRating = hotel?.overallRating.toFixed(1);
 
+  const onSubmit = (data : any) => {
+    const stringifiedData = JSON.stringify({
+      checkInDate: data.checkInDateCart,
+      checkOutDate: data.checkOutDateCart,
+      totalRooms: parseInt(data.totalRoomsCart, 10),
+      hotelId: selectedRoom?.hotelId,
+      roomTypeId: selectedRoom?.roomTypeId
+    });
+    insertData('/hotel/cart', stringifiedData, setLoading, showSnackbar);
+    setIsOpenAddToCart(false);
+  };
 
-  const onSubmit = () => {
+  useEffect(() => {
+    console.log(loading)
+  }, [loading]);
 
-  }
+  const handleCart = (room: Room) => {
+    setSelectedRoom(room);
+    setIsOpenAddToCart(true);
+  };
   return (
     <MainTemplate>
       <Middleware>
@@ -305,14 +331,12 @@ export default function HotelDetailPage() {
                   })}
             </div>
           </div>
-          {isFixedNavigationTab && (
-            <div style={{height:'5vh'}}></div>
-          )}
+          {isFixedNavigationTab && <div style={{ height: "5vh" }}></div>}
           <div
             className={style.navigationTab}
             style={{
               position: isFixedNavigationTab ? "fixed" : "static",
-              top: isFixedNavigationTab ? "8vh" :0,
+              top: isFixedNavigationTab ? "8vh" : 0,
               width: isFixedNavigationTab ? "80%" : "100%",
             }}
             ref={navigationTabRef}
@@ -362,7 +386,8 @@ export default function HotelDetailPage() {
               <div className={style.topRightGeneralInformation}>
                 <p style={{ textAlign: "end" }}>Start from</p>
                 <h5 className={style.hotelMinimumPrice}>
-                  $ {getMinimumPrice(rooms)}
+                  {getCurrency()}{" "}
+                  {convertPrice(getMinimumPrice(rooms)).toLocaleString()}
                 </h5>
                 <p style={{ textAlign: "end" }}>/room/night</p>
                 <button className={style.seeRoomButton}>See Rooms</button>
@@ -393,8 +418,13 @@ export default function HotelDetailPage() {
             <div className={style.bottomGeneralInformation}>
               <h2>The Fun Awaits</h2>
               <div className={style.hotelDetailReasonCardContainer}>
-                {HOTEL_DETAIL_REASONS.map((reason: any) => {
-                  return <HotelDetailReasonCard reason={reason} key={reason.title} />;
+                {HOTEL_DETAIL_REASONS.map((reason: any, index: number) => {
+                  return (
+                    <HotelDetailReasonCard
+                      reason={reason}
+                      key={`${reason.title} ${index}`}
+                    />
+                  );
                 })}
               </div>
             </div>
@@ -413,117 +443,174 @@ export default function HotelDetailPage() {
               </div>
             </div>
             <div className={style.bottomRatingContainer}>
-              {
-                !reviews && (
-                  <div className={style.noReviewYet}>
-                    <h1>No review yet</h1>
-                  </div>
-                )
-              }
-              {reviews?.length > 0 && reviews?.map((review) => {
- 
-                return <ReviewCard review={review} />;
-              })}
+              {!reviews && (
+                <div className={style.noReviewYet}>
+                  <h1>No review yet</h1>
+                </div>
+              )}
+              {reviews?.length > 0 &&
+                reviews?.map((review, index: number) => {
+                  return <ReviewCard review={review} key={`${index}`} />;
+                })}
             </div>
           </div>
           <div className={style.divider}></div>
           <div
             ref={navigationTab[2].sectionRef}
             className={`${style.facilities}`}
-          
           >
             <p className={style.sectionHeader}>Facilities</p>
             <div className={style.facilityListContainer}>
-              {
-                facilities.map((facility : Facility) => {
-                  return(
-                    <div className={style.facilityList} key={facility.facilityName}>
-                      {FACILITY_ICONS[facility.facilityName as keyof typeof FACILITY_ICONS]}
-                      <p>{facility.facilityName}</p>
-                    </div>
-                  )
-                })
-              }
+              {facilities.map((facility: Facility) => {
+                return (
+                  <div
+                    className={style.facilityList}
+                    key={facility.facilityName}
+                  >
+                    {
+                      FACILITY_ICONS[
+                        facility.facilityName as keyof typeof FACILITY_ICONS
+                      ]
+                    }
+                    <p>{facility.facilityName}</p>
+                  </div>
+                );
+              })}
             </div>
-            <span>See all <IoChevronDown/></span>
+            <span>
+              See all <IoChevronDown />
+            </span>
           </div>
           <div className={style.divider}></div>
-          <div
-            ref={navigationTab[3].sectionRef}
-            className={`${style.about}`}
-          >
+          <div ref={navigationTab[3].sectionRef} className={`${style.about}`}>
             <p className={style.sectionHeader}>About {hotel?.hotelName}</p>
             <p className={style.hotelDescription}>{hotel?.hotelDescription}</p>
-            <p className={style.seeMore}>See more <IoChevronDown/></p>
+            <p className={style.seeMore}>
+              See more <IoChevronDown />
+            </p>
           </div>
           <div className={style.divider}></div>
-          <div
-            ref={navigationTab[4].sectionRef}
-            className={`${style.rooms}`}
-       
-          >
+          <div ref={navigationTab[4].sectionRef} className={`${style.rooms}`}>
             <p className={style.sectionHeader}>Room Type and Price</p>
-            <form className={style.dateForm} onSubmit={handleSubmit(onSubmit)}>
+            <div className={style.dateForm}>
               <div className={style.dateInputContainer}>
-                <TextField 
+                <TextField
                   label="Check-in date"
                   name="checkInDate"
                   error={errors.checkInDate}
                   register={register}
-                  rules={{required: 'required*'}}
+                  rules={{}}
                   type="date"
                 />
               </div>
               <div className={style.dateInputContainer}>
-                <TextField 
+                <TextField
                   label="Check-out date"
                   name="checkOutDate"
                   error={errors.checkOutDate}
                   register={register}
-                  rules={{required: 'required*'}}
+                  rules={{}}
                   type="date"
                 />
               </div>
               <div className={style.dateInputContainer}>
-                <TextField 
+                <TextField
                   label="Total Guests"
                   name="totalGuest"
                   error={errors.totalGuest}
                   register={register}
-                  rules={{required: 'required*'}}
+                  rules={{}}
                   type="number"
                   defaultValue={2}
                 />
               </div>
               <div className={style.dateInputContainer}>
-                <TextField 
+                <TextField
                   label="Total Rooms"
-                  name="totalRoom"
-                  error={errors.totalRoom}
+                  name="totalRooms"
+                  error={errors.totalRooms}
                   register={register}
-                  rules={{required: 'required*'}}
+                  rules={{}}
                   type="number"
                   defaultValue={2}
                 />
               </div>
-            </form>
+            </div>
             <div className={style.roomListContainer}>
-              {
-                rooms.map((room : Room, index: number) => (
-                  <RoomDetail room={room} key={index}/>
-                ))
-              }
+              {rooms.map((room: Room, index: number) => (
+                <RoomDetail handleCart={handleCart} room={room} key={index} />
+              ))}
             </div>
           </div>
         </div>
-        <Footer/>
+        <Modal
+          isOpen={isOpenAddToCart}
+          onRequestClose={() => setIsOpenAddToCart(false)}
+        >
+          <form
+            className={style.addToCartForm}
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <h3>Add To Cart</h3>
+            <div className={style.addToCartContent}>
+              <div className={style.addToCartInput}>
+                <TextField
+                  label="Check-in date"
+                  name="checkInDateCart"
+                  error={errors.checkInDateCart}
+                  register={register}
+                  rules={{ required: "required*" }}
+                  type="date"
+                  defaultValue={inputData['checkInDate']}
+                />
+              </div>
+              <div className={style.addToCartInput}>
+                <TextField
+                  label="Check-out date"
+                  name="checkOutDateCart"
+                  error={errors.checkOutDateCart}
+                  register={register}
+                  rules={{ required: "required*" }}
+                  type="date"
+                  defaultValue={inputData['checkOutDate']}
+                />
+              </div>
+              <div className={style.addToCartInput}>
+                <TextField
+                  label="Total Guests"
+                  name="totalGuestCart"
+                  error={errors.totalGuestCart}
+                  register={register}
+                  rules={{ required: "required*" }}
+                  type="number"
+                  defaultValue={2}
+                />
+              </div>
+              <div className={style.addToCartInput}>
+                <TextField
+                  label="Total Rooms"
+                  name="totalRoomsCart"
+                  error={errors.totalRoomsCart}
+                  register={register}
+                  rules={{ required: "required*" }}
+                  type="number"
+                  defaultValue={inputData['totalRooms']}
+                />
+              </div>
+            </div>
+            <div className={style.cartButtonContainer}>
+                <button className={style.outlineButton}>Cancel</button>
+                <button className={style.addButton}>Add to Cart</button>
+            </div>
+          </form>
+        </Modal>
+        <Footer />
         <Snackbar
           message={snackbarMessage}
           type={snackbarType}
           show={snackbarOpen}
           setShow={setSnackbarOpen}
         />
-        
       </Middleware>
     </MainTemplate>
   );

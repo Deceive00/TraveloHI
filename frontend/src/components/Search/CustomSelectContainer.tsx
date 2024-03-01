@@ -1,11 +1,7 @@
 import React from "react";
 import style from "./CustomSelectContainer.module.scss";
 import { MdLocalAirport } from "react-icons/md";
-interface ISearchFlight {
-  countries: Country[];
-  cities: City[];
-  airports: IAirport[]
-}
+
 interface ICustomSelectContainerProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,7 +19,7 @@ const CustomSelectContainer: React.FC<ICustomSelectContainerProps> = ({
   options,
   handleNameOptionsClicked,
 }) => {
-  console.log(options)
+  console.log(options);
   return (
     <div className={style.customSelectContainer}>
       <div className={style.selectContainer}>
@@ -41,43 +37,51 @@ const CustomSelectContainer: React.FC<ICustomSelectContainerProps> = ({
         </div>
         {isOpen && (
           <ul className={style.optionsList}>
-          {options?.countries.map((option: Country, index: any) => (
-            <li
-              key={index}
-              className={style.option}
-              onClick={() =>
-                handleNameOptionsClicked(option.countryName)
-              }
-            >
-              <span>{option.countryName}</span>{" "}
-              <span className={style.nameType}>Country</span>
-            </li>
-          ))}
-          {options?.cities.map((option: City, index: any) => (
-            <li
-              key={index}
-              className={style.option}
-              onClick={() =>
-                handleNameOptionsClicked(option.cityName)
-              }
-            >
-              <span>{option.cityName}</span>{" "}
-              <span className={style.nameType}>City</span>
-            </li>
-          ))}
-          {options?.airports.map((option: IAirport, index: any) => (
-            <li
-              key={index}
-              className={style.option}
-              onClick={() =>
-                handleNameOptionsClicked(option.airportName)
-              }
-            >
-              <span>{option.airportName} ({option.airportCode})</span>{" "}
-              <span className={style.nameType}>Airport</span>
-            </li>
-          ))}
-        </ul>
+            {options?.searchHistories.map(
+              (option: ISearchHistory, index: any) => (
+                <li
+                  key={index}
+                  className={style.option}
+                  onClick={() => handleNameOptionsClicked(option.searchTerm)}
+                >
+                  <span>{option.searchTerm}</span>{" "}
+                  <span className={style.nameType}>Before</span>
+                </li>
+              )
+            )}
+            {options?.countries.map((option: Country, index: any) => (
+              <li
+                key={index}
+                className={style.option}
+                onClick={() => handleNameOptionsClicked(option.countryName)}
+              >
+                <span>{option.countryName}</span>{" "}
+                <span className={style.nameType}>Country</span>
+              </li>
+            ))}
+            {options?.cities.map((option: City, index: any) => (
+              <li
+                key={index}
+                className={style.option}
+                onClick={() => handleNameOptionsClicked(option.cityName)}
+              >
+                <span>{option.cityName}</span>{" "}
+                <span className={style.nameType}>City</span>
+              </li>
+            ))}
+            {options?.airports.map((option: IAirport, index: any) => (
+              <li
+                key={index}
+                className={style.option}
+                onClick={() => handleNameOptionsClicked(option.airportName)}
+              >
+                <span>
+                  {option.airportName} ({option.airportCode})
+                </span>{" "}
+                <span className={style.nameType}>Airport</span>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </div>

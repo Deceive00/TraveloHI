@@ -14,6 +14,7 @@ import EnglishFlag from '/images/language/united-kingdom.png';
 import { useCurrency } from "../../context/CurrencyContext";
 import { HiChevronDown } from "react-icons/hi2";
 import PayContent from "./NavbarPopover/PayContent";
+import { BiCart } from "react-icons/bi";
 export default function Navbar() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
@@ -72,6 +73,9 @@ export default function Navbar() {
           {/* <Searchbar/> */}
         </div>
         <div className={style.rightNavbarContainer}>
+          <div className={style.cart} onClick={() => navigate('/cart')}>
+            <BiCart/>
+          </div>
           <div className={style.language}>
             <span onClick={handlePaySelectorClick} className={style.languageContainer}>
               Pay <HiChevronDown/>

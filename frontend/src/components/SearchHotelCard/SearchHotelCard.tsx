@@ -7,9 +7,11 @@ import logo from "/images/travelohiLogo.png";
 import { FaHotel } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
 import { HiMiniReceiptRefund } from "react-icons/hi2";
+import { useCurrency } from "../../context/CurrencyContext";
 export default function SearchHotelCard({ hotel }: { hotel: HotelSearch }) {
   const formattedRating = hotel?.overallRating.toFixed(1);
   const navigate = useNavigate();
+  const {getCurrency, convertPrice} = useCurrency();
   const handleClick = () => {
 
     navigate(`/hotel-detail/${hotel.id}`)
@@ -80,8 +82,8 @@ export default function SearchHotelCard({ hotel }: { hotel: HotelSearch }) {
       </div>
       <div className={style.rightSearchHotelCard}>
         <div className={style.rightContainer}>
-          <h5>$ {(getMinimumPrice(hotel.rooms) * 110) / 100}</h5>
-          <h4>$ {getMinimumPrice(hotel.rooms)}</h4>
+          <h5>{getCurrency()} {convertPrice((getMinimumPrice(hotel.rooms) * 110) / 100).toLocaleString()}</h5>
+          <h4>{getCurrency()} {convertPrice(getMinimumPrice(hotel.rooms)).toLocaleString()}</h4>
           <span>Per room, per night</span>
           <div className={style.selectRoomBtnContainer}>
             <button className={style.selectRoomBtn}>Select Room</button>

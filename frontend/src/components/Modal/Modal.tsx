@@ -1,6 +1,7 @@
 // Modal.js
 import React, { useRef } from "react";
 import styles from './Modal.module.scss';
+import { IoClose } from "react-icons/io5";
 
 const Modal: React.FC<{
   isOpen: boolean;
@@ -20,6 +21,17 @@ const Modal: React.FC<{
   return (
     <div className={modalClasses} onClick={handleClick}>
       <div ref={contentRef} className={contentClasses} onClick={(e) => e.stopPropagation()}>
+        <IoClose
+          style={{
+            position: "absolute",
+            right: "0.5vw",
+            top: "0.5vw",
+            width: "2rem",
+            height: "2rem",
+            cursor: "pointer"
+          }}
+          onClick={onRequestClose}
+        />
         {children}
       </div>
     </div>

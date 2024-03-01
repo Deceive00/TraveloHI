@@ -4,6 +4,7 @@ interface ICurrencyContextProps {
   currency: string;
   setCurrency: (currency: string) => void;
   getCurrency: () => string;
+  convertPrice: (price: number) => number;
 }
 
 const CurrencyContext = createContext<ICurrencyContextProps | undefined>(undefined);
@@ -21,12 +22,21 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return 'IDR'
     }
   }
+  const convertPrice = (price: number) => {
+    if(currency === 'USD'){
+      return price;
+    }
+    else{
+      return price * 15650
+    }
+  }
+
   useEffect(() => {
     localStorage.setItem('currency', currency);
   }, [currency]);
 
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, getCurrency }}>
+    <CurrencyContext.Provider value={{ currency, setCurrency, getCurrency, convertPrice }}>
       {children}
     </CurrencyContext.Provider>
   );

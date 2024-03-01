@@ -361,8 +361,6 @@
     padding-block: 2vh;
     .topGeneralInformation {
       .topLeftGeneralInformation {
-        .typeAndStarContainer {
-        }
         .locationAndRatingContainer {
           .ratingContainer {
             flex-direction: column;
@@ -397,4 +395,49 @@
 .dateInputContainer{
   width: 23%;
   height: 100%;
+}
+
+.addToCartForm{
+  width: calc(20rem + 10vw);
+  h3{
+    font-size:calc(15px + 0.4vw);
+    margin-bottom: 2vh;
+  }
+}
+
+.addToCartContent{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vh;
+}
+
+.addToCartInput{
+  width: 100%;
+}
+
+.cartButtonContainer{
+  display: flex;
+  margin-top: 2vh;
+  justify-content: end;
+  width: 100%;
+  gap: 1vw
+
+}
+
+.addButton{
+  @include customButton($blue, $blue-onhover);
+}
+.outlineButton{
+  padding: 10px 15px;
+  border-radius: 6px;
+  background: $background-color;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: calc(0.5rem + 0.3vw);
+  border: 1px solid $blue;
+  color: $text-color;
+  &:hover {
+    background: $hover-dark-background;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
 }

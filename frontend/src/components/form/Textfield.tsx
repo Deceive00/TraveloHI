@@ -4,7 +4,6 @@ import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 
 const TextField = ({ label, name, type, register, rules, error, defaultValue }: { label: string, name: string, type: string, register: any, rules: any, error: any, defaultValue?: any }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };

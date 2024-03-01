@@ -130,7 +130,7 @@
 
 .centerContent {
   border-radius: 20px;
-  margin-top: 10vh;
+  margin-top: 8vh;
   border: 1px solid var(--secondary-text-color);
   // width: calc(20rem + 25vw);
   width: 100%;
@@ -326,5 +326,21 @@
 @media (max-width: 768px){
   .flightDetailContainer{
     padding-inline: 3vw;
+  }
+}
+
+.outlineButton{
+  padding: 10px 15px;
+  width: 48%;
+  border-radius: 6px;
+  background: $background-color;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: calc(0.5rem + 0.3vw);
+  border: 1px solid $blue;
+  color: $text-color;
+  &:hover {
+    background: $hover-dark-background;
+    transition: 0.3s;
   }
 }
