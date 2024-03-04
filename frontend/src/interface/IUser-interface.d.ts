@@ -10,6 +10,8 @@ interface IUser{
   securityQuestions: SecurityQuestion[];
   profilePicture: string;
   walletCredits: number;
+  phoneNumber: string;
+  address: string;
 };
 
 interface SecurityQuestion{

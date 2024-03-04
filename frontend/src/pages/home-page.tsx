@@ -37,11 +37,11 @@ export default function HomePage() {
   };
   useEffect(() => {
     getPromotion();
-    // const intervalId = setInterval(() => {
-    //   getPromotion();
-    // }, 500); 
+    const intervalId = setInterval(() => {
+      getPromotion();
+    }, 500); 
 
-    // return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleNextPromotion = () => {

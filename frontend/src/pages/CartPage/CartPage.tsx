@@ -22,6 +22,7 @@ import { isArray, round } from "lodash";
 import { BiWallet } from "react-icons/bi";
 import axios, { AxiosError } from "axios";
 import Loading from "../../components/Loading/Loading";
+import { useNavigate } from "react-router-dom";
 
 interface IProduct {
   flightCarts: IFlightCarts[];
@@ -48,6 +49,7 @@ export default function CartPage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarType, setSnackbarType] = useState("error");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<CheckoutStep>(
     CheckoutStep.CART
   );
@@ -299,7 +301,7 @@ export default function CartPage() {
               {currentStep === CheckoutStep.SUCCESS && (
                 <div>
                   <h2>Succesfully paid</h2>
-                  <button className={style.updateButton}>Go To History</button>
+                  <button className={style.updateButton} onClick={() => navigate('/history')}>Go To History</button>
                 </div>
               )}
               {currentStep !== CheckoutStep.SUCCESS && (

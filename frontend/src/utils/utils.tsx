@@ -13,6 +13,9 @@ export const uploadImage = async (filename : any, photo : any) => {
 const currentDate = new Date();
 
 export const rules = {
+  'address':{
+    required: 'required*',
+  },
   'name' : {
     required: 'required*',
     minLength: { value: 5, message: 'Name must be at least 5 characters.' },
@@ -61,6 +64,12 @@ export const rules = {
   },
   profilePicture:{
 
+  },
+  phoneNumber:{
+    pattern: {
+      value: /^[0-9]+$/, 
+      message: "Phone number must contain only numeric digits"
+    }
   }
 } 
 

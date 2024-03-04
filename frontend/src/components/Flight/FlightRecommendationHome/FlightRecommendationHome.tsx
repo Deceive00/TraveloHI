@@ -9,7 +9,8 @@ export default function FlightRecommendationHome(){
   useEffect(() => {
     getAllData('/flights', setFlightData);
 
-  }, [])
+  }, []);
+  console.log(flightData)
 
   return(
     <div className={style.container}>

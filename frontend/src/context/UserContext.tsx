@@ -72,6 +72,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           securityQuestions: userData.securityQuestions,
           profilePicture: userData.profilePicture,
           walletCredits: userData.walletCredits,
+          phoneNumber: userData.phoneNumber,
+          address: userData.address,
         });
       } else {
         console.log("Failed to fetch user data");

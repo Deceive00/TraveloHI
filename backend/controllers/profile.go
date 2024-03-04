@@ -22,6 +22,8 @@ func UpdateProfileController(c *fiber.Ctx) error {
 		Gender         string `json:"gender"`
 		ProfilePicture string `json:"profilePicture"`
 		IsSubscribe    bool   `json:"isSubscribe"`
+		Address        string `json:"address"`
+		PhoneNumber    string `json:"phoneNumber"`
 	}
 	var requestBody UpdateProfileRequest
 
@@ -31,18 +33,24 @@ func UpdateProfileController(c *fiber.Ctx) error {
 			"error": "Invalid Request Body",
 		})
 	}
-	if requestBody.DateOfBirth == ""  || requestBody.Gender == "" || requestBody.ProfilePicture == ""  || requestBody.FirstName == "" || requestBody.LastName == "" || requestBody.Email == ""{
+	if requestBody.DateOfBirth == "" || requestBody.Gender == "" || requestBody.ProfilePicture == "" || requestBody.FirstName == "" || requestBody.LastName == "" || requestBody.Email == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Please fill all the fields",
 		})
 	}
-
+	if requestBody.PhoneNumber != ""{
+		if _, err := strconv.Atoi(requestBody.PhoneNumber); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"error": "Phone number must contain only numeric digits",
+			})
+	}
+	}
 	if len(requestBody.FirstName) < 5 || len(requestBody.LastName) < 5 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "First name and last name must be more than 5 characters",
 		})
 	}
-	if !services.ValidateEmailFormat(requestBody.Email){
+	if !services.ValidateEmailFormat(requestBody.Email) {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Email format is not valid",
 		})
@@ -119,12 +127,12 @@ func AddCreditCardController(c *fiber.Ctx) error {
 			"error": "Invalid Request Body",
 		})
 	}
-	
+
 	if requestBody.AccountName == "" || requestBody.AccountNumber == "" || requestBody.BankName == "" || requestBody.CVV == "" {
-    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-      "error": "Please fill all the fields",
-    })
-  }
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Please fill all the fields",
+		})
+	}
 
 	userID, ok := c.Locals("userID").(uint)
 	if !ok {
@@ -205,6 +213,7 @@ func GetCreditCard(c *fiber.Ctx) error {
 	})
 
 }
+
 // RemoveCreditCardController removes a credit card associated with the authenticated user.
 // @Summary Remove credit card
 // @Description Removes the specified credit card associated with the authenticated user.

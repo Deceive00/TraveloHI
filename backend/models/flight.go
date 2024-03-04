@@ -13,6 +13,7 @@ type Flights struct {
 	IsIncludeBaggage bool    `json:"isIncludeBaggage"`
 	BaggageMaxWeight int     `json:"baggageMaxWeight"`
 	CabinMaxWeight   int     `json:"cabinMaxWeight"`
+	ClickCount int `json:"clickCount"`
 }
 
 type FlightSegment struct {

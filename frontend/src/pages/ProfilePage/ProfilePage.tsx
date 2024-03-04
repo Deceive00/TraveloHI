@@ -28,7 +28,9 @@ export default function ProfilePage() {
     lastName: watch('lastName', ''),
     email: watch('email', ''),
     dob: watch('dob', ''),
-    gender: watch('gender', user?.gender)
+    gender: watch('gender', user?.gender),
+    phoneNumber: watch('phoneNumber', ''),
+    address: watch('address', ''),
   }
   const [loading, setLoading] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -41,7 +43,9 @@ export default function ProfilePage() {
         currentData.email === user?.email && 
         currentData.dob === user?.dob && 
         isSubscribe === user?.isSubscribe && 
-        currentData.gender === user?.gender){
+        currentData.gender === user?.gender &&
+        currentData.phoneNumber === user?.phoneNumber &&
+        currentData.address === user?.address){
           return true;
         }
     return false;
@@ -224,6 +228,30 @@ export default function ProfilePage() {
                           Female
                         </label>
                       </div>
+                    </div>
+                  </div>
+                  <div className={style.halfContainer}>
+                    <div className={style.halfContentContainer}>
+                      <TextField
+                        label="Phone Number"
+                        name="phoneNumber"
+                        type="text"
+                        register={register}
+                        rules={rules.phoneNumber}
+                        error={errors.phoneNumber}
+                        defaultValue={user?.phoneNumber}
+                      />
+                    </div>
+                    <div className={`${style.halfContentContainer}`}>
+                    <TextField
+                        label="Address"
+                        name="address"
+                        type="text"
+                        register={register}
+                        rules={{}}
+                        error={errors.address}
+                        defaultValue={user?.address}
+                      />
                     </div>
                   </div>
 

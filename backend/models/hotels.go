@@ -26,6 +26,7 @@ type Hotels struct {
 	LocationRating    float64        `json:"locationRating"`
 	ServiceRating     float64        `json:"serviceRating"`
 	OverallRating     float64        `json:"overallRating"`
+	ClickCount int `json:"clickCount"`
 }
 
 type Pictures []string

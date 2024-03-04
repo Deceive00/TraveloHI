@@ -12,7 +12,7 @@ import (
 func GetRecommendationHotel(c *fiber.Ctx) error {
 	var hotels []models.Hotels
 	db := database.GetDB()
-	if err := db.Preload("City.Country").Find(&hotels).Error; err != nil {
+	if err := db.Preload("City.Country").Order("click_count DESC").Limit(8).Find(&hotels).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"error": "No hotels available",
@@ -40,6 +40,11 @@ func GetHotelByID(c *fiber.Ctx) error {
 	db := database.GetDB()
 	var hotel models.Hotels
 	if err := db.First(&hotel, hotelID).Error; err != nil {
+		return err
+	}
+
+	hotel.ClickCount++
+	if err := db.Save(&hotel).Error; err != nil {
 		return err
 	}
 
