@@ -3,7 +3,6 @@ import { storage } from "../../firebase/firebase-config";
 import axios, { AxiosError } from "axios";
 
 export const uploadImage = async (filename : any, photo : any) => {
-  console.log(filename, photo);
   const photoRef = ref(storage, filename);
   
   await uploadBytes(photoRef, photo);
@@ -168,7 +167,7 @@ export const getAllData = async (url : string, setData : any, setLoading? : any,
   }
 }
 
-export const insertData = async (url : string, stringifiedData : any, setLoading? : any,  showSnackbar? : any) => {
+export const insertData = async (url : string, stringifiedData : any, setLoading? : any,  showSnackbar? : any, callback? : any) => {
   try {
     if(setLoading){
       setLoading(true);
@@ -186,6 +185,9 @@ export const insertData = async (url : string, stringifiedData : any, setLoading
 
     if (response.status === 200) {
       showSnackbar(response.data.message, 'success');
+      if(callback){
+        callback()
+      }
     }
     if(setLoading){
       setLoading(false);
@@ -275,4 +277,30 @@ export const getMaximumPrice = (rooms: Room[]) => {
     }
   });
   return maxPrice;
+};
+
+export function formatDateForFlight(dateStr: any | undefined): string {
+  if (!dateStr) return "No Date";
+  const date = new Date(dateStr);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+
+  const formattedDate: string = date.toLocaleDateString("en-US", options);
+
+  const timePart: string = formattedDate.split(", ")[1];
+
+  return formattedDate.replace(timePart, ` ${timePart}`);
+}
+
+export const getTotalDays = (checkInDate: string, checkOutDate: string) => {
+  const oneDay = 24 * 60 * 60 * 1000; 
+  const startDate = new Date(checkInDate);
+  const endDate = new Date(checkOutDate);
+  const totalDays = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / oneDay));
+  return totalDays;
 };

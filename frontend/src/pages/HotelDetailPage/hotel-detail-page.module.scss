@@ -441,3 +441,26 @@
     transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
+
+.topRating{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2vh;
+  p{
+    font-size: $bigger-text-size;
+    font-weight: 900;
+  }
+}
+
+.flexRating{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  svg{
+    color: $blue;
+    width: $bigger-text-size;
+    height: $bigger-text-size;
+  }
+}

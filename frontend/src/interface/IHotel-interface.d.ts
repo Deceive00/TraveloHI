@@ -33,5 +33,5 @@ interface Room{
   roomBed: string;
   roomPicture: string[];
   hotelId: int;
-  roomTypeId: int;
+  roomId: int;
 }

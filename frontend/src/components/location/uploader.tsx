@@ -5,6 +5,7 @@ import Loading from "../Loading/Loading";
 import { MdDelete } from "react-icons/md";
 import { MdDescription } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Checkbox from "../form/Checkbox/Checkbox";
 
 interface UploaderProps {
   onPredict: () => void;
@@ -26,10 +27,20 @@ const Uploader: React.FC<UploaderProps> = ({ onPredict, onNotPredict }) => {
   const [prediction, setPrediction] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const [mode, setMode] = useState("hotel");
+  const handleModeChange = (event: any) => {
+    setMode(event.target.value);
+  };
   const handleSearch = (searchTerm: string) => {
-    navigate(`/hotel/search?term=${encodeURIComponent(searchTerm)}`);
-  }
+    if (mode === "hotel") {
+      navigate(`/hotel/search?term=${encodeURIComponent(searchTerm)}`);
+    }
+    if (mode === "flight") {
+      navigate(
+        `/flight/search?departureAirport=${encodeURIComponent(searchTerm)}`
+      );
+    }
+  };
   const handlePredict = async () => {
     try {
       setLoading(true);
@@ -44,9 +55,9 @@ const Uploader: React.FC<UploaderProps> = ({ onPredict, onNotPredict }) => {
 
       const result = await response.json();
       setPrediction(country[result.predictedIndex - 1]);
-      alert(`${country[result.predictedIndex - 1]}`)
+      alert(`${country[result.predictedIndex - 1]}`);
       setLoading(false);
-      handleSearch(country[result.predictedIndex - 1])
+      handleSearch(country[result.predictedIndex - 1]);
       onPredict();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -94,74 +105,95 @@ const Uploader: React.FC<UploaderProps> = ({ onPredict, onNotPredict }) => {
 
   return (
     <main>
-      {loading ? (
-        <>
-          <Loading />
-        </>
-      ) : (
-        <>
-          {prediction !== "" && (
+      <>
+        {
+          loading && <Loading/>
+        }
+        {prediction !== "" && (
+          <>
+            <p className="result">Hasil Prediksi : {prediction}</p>
+          </>
+        )}
+        <form
+          action=""
+          onClick={() => inputRef.current?.click()}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          className="upload-form"
+        >
+          <input
+            type="file"
+            accept="image/*"
+            className="input-field"
+            ref={inputRef}
+            hidden
+            onChange={({ target: { files } }) => {
+              handleImageChange(files);
+            }}
+          />
+          {image ? (
+            <img
+              src={image}
+              style={{ width: "20vw", height: "20vw" }}
+              alt={filename}
+            />
+          ) : (
             <>
-              <p className="result">Hasil Prediksi : {prediction}</p>
+              <MdBackup style={{ width: "5vw", height: "5vw" }} />
+              <p className="text-3xl">Drag and drop image</p>
+              <p className="pt-6 text-xl">
+                or browse picture from your computer
+              </p>
             </>
           )}
-          <form
-            action=""
-            onClick={() => inputRef.current?.click()}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            className="upload-form"
-          >
-            <input
-              type="file"
-              accept="image/*"
-              className="input-field"
-              ref={inputRef}
-              hidden
-              onChange={({ target: { files } }) => {
-                handleImageChange(files);
-              }}
-            />
-            {image ? (
-              <img
-                src={image}
-                style={{ width: "20vw", height: "20vw" }}
-                alt={filename}
-              />
-            ) : (
-              <>
-                <MdBackup style={{ width: "5vw", height: "5vw" }} />
-                <p className="text-3xl">Drag and drop image</p>
-                <p className="pt-6 text-xl">
-                  or browse picture from your computer
-                </p>
-              </>
-            )}
-          </form>
+        </form>
 
-          <section className="uploaded-row">
-            <MdDescription className="uploader-icon" />
-            <span className="uploaded-content">
-              <p>{filename}</p>
-              <MdDelete
-                onClick={handleDelete}
-                style={{ color: "red" }}
-                className="uploader-icon"
+        <section className="uploaded-row">
+          <MdDescription className="uploader-icon" />
+          <span className="uploaded-content">
+            <p>{filename}</p>
+            <MdDelete
+              onClick={handleDelete}
+              style={{ color: "red" }}
+              className="uploader-icon"
+            />
+          </span>
+        </section>
+        <div style={{ width: "100%", marginBlock: "1vh" }}>
+          <div className="gender-container">
+            <label className="form-control">
+              <input
+                type="radio"
+                name="Hotel"
+                value={"hotel"}
+                checked={mode === "hotel"}
+                onChange={handleModeChange}
               />
-            </span>
-          </section>
-          <button
-            className="submit-button"
-            onClick={handlePredict}
-            style={{
-              marginTop: "2vh",
-              width: "100%",
-            }}
-          >
-            Upload
-          </button>
-        </>
-      )}
+              Hotel
+            </label>
+            <label className="form-control">
+              <input
+                type="radio"
+                name="baggage"
+                value={"flight"}
+                checked={mode === "flight"}
+                onChange={handleModeChange}
+              />
+              Flight
+            </label>
+          </div>
+        </div>
+        <button
+          className="submit-button"
+          onClick={handlePredict}
+          style={{
+            marginTop: "2vh",
+            width: "100%",
+          }}
+        >
+          Upload
+        </button>
+      </>
     </main>
   );
 };

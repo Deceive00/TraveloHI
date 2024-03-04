@@ -14,9 +14,9 @@ import (
 )
 
 type SearchResultResponse struct {
-	Countries []CountryResult `json:"countries"`
-	Cities    []CityResult    `json:"cities"`
-	Hotels    []HotelResult   `json:"hotels"`
+	Countries       []CountryResult        `json:"countries"`
+	Cities          []CityResult           `json:"cities"`
+	Hotels          []HotelResult          `json:"hotels"`
 	SearchHistories []models.SearchHistory `json:"searchHistories"`
 }
 
@@ -75,8 +75,11 @@ func GetSearchResult(c *fiber.Ctx) error {
 	var hotels []models.Hotels
 	db := database.GetDB()
 	var searchHistories []models.SearchHistory
-	
-	if err := db.Where("user_id = ?", userId).Find(&searchHistories).Error; err != nil {
+
+	if err := db.Where("user_id = ?", userId).
+		Order("search_date DESC").
+		Limit(3).
+		Find(&searchHistories).Error; err != nil {
 		return err
 	}
 	if err := db.Select("id, country_name").Where("country_name ILIKE ?", "%"+term+"%").Find(&countries).Error; err != nil {
@@ -103,9 +106,9 @@ func GetSearchResult(c *fiber.Ctx) error {
 	}
 
 	results := SearchResultResponse{
-		Countries: make([]CountryResult, len(countries)),
-		Cities:    make([]CityResult, len(cities)),
-		Hotels:    make([]HotelResult, len(hotels)),
+		Countries:       make([]CountryResult, len(countries)),
+		Cities:          make([]CityResult, len(cities)),
+		Hotels:          make([]HotelResult, len(hotels)),
 		SearchHistories: searchHistories,
 	}
 
@@ -274,7 +277,10 @@ func GetSearchFlightResult(c *fiber.Ctx) error {
 	var searchHistories []models.SearchHistory
 
 	db := database.GetDB()
-	if err := db.Where("user_id = ?", userId).Find(&searchHistories).Error; err != nil {
+	if err := db.Where("user_id = ?", userId).
+		Order("search_date DESC").
+		Limit(3).
+		Find(&searchHistories).Error; err != nil {
 		return err
 	}
 	if err := db.Select("id, country_name").Where("country_name ILIKE ?", "%"+term+"%").Find(&countries).Error; err != nil {
@@ -319,8 +325,79 @@ func GetSearchFlightResult(c *fiber.Ctx) error {
 	}
 	return c.JSON(fiber.Map{
 		"searchHistories": searchHistories,
-		"airports":  results.Airports,
-		"cities":    results.Cities,
-		"countries": results.Countries,
+		"airports":        results.Airports,
+		"cities":          results.Cities,
+		"countries":       results.Countries,
 	})
+}
+
+func GetSearchFlightData(c *fiber.Ctx) error {
+	db := database.GetDB()
+	departureTerm := c.Query("departureTerm")
+	arrivalTerm := c.Query("arrivalTerm")
+	departureDateString := c.Query("departureDate")
+	var departureDate time.Time
+	if departureDateString != "" {
+		departDate, err := time.Parse("2006-01-02", departureDateString)
+		if err != nil {
+			log.Printf("Error parsing departureDate: %v", err)
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Invalid departureDate format",
+			})
+		}
+		departureDate = departDate
+	} else {
+		departureDate = time.Time{}
+	}
+	var arrival string
+	if arrivalTerm != "" {
+		arrival = "%" + arrivalTerm + "%"
+	} else {
+		arrival = ""
+	}
+	var correspondingFlightSegment []models.FlightSegment
+	query := db.Table("flight_segments").
+		Joins("JOIN flight_schedules ON flight_segments.flight_schedule_id = flight_schedules.id").
+		Joins("JOIN flights ON flight_segments.flight_id = flights.id").
+		Joins("JOIN flight_routes ON flight_schedules.flight_route_id = flight_routes.id").
+		Joins("JOIN airports AS departure_airports ON departure_airports.id = flight_routes.departure_airport_id").
+		Joins("JOIN airports AS arrival_airports ON arrival_airports.id = flight_routes.arrival_airport_id").
+		Joins("JOIN cities AS departure_cities ON departure_cities.id = departure_airports.city_id").
+		Joins("JOIN cities AS arrival_cities ON arrival_cities.id = arrival_airports.city_id").
+		Joins("JOIN countries AS departure_countries ON departure_countries.id = departure_cities.country_id").
+		Joins("JOIN countries AS arrival_countries ON arrival_countries.id = arrival_cities.country_id").
+		Where("departure_cities.city_name ILIKE ? OR arrival_cities.city_name ILIKE ? OR departure_countries.country_name ILIKE ? OR arrival_countries.country_name ILIKE ? OR departure_airports.airport_name ILIKE ? OR arrival_airports.airport_name ILIKE ?", "%"+departureTerm+"%", arrival, "%"+departureTerm+"%", arrival, "%"+departureTerm+"%", arrival).
+		Where("DATE(flight_schedules.departure_time) > ?", departureDate.Format("2006-01-02")).
+		Preload("Flight").
+		Preload("FlightSchedule.Airplane.Airline").
+		Preload("FlightSchedule.FlightRoute.DepartureAirport.City.Country").
+		Preload("FlightSchedule.FlightRoute.ArrivalAirport.City.Country")
+
+	if err := query.Find(&correspondingFlightSegment).Error; err != nil {
+		return err
+	}
+
+	flightIndexMap := make(map[uint]int)
+	var flightData []struct {
+		Flight          models.Flights
+		FlightSchedules []models.FlightSchedules
+	}
+
+	for _, fs := range correspondingFlightSegment {
+
+		index, ok := flightIndexMap[fs.FlightID]
+		if !ok {
+			flightData = append(flightData, struct {
+				Flight          models.Flights
+				FlightSchedules []models.FlightSchedules
+			}{
+				Flight: fs.Flight,
+			})
+			flightIndexMap[fs.FlightID] = len(flightData) - 1
+			index = len(flightData) - 1
+		}
+		flightData[index].FlightSchedules = append(flightData[index].FlightSchedules, fs.FlightSchedule)
+	}
+
+	return c.JSON(flightData)
 }

@@ -25,6 +25,7 @@ type Users struct {
 	UpdatedAt         time.Time             `json:"-"`
 	IsLoggedIn        bool                  `json:"isLoggedIn"`
 	LoggedInExpiry    int64             `json:"-"`
+	WalletCredits float64 `json:"walletCredits"`
 }
 
 type SecurityQuestion struct {

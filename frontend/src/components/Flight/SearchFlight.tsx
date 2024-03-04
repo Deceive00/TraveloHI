@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import style from "./SearchFlight.module.scss";
 import parentStyle from "../home-page/SearchComponent/SearchComponent.module.scss";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,15 @@ const FILTER_OPTIONS = [
   "Transit",
 ];
 
-export default function SearchFlight() {
+export default function SearchFlight({defaultValue} : {defaultValue?: any}) {
+
+  useEffect(() => {
+    setDepartureAirport(defaultValue?.departureTerm);
+    setArrivalAirport(defaultValue?.arrivalTerm);
+    if(defaultValue?.departureDate){
+      setDepartureDate(new Date(defaultValue.departureDate))
+    }
+  }, [])
   const [loading, setLoading] = useState(false);
   const [departureData, setDepartureData] = useState<ISearchFlight>();
   const [arrivalData, setArrivalData] = useState<ISearchFlight>();
@@ -100,6 +108,7 @@ export default function SearchFlight() {
               setIsOpen={setIsDepartureOpen}
               options={departureData}
               handleNameOptionsClicked={handleDepartureAirportClicked}
+              defaultValue={defaultValue?.departureTerm}
             />
           </div>
         </div>
@@ -113,6 +122,7 @@ export default function SearchFlight() {
               setIsOpen={setIsArrivalOpen}
               options={arrivalData}
               handleNameOptionsClicked={handleArrivalAirportClicked}
+              defaultValue={defaultValue?.arrivalTerm}
             />
           </div>
         </div>
@@ -151,15 +161,15 @@ export default function SearchFlight() {
         <div className={parentStyle.leftSideSearchButtonContainer}>
           <span>Filter: </span>
           <div className={parentStyle.filterOptionContainer}>
-            {FILTER_OPTIONS.map((item: string) => (
-              <div className={parentStyle.filterOption}>{item}</div>
+            {FILTER_OPTIONS.map((item: string, index : number) => (
+              <div className={parentStyle.filterOption} key={index}>{item}</div>
             ))}
           </div>
         </div>
         <button
           className={parentStyle.searchButton}
           onClick={handleSearch}
-          disabled={departureAirport === "" || arrivalAirport === ""}
+          disabled={departureAirport === "" || arrivalAirport === "" || !departureAirport || !arrivalAirport}
         >
           <p>Search</p>
           <FaArrowRightLong />

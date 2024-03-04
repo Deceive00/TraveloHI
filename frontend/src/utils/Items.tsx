@@ -27,7 +27,7 @@ export const PROFILE_MENU = [
   {
     icon: <FaHistory className='profileMenuIcon'/>,
     text: 'Order History',
-    onClick: '/order-history'
+    onClick: '/history'
   },
   {
     icon: <FaBell className='profileMenuIcon'/>,

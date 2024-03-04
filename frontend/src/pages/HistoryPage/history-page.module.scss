@@ -1,0 +1,49 @@
+@import "../../style/variables/variables.scss";
+@import "../../style/variables/mixins";
+
+
+.content{
+  min-height: 70vh;
+  padding-inline: 10vw;
+  padding-block: 8vh;
+  h1{
+    font-size: calc(16px + 1vw);
+  }
+}
+
+.typeFilter{
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+}
+
+.typeFilter{
+  margin-top: 2vh;
+  button{
+    border: none;
+    background-color: transparent;
+    padding-block: 0.2rem;
+    padding-inline: 0.5vw;
+    border: 1px solid var(--lighter-text-color);
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    font-size: calc(12px + 0.2vw);
+    font-weight: 900;
+    color: var(--lighter-text-color);
+  }
+}
+
+.active{
+  border: 1px solid $blue !important;
+  background-color: $blue !important;
+  color: $secondary-background-color !important;
+  
+}
+
+.productContainer{
+  margin-top: 2vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}

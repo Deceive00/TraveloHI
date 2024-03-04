@@ -1,8 +1,8 @@
 import { CiEdit } from "react-icons/ci";
 import { useCurrency } from "../../../context/CurrencyContext";
-import TextField from "../../form/Textfield";
 import style from "./HotelCartCard.module.scss";
 import defaultImg from "/Background/bg.jpg";
+import { getTotalDays } from "../../../utils/utils";
 export default function HotelCartCard({
   hotelCart,
   handleEdit,
@@ -36,30 +36,31 @@ export default function HotelCartCard({
 
     return dayOfWeek;
   };
-  return (
-    <div className={style.container}>
+  if(hotelCart){
+    return (
+      <div className={style.container}>
       <div className={style.leftContainer}>
         <div className={style.imageContainer}>
-          <img src={defaultImg} alt={defaultImg} />
+          <img src={hotelCart?.Room?.roomPicture[0] || defaultImg} alt={defaultImg} />
         </div>
         <div className={style.hotelDetail}>
-          <h5>{hotelCart.Hotel.hotelName}</h5>
-          <p>{hotelCart.Room.roomName}</p>
+          <h5>{hotelCart?.Hotel.hotelName}</h5>
+          <p>{hotelCart?.Room.roomName}</p>
           <h5 className={style.price}>
             {getCurrency()}
-            {convertPrice(hotelCart.Room.roomPrice).toLocaleString("en-US")}
+            {convertPrice(hotelCart?.Room?.roomPrice).toLocaleString("en-US")}
           </h5>
         </div>
       </div>
 
       <div className={style.rightContainer}>
         <div className={style.topRightContainer}>
-          <CiEdit onClick={() => handleEdit(hotelCart)} />
+          {hotelCart && (<CiEdit onClick={() => handleEdit(hotelCart)} />)}
         </div>
         <div className={style.totalHotelPrice}>
           <p>
             Total price: {getCurrency()}
-            {(hotelCart.Room.roomPrice || 1) * (hotelCart.totalRooms || 1)}
+            {(hotelCart?.Room.roomPrice || 1) * (hotelCart?.totalRooms || 1) * (getTotalDays(hotelCart?.checkInDate, hotelCart?.checkOutDate))}
           </p>
         </div>
         <div className={style.bottomRightContainer}>
@@ -75,5 +76,6 @@ export default function HotelCartCard({
         </div>
       </div>
     </div>
-  );
+    )
+  }
 }

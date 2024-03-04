@@ -4,7 +4,7 @@ import style from "./search-page.module.scss";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Footer from "../../components/footer/Footer";
-import { getAllData, getMinimumPrice } from "../../utils/utils";
+import { getMinimumPrice } from "../../utils/utils";
 import Star from "../../components/Star/Star";
 import Checkbox from "../../components/form/Checkbox/Checkbox";
 import PriceRangeSlider from "../../components/PriceSlider/PriceRangeSlider";
@@ -216,6 +216,7 @@ export default function SearchPage() {
 
       <div className={style.container}>
         <SearchComponent defaultValue={searchTerm} />
+        <h2 style={{textAlign:'left', width:'100%', fontSize:'calc(13px + 0.4vw)'}}>Displaying Results for {searchTerm}</h2>
         <div className={style.content}>
           <div className={style.filter}>
             <div className={style.filterContainer}>

@@ -68,7 +68,7 @@ func (hf *HotelFacilities) BeforeCreate(tx *gorm.DB) error {
 type HotelRooms struct {
 	gorm.Model
 	HotelID         uint     `json:"hotelId"`
-	Hotels          Hotels   `gorm:"foreignKey:HotelID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Hotel          Hotels   `gorm:"foreignKey:HotelID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 	RoomName        string   `json:"roomName"`
 	RoomPrice       float64  `json:"roomPrice"`
 	RoomCapacity    int      `json:"roomCapacity"`
@@ -85,6 +85,9 @@ type HotelRooms struct {
 
 func MigrateHotels(db *gorm.DB) error {
 	err := db.AutoMigrate(&Hotels{}, &Facilities{}, &HotelFacilities{}, &HotelRooms{})
+	if err != nil {
+		return err
+	}
 	return err
 }
 

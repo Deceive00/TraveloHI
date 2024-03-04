@@ -20,6 +20,9 @@ import TextField from "../../components/form/Textfield";
 import { useForm } from "react-hook-form";
 import { useCurrency } from "../../context/CurrencyContext";
 import Modal from "../../components/Modal/Modal";
+import { MdDryCleaning } from "react-icons/md";
+import { BiHappyAlt, BiLocationPlus } from "react-icons/bi";
+import { RiServiceFill } from "react-icons/ri";
 
 interface HotelDetailNavigationTab {
   name: string;
@@ -151,7 +154,7 @@ export default function HotelDetailPage() {
               roomBed: room.roomBed,
               roomPicture: room.roomPicture,
               hotelId: room.hotelId,
-              roomTypeId: room.roomTypeId,
+              roomId: room.roomId,
             };
           });
 
@@ -279,7 +282,7 @@ export default function HotelDetailPage() {
       checkOutDate: data.checkOutDateCart,
       totalRooms: parseInt(data.totalRoomsCart, 10),
       hotelId: selectedRoom?.hotelId,
-      roomTypeId: selectedRoom?.roomTypeId
+      roomId: selectedRoom?.roomId
     });
     insertData('/hotel/cart', stringifiedData, setLoading, showSnackbar);
     setIsOpenAddToCart(false);
@@ -432,14 +435,34 @@ export default function HotelDetailPage() {
           <div className={style.divider}></div>
           <div ref={navigationTab[1].sectionRef} className={`${style.review}`}>
             <p className={style.sectionHeader}>Reviews</p>
-            <div className={style.topRatingContainer}>
-              <p className={style.overallRating}>
-                {formattedRating}
-                <span>/5</span>
-              </p>
-              <div className={style.reviewConclusion}>
-                <h6>Fantastic</h6>
-                <p>From 1000 review</p>
+            <div className={style.topRating}>
+              <div className={style.topRatingContainer}>
+                <p className={style.overallRating}>
+                  {formattedRating}
+                  <span>/5</span>
+                </p>
+                <div className={style.reviewConclusion}>
+                  <h6>Fantastic</h6>
+                  <p>From 1000 review</p>
+                </div>
+              </div>
+              <div className={style.allRating}>
+                <div className={style.flexRating}>
+                  <MdDryCleaning/>
+                  <p>{hotel?.cleanlinessRating.toFixed(1)}</p>
+                </div>
+                <div className={style.flexRating}>
+                  <BiHappyAlt/>
+                  <p>{hotel?.comfortnessRating.toFixed(1)}</p>
+                </div>
+                <div className={style.flexRating}>
+                  <BiLocationPlus/>
+                  <p>{hotel?.locationRating.toFixed(1)}</p>
+                </div>
+                <div className={style.flexRating}>
+                  <RiServiceFill/>
+                  <p>{hotel?.serviceRating.toFixed(1)}</p>
+                </div>
               </div>
             </div>
             <div className={style.bottomRatingContainer}>

@@ -72,60 +72,64 @@ func GetAllFlightData(c *fiber.Ctx) error {
 
 	return c.JSON(flightData)
 }
-
 func GetFlightById(c *fiber.Ctx) error {
 	db := database.GetDB()
 	id := c.Params("id")
 
 	flightID, err := strconv.Atoi(id)
 	if err != nil {
-		return err
+			return err
 	}
 
 	var flightSegments []models.FlightSegment
 	if err := db.
-		Preload("Flight").
-		Preload("FlightSchedule.Airplane.Airline").
-		Preload("FlightSchedule.FlightRoute.DepartureAirport.City.Country").
-		Preload("FlightSchedule.FlightRoute.ArrivalAirport.City.Country").
-		Where("flight_id = ?", flightID).
-		Find(&flightSegments).Error; err != nil {
-		log.Printf("Error fetching flights: %v", err)
-		log.Printf("Query: %s", db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...))
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Internal Server Error",
-		})
+			Preload("Flight").
+			Preload("FlightSchedule.Airplane.Airline").
+			Preload("FlightSchedule.FlightRoute.DepartureAirport.City.Country").
+			Preload("FlightSchedule.FlightRoute.ArrivalAirport.City.Country").
+			Where("flight_id = ?", flightID).
+			Find(&flightSegments).Error; err != nil {
+			log.Printf("Error fetching flights: %v", err)
+			log.Printf("Query: %s", db.Dialector.Explain(db.Statement.SQL.String(), db.Statement.Vars...))
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Internal Server Error",
+			})
 	}
 
 	var flightData struct {
-		Flight          models.Flights
-		FlightSchedules []models.FlightSchedules
-		Seats           [][]models.Seats
+			Flight          models.Flights
+			FlightSchedules []models.FlightSchedules
+			Seats           [][]models.Seats
 	}
 
 	if len(flightSegments) == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "Flight not found",
-		})
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+					"error": "Flight not found",
+			})
 	}
 
 	flightData.Flight = flightSegments[0].Flight
 	for _, segment := range flightSegments {
-		flightData.FlightSchedules = append(flightData.FlightSchedules, segment.FlightSchedule)
+			flightData.FlightSchedules = append(flightData.FlightSchedules, segment.FlightSchedule)
 	}
 
 	var seats [][]models.Seats
-	for _, schedule := range flightData.FlightSchedules{
-		var seat []models.Seats
-		if err := db.Preload("Airplane").Preload("SeatClass").Where("airplane_id = ?", schedule.AirplaneID).Find(&seat).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error":   err.Error(),
-			})
-		}
-		seats = append(seats, seat)
+	for _, schedule := range flightData.FlightSchedules {
+			var seat []models.Seats
+			if err := db.Preload("Airplane").
+					Preload("SeatClass").
+					Where("airplane_id = ?", schedule.AirplaneID).
+					Order("id").
+					Find(&seat).Error; err != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+							"error": err.Error(),
+					})
+			}
+			seats = append(seats, seat)
 	}
-	
+
 	flightData.Seats = seats
 
 	return c.JSON(flightData)
 }
+

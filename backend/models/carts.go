@@ -8,8 +8,8 @@ type HotelCart struct {
 	CheckOutDate string     `json:"checkOutDate"`
 	HotelID      uint       `json:"hotelId"`
 	Hotel        Hotels     `gorm:"foreignKey:HotelID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	RoomTypeID   uint       `json:"roomtypeId"`
-	Room         HotelRooms `gorm:"foreignKey:HotelID;references:HotelID,RoomTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	RoomID   uint       `json:"roomId"`
+	Room         HotelRooms `gorm:"foreignKey:HotelID;references:HotelID,RoomID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 	UserID       uint       `json:"userId"`
 	TotalRooms   int        `json:"totalRooms"`
 	User         Users      `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`

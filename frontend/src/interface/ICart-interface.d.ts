@@ -18,8 +18,13 @@ interface IHotelCarts{
   checkOutDate: string;
   hotelId: int;
   isPaid: boolean;
-  roomTypeId: int;
+  roomId: int;
   totalRooms: number;
   userId: int;
   Hotel: Hotel;
+}
+
+interface IFlightCarts {
+  flightId: number;
+  Tickets: ITickets[];
 }

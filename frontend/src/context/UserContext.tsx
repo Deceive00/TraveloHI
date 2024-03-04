@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 
 interface IUserContextProps {
   user: IUser | null;
@@ -72,6 +71,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           status: userData.status,
           securityQuestions: userData.securityQuestions,
           profilePicture: userData.profilePicture,
+          walletCredits: userData.walletCredits,
         });
       } else {
         console.log("Failed to fetch user data");

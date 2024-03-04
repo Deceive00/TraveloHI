@@ -7,6 +7,7 @@ import SendnewsLetter from "../pages/Admin/SendNewsletter/SendNewsletter";
 import CartPage from "../pages/CartPage/CartPage";
 import FlightDetailPage from "../pages/FlightDetailPage/FlightDetailPage";
 import FlightSearchPage from "../pages/FlightSearchPage/FlightSearchPage";
+import HistoryPage from "../pages/HistoryPage/history-page";
 import HotelDetailPage from "../pages/HotelDetailPage/hotel-detail-page";
 import MyCards from "../pages/MyCardsPage/MyCards";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
@@ -114,5 +115,10 @@ export const MENU_LIST: IMenu[] = [
     element: <CartPage/>,
     name: "Cart",
     path: "/cart"
+  },
+  {
+    element: <HistoryPage/>,
+    name: "History",
+    path: "/history"
   },
 ]

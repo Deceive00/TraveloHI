@@ -1,0 +1,82 @@
+@import "../../../style/variables/mixins";
+@import "../../../style/variables/variables.scss";
+
+.container{
+  padding: 2vw;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 10px;
+  transition: 0.3s;
+  &:hover{
+    box-shadow: $blue 0px 3px 15px 0px;
+    margin-left: 5px;
+  }
+  height: calc(8rem + 5vw);
+}
+.time{
+  .head{
+    text-align: center;
+  }
+  .desc{
+    text-align: center;
+  }
+}
+.leftContainer{
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.topLeftContainer{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  justify-content: flex-start;
+}
+.head{
+  font-size: calc(12px + 0.3vw);
+  font-weight: 800;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+.circle{
+  width:calc(10px + 0.3vw);
+  height:calc(10px + 0.3vw);
+  border-radius: 50%;
+  background-color:$blue;
+
+}
+.desc{
+  font-size: $normal-text-size;
+  color: $secondary-text-color;
+}
+.flex{
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: $normal-text-size;
+  color: $secondary-text-color;
+}
+
+
+.rightContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  justify-content: center;
+}
+
+.unpaid{
+  color: $blue;
+
+}
+
+.status{
+  font-weight: 900;
+}

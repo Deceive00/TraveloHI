@@ -4,9 +4,9 @@ import { FaCircle, FaSuitcase } from "react-icons/fa";
 interface IFlightProgressProps {
   flightData: IFlightData | undefined;
   data: IFlightSchedule | undefined;
-  handleSeat: any;
-  seat: any;
-  selectedSeat: ISeats | undefined;
+  handleSeat?: any;
+  seat?: any;
+  selectedSeat?: ISeats | undefined;
   index: number;
 }
 export default function FlightProgress({
@@ -18,7 +18,9 @@ export default function FlightProgress({
   index
 }: IFlightProgressProps) {
   const handlePickSeat = () => {
-    handleSeat(seat, index);
+    if(handleSeat){
+      handleSeat(seat, index);
+    }
 
   };
   return (

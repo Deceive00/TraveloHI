@@ -43,15 +43,14 @@ export default function FlightRecommendationCard({
         <div className={style.destinationContainer}>
           <h4>
             {
-              flightData?.FlightSchedules[0]?.FlightRoute?.DepartureAirport?.City
-                ?.cityName
+              flightData?.FlightSchedules[0]?.FlightRoute?.DepartureAirport?.airportName
             }
           </h4>
           <FaPlane />
           <h4>
             {
               flightData?.FlightSchedules[flightData?.FlightSchedules?.length - 1]
-                ?.FlightRoute?.DepartureAirport?.airportName
+                ?.FlightRoute?.ArrivalAirport?.airportName
             }
           </h4>
         </div>

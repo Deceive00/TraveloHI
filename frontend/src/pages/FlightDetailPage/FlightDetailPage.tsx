@@ -338,8 +338,7 @@ export default function FlightDetailPage() {
                   <h4 className={style.totalPrice}>
                     {getCurrency()}
                     {convertPrice(
-                      getTotalPrice(flightData?.Flight.flightPrice || 0) + getTotalPrice(flightData?.Flight.flightPrice || 0) *
-                      0.001
+                      getTotalPrice(flightData?.Flight.flightPrice || 0)
                     ).toLocaleString()}
                     <HiChevronDown />
                   </h4>
@@ -430,7 +429,11 @@ export default function FlightDetailPage() {
                               ? style.available
                               : style.isNotAvailable
                           }`}
-                          onClick={() => handleSeatClicked(seat)}
+                          onClick={() =>{
+                            if(seat.isAvailable){
+                              handleSeatClicked(seat)
+                            }
+                          }}
                           key={seat.ID}
                         >
                           <p>{seat.seatNumber}</p>

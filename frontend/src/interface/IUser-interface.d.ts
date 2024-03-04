@@ -9,6 +9,7 @@ interface IUser{
   status: string;
   securityQuestions: SecurityQuestion[];
   profilePicture: string;
+  walletCredits: number;
 };
 
 interface SecurityQuestion{

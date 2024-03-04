@@ -9,6 +9,7 @@ interface ICustomSelectContainerProps {
   setIsOpen: (isOpen: boolean) => void;
   options: ISearchFlight | undefined;
   handleNameOptionsClicked: (name: string) => void;
+  defaultValue?: any;
 }
 
 const CustomSelectContainer: React.FC<ICustomSelectContainerProps> = ({
@@ -18,8 +19,9 @@ const CustomSelectContainer: React.FC<ICustomSelectContainerProps> = ({
   setIsOpen,
   options,
   handleNameOptionsClicked,
+  defaultValue
 }) => {
-  console.log(options);
+
   return (
     <div className={style.customSelectContainer}>
       <div className={style.selectContainer}>

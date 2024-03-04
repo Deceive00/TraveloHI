@@ -16,7 +16,7 @@ const FILTER_OPTIONS = [
   "Cottages",
 ];
 
-const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
+const SearchComponent = ({ defaultValue, defaultOptions }: { defaultValue?: any, defaultOptions?: any }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [countryResults, setCountryResults] = useState<Country[]>([]);
   const [cityResults, setCityResults] = useState<City[]>([]);
@@ -26,6 +26,9 @@ const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
   const [searchHistoriesResults, setSearchHistoriesResults] = useState<ISearchHistory[]>([]);
   useEffect(() => {
     setIsOpen(false);
+    if(defaultOptions){
+      setSelectedOptions(defaultOptions)
+    }
   }, []);
   useEffect(() => {
     if (defaultValue) {
@@ -203,8 +206,8 @@ const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
             <div className={style.leftSideSearchButtonContainer}>
               <span>Filter: </span>
               <div className={style.filterOptionContainer}>
-                {FILTER_OPTIONS.map((item: string) => (
-                  <div className={style.filterOption}>{item}</div>
+                {FILTER_OPTIONS.map((item: string, index: number) => (
+                  <div className={style.filterOption} key={index}>{item}</div>
                 ))}
               </div>
             </div>
@@ -222,7 +225,7 @@ const SearchComponent = ({ defaultValue }: { defaultValue?: string }) => {
       {
         selectedOptions === 'flight' && (
           <>
-            <SearchFlight/>
+            <SearchFlight defaultValue={defaultValue}/>
           </>
         )
       }

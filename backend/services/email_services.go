@@ -150,3 +150,25 @@ func ValidateEmailFormat(email string) bool {
     return regexpPattern.MatchString(email)
 }
 
+
+func SendPaymentDetailsEmail(email string, requestBody struct {
+	Price        float64 `json:"price"`
+	HotelCartIDs []uint  `json:"hotelCartIds"`
+	TicketIDs    []uint  `json:"ticketIds"`
+	PromotionID  uint    `json:"promotionId"`
+}) error {
+	htmlContent := fmt.Sprintf("Payment successful for the amount of $%.2f. Details: Hotel Cart IDs: %v, Ticket IDs: %v, Promotion ID: %d", requestBody.Price, requestBody.HotelCartIDs, requestBody.TicketIDs, requestBody.PromotionID)
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", senderEmail)
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", "Payment Details")
+	m.SetBody("text/html", htmlContent)
+
+	d := gomail.NewDialer(smtpAddress, smtpPort, senderEmail, senderPassword)
+	if err := d.DialAndSend(m); err != nil {
+		return err
+	}
+
+	return nil
+}
