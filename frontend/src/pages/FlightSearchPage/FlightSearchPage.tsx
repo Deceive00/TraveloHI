@@ -31,7 +31,6 @@ export default function FlightSearchPage() {
           departureDate: departureDate,
         });
 
-        console.log(departureAirport, arrivalAirport, departureDate);
         const response = await axios.get(
           `http://localhost:8080/api/flights/search`,
           {
@@ -52,7 +51,7 @@ export default function FlightSearchPage() {
       }
     };
     fetchSearchResults();
-  }, []);
+  }, [window.location.search]);
   type TransitOption = "noTransit" | "oneTransit" | "multipleTransits";
 
   const handleCheckboxChange = (option: TransitOption) => {
@@ -63,7 +62,7 @@ export default function FlightSearchPage() {
   };
 
   const filterFlightSegments = () => {
-    return flightSegments.filter((segment) => {
+    return flightSegments?.filter((segment) => {
       if(!transitOptions.noTransit && !transitOptions.multipleTransits && !transitOptions.oneTransit){
         return true;
       }
@@ -141,9 +140,9 @@ export default function FlightSearchPage() {
               </div>
             </div>
             <div className={style.flightList}>
-              {filteredSegments.length <= 0 && <h2>No Flight Matched</h2>}
-              {filteredSegments.length > 0 &&
-                filteredSegments.map((flightData: IFlightData) => (
+              {!filteredSegments || filteredSegments.length <= 0 && <h2>No Flight Matched</h2>}
+              {filteredSegments?.length > 0 &&
+                filteredSegments?.map((flightData: IFlightData) => (
                   <div className={style.flightRoute} onClick={() => handleCardClick(flightData)}>
                     <h2 style={{ marginBottom: "1vh" }}>
                       {

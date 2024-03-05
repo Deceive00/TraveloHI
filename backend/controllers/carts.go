@@ -233,7 +233,7 @@ func GetCarts(c *fiber.Ctx) error {
 			Tickets:  tickets,
 		})
 	}
-	
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"hotelCarts":  hotelCarts,
 		"flightCarts": flightResponse,
@@ -447,34 +447,34 @@ func CheckoutPaymentWallet(c *fiber.Ctx) error {
 				"error": "Internal Server Error",
 			})
 		}
-    if existingTicket.FlightSchedule.DepartureTime.After(time.Now()) {
+		if existingTicket.FlightSchedule.DepartureTime.After(time.Now()) {
 			existingTicket.Status = "expired"
 			if err := db.Save(&existingTicket).Error; err != nil {
-					tx.Rollback()
-					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-							"error": "Internal Server Error",
-					})
+				tx.Rollback()
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Internal Server Error",
+				})
 			}
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Flight tickets has expired",
 			})
 		}
 		var bookedSeat models.Seats
-		if err := tx.Where("id = ?", existingTicket.SeatID).First(&bookedSeat).Error; err != nil {
+		if err := tx.Where("id = ? AND is_available = ?", existingTicket.SeatID, true).First(&bookedSeat).Error; err != nil {
 			tx.Rollback()
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Invalid Seat!",
+				"error": "The seat is already booked!",
 			})
 		}
-	
+
 		bookedSeat.IsAvailable = false
-		
+
 		if err := tx.Save(&bookedSeat).Error; err != nil {
 			tx.Rollback()
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Internal Server Error",
 			})
-		}	
+		}
 
 		existingTicket.Status = "paid"
 
@@ -531,7 +531,7 @@ func CheckoutPaymentCard(c *fiber.Ctx) error {
 	var requestBody struct {
 		Price        float64 `json:"price"`
 		HotelCartIDs []uint  `json:"hotelCartIds"`
-		CardID uint `json:"cardId"`
+		CardID       uint    `json:"cardId"`
 		TicketIDs    []uint  `json:"ticketIds"`
 		PromotionID  uint    `json:"promotionId"`
 	}
@@ -550,8 +550,8 @@ func CheckoutPaymentCard(c *fiber.Ctx) error {
 	log.Print(userID, requestBody.CardID)
 	if err := tx.Where("user_id = ? AND credit_card_id = ?", userID, requestBody.CardID).First(&userCC); err == nil {
 		return c.Status(fiber.StatusConflict).JSON(fiber.Map{
-      "error": "No Data CC Found",
-    })
+			"error": "No Data CC Found",
+		})
 	}
 	defer func() {
 		if r := recover(); r != nil {
@@ -594,13 +594,13 @@ func CheckoutPaymentCard(c *fiber.Ctx) error {
 			})
 		}
 		log.Print(existingTicket.FlightSchedule.DepartureTime, time.Now())
-    if existingTicket.FlightSchedule.DepartureTime.After(time.Now()) {
+		if existingTicket.FlightSchedule.DepartureTime.After(time.Now()) {
 			existingTicket.Status = "expired"
 			if err := db.Save(&existingTicket).Error; err != nil {
-					tx.Rollback()
-					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-							"error": "Internal Server Error",
-					})
+				tx.Rollback()
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Internal Server Error",
+				})
 			}
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Flight tickets has expired",
@@ -613,7 +613,7 @@ func CheckoutPaymentCard(c *fiber.Ctx) error {
 				"error": "Invalid Seat!",
 			})
 		}
-		
+
 		bookedSeat.IsAvailable = false
 		if err := tx.Model(&bookedSeat).Where("id = ?", existingTicket.SeatID).Updates(&bookedSeat).Error; err != nil {
 			tx.Rollback()
@@ -662,4 +662,3 @@ func CheckoutPaymentCard(c *fiber.Ctx) error {
 		"message": "Payment Successful",
 	})
 }
-

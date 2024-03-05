@@ -26,7 +26,7 @@ export default function SearchFlight({defaultValue} : {defaultValue?: any}) {
     if(defaultValue?.departureDate){
       setDepartureDate(new Date(defaultValue.departureDate))
     }
-  }, [])
+  }, []);
   const [loading, setLoading] = useState(false);
   const [departureData, setDepartureData] = useState<ISearchFlight>();
   const [arrivalData, setArrivalData] = useState<ISearchFlight>();

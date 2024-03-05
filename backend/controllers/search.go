@@ -366,7 +366,7 @@ func GetSearchFlightData(c *fiber.Ctx) error {
 		Joins("JOIN cities AS arrival_cities ON arrival_cities.id = arrival_airports.city_id").
 		Joins("JOIN countries AS departure_countries ON departure_countries.id = departure_cities.country_id").
 		Joins("JOIN countries AS arrival_countries ON arrival_countries.id = arrival_cities.country_id").
-		Where("departure_cities.city_name ILIKE ? OR arrival_cities.city_name ILIKE ? OR departure_countries.country_name ILIKE ? OR arrival_countries.country_name ILIKE ? OR departure_airports.airport_name ILIKE ? OR arrival_airports.airport_name ILIKE ?", "%"+departureTerm+"%", arrival, "%"+departureTerm+"%", arrival, "%"+departureTerm+"%", arrival).
+		Where("(departure_cities.city_name ILIKE ? AND arrival_cities.city_name ILIKE ?) OR (departure_countries.country_name ILIKE ? AND arrival_countries.country_name ILIKE ?) OR (departure_airports.airport_name ILIKE ? AND arrival_airports.airport_name ILIKE ?)", "%"+departureTerm+"%", arrival, "%"+departureTerm+"%", arrival, "%"+departureTerm+"%", arrival).
 		Where("DATE(flight_schedules.departure_time) > ?", departureDate.Format("2006-01-02")).
 		Preload("Flight").
 		Preload("FlightSchedule.Airplane.Airline").
