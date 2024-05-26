@@ -192,9 +192,10 @@ export default function SearchPage() {
       const response = await axios.get(
         `http://localhost:8080/api/hotel/search`,
         {
-          params: { term: term, page: currentPage, pageSize: pageSize, userId: user?.id },
+          params: { term: term, page: currentPage, pageSize: pageSize, userId: parseInt(user?.id || '0') },
         }
       );
+      console.log(response.data)
       setHotel(response.data.hotels);
       setTotalPages(response.data.totalPages);
     } catch (error) {

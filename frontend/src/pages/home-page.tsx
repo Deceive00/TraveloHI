@@ -30,6 +30,7 @@ export default function HomePage() {
       );
       if (response.status === 200) {
         setPromotions(response.data.promotions);
+        console.log(response.data)
       }
     } catch (error) {
       console.log(error);
@@ -37,11 +38,11 @@ export default function HomePage() {
   };
   useEffect(() => {
     getPromotion();
-    const intervalId = setInterval(() => {
-      getPromotion();
-    }, 500); 
+    // const intervalId = setInterval(() => {
+    //   getPromotion();
+    // }, 500); 
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, []);
 
   const handleNextPromotion = () => {
@@ -80,12 +81,12 @@ export default function HomePage() {
             <SearchComponent/>
           </div>
         </div>
-        {promotions.length !== 0 && (
+        {promotions?.length !== 0 && (
           <div className={style.promotionContainer}>
             <h2>Exclusive Deals Just For You!</h2>
             <div className={style.sliderWrapper}>
               <div className={style.promotionSlider} ref={sliderRef}>
-                {promotions.map((promotion, index) => (
+                {promotions?.map((promotion, index) => (
                   <PromotionCard key={`${promotion.promotionName} ${index}`} promotion={promotion} />
                 ))}
               </div>
